@@ -38,15 +38,11 @@ class LiamW_PostMacros_ViewPublic_Use extends XenForo_ViewPublic_Base
 		$threadName = isset($thread['title']) ? $thread['title'] : '';
 		$forumName = isset($forum['title']) ? $forum['title'] : '';
 
-		$macro['content'] = str_replace(array(
-			"{threadcreator}",
-			"{threadtitle}",
-			"{forumtitle}"
-		), array(
-			$threadUser,
-			$threadName,
-			$forumName
-		), $macro['content']);
+		$macro['content'] = strtr($macro['content'], array(
+			"{threadcreator}" => $threadUser,
+			"{threadtitle}" => $threadName,
+			"{forumtitle}" => $forumName
+		));
 
 		return $macro;
 	}

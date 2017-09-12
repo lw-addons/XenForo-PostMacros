@@ -13,6 +13,7 @@ class LiamW_PostMacros_Installer
 				content MEDIUMTEXT NOT NULL,
 				lock_thread TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 				staff_macro TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+				display_order INT(10) UNSIGNED NOT NULL DEFAULT 1,
 			PRIMARY KEY (macro_id)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8
 		",
@@ -25,6 +26,7 @@ class LiamW_PostMacros_Installer
 				content MEDIUMTEXT NOT NULL,
 				lock_thread TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 				authorized_usergroups BLOB NULL DEFAULT NULL,
+				display_order INT(10) UNSIGNED NOT NULL DEFAULT 1,
 			PRIMARY KEY (admin_macro_id)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8
 		"
@@ -43,6 +45,9 @@ class LiamW_PostMacros_Installer
 			",
 			'post_macros_hide_conversation_quick_reply' => "
 				ALTER TABLE xf_user_option ADD post_macros_hide_conversation_quick_reply TINYINT(1) UNSIGNED NOT NULL DEFAULT 0
+			",
+			"post_macros_hide_other" => "
+				ALTER TABLE xf_user_option ADD post_macros_hide_other TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER post_macros_hide_conversation_quick_reply
 			"
 		),
 		'xf_forum' => array(
@@ -97,6 +102,11 @@ class LiamW_PostMacros_Installer
 			if ($installedVersion <= 400070)
 			{
 				self::_runQuery("ALTER TABLE liam_post_macros ADD display_order INT(10) UNSIGNED NOT NULL DEFAULT 1");
+			}
+
+			if ($installedVersion <= 400100)
+			{
+				self::_runQuery("ALTER TABLE liam_post_macros_admin ADD display_order INT(10) UNSIGNED NOT NULL DEFAULT 1");
 			}
 		}
 	}

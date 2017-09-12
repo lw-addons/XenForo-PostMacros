@@ -8,19 +8,23 @@ class LiamW_PostMacros_Extend_DataWriter_User extends XFCP_LiamW_PostMacros_Exte
 			'xf_user_option' => array(
 				'post_macros_hide_new_thread_reply' => array(
 					'type' => self::TYPE_BOOLEAN,
-					'default' => 1
+					'default' => 0
 				),
 				'post_macros_hide_thread_quick_reply' => array(
 					'type' => self::TYPE_BOOLEAN,
-					'default' => 1
+					'default' => 0
 				),
 				'post_macros_hide_new_conversation_reply' => array(
 					'type' => self::TYPE_BOOLEAN,
-					'default' => 1
+					'default' => 0
 				),
 				'post_macros_hide_conversation_quick_reply' => array(
 					'type' => self::TYPE_BOOLEAN,
-					'default' => 1
+					'default' => 0
+				),
+				'post_macros_hide_other' => array(
+					'type' => self::TYPE_BOOLEAN,
+					'default' => 0
 				)
 			)
 		);

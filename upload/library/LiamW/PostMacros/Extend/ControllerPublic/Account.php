@@ -22,7 +22,8 @@ class LiamW_PostMacros_Extend_ControllerPublic_Account extends XFCP_LiamW_PostMa
 				'post_macros_hide_new_thread_reply' => XenForo_Input::BOOLEAN,
 				'post_macros_hide_thread_quick_reply' => XenForo_Input::BOOLEAN,
 				'post_macros_hide_new_conversation_reply' => XenForo_Input::BOOLEAN,
-				'post_macros_hide_conversation_quick_reply' => XenForo_Input::BOOLEAN
+				'post_macros_hide_conversation_quick_reply' => XenForo_Input::BOOLEAN,
+				'post_macros_hide_other' => XenForo_Input::BOOLEAN
 			));
 
 			XenForo_Application::set('liam_postMacros_options', $macrosOptions);

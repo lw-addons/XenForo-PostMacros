@@ -55,6 +55,10 @@ class LiamW_PostMacros_DataWriter_AdminMacros extends XenForo_DataWriter
 				'authorized_usergroups' => array(
 					'type' => self::TYPE_SERIALIZED,
 					'required' => true
+				),
+				'display_order' => array(
+					'type' => self::TYPE_UINT,
+					'default' => 1
 				)
 			)
 		);

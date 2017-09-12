@@ -11,7 +11,7 @@ class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdm
 	{
 		$this->canonicalizeRequestUrl(XenForo_Link::buildAdminLink('post-macros'));
 
-		$macros = $this->_getMacrosModel()->getAdminMacrosForDisplay();
+		$macros = $this->_getMacrosModel()->getAdminMacros(array(), array('order' => 'display_order'));
 
 		$viewParams = array(
 			'macros' => $macros
@@ -49,7 +49,8 @@ class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdm
 			'authorized_usergroups' => array(
 				XenForo_Input::UINT,
 				'array' => true
-			)
+			),
+			'display_order' => XenForo_Input::UINT
 		));
 
 		$dw = XenForo_DataWriter::create('LiamW_PostMacros_DataWriter_AdminMacros');
@@ -88,6 +89,19 @@ class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdm
 
 			return $this->responseView('LiamW_PostMacros_ViewAdmin_Delete', 'postMacros_delete_confirm', $viewParams);
 		}
+	}
+
+	public function actionDisplayOrder()
+	{
+		$order = $this->_input->filterSingle('order', XenForo_Input::ARRAY_SIMPLE);
+
+		$this->_assertPostOnly();
+		$this->_getMacrosModel()->massUpdateAdminMacroDisplayOrder($order);
+
+		return $this->responseRedirect(
+			XenForo_ControllerResponse_Redirect::SUCCESS,
+			XenForo_Link::buildAdminLink('post-macros')
+		);
 	}
 
 	protected function _getMacroOrError($adminMacroId = null)

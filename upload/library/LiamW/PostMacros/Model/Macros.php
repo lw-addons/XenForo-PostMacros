@@ -16,10 +16,13 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 		);
 	}
 
-	public function getAllAdminMacros()
+	public function getAdminMacros(array $conditions = array(), array $fetchOptions = array())
 	{
+		$whereConditions = $this->_prepareAdminMacrosConditions($conditions);
+		$orderByClause = ' ' . $this->getOrderByClause($this->_orderOptions, $fetchOptions);
+
 		return $this->fetchAllKeyed(
-			'SELECT * FROM liam_post_macros_admin', 'admin_macro_id'
+			'SELECT * FROM liam_post_macros_admin WHERE ' . $whereConditions . $orderByClause, 'admin_macro_id'
 		);
 	}
 
@@ -58,24 +61,19 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 		}
 	}
 
-	public function getAdminMacrosForDisplay(array $viewingUser = null)
-	{
-		$this->standardizeViewingUserReference($viewingUser);
-
-		return $this->getAllAdminMacros();
-	}
-
 	public function getAdminMacrosForPublicDisplay(array $viewingUser = null)
 	{
 		$this->standardizeViewingUserReference($viewingUser);
 
-		$allMacros = $this->prepareAdminMacros($this->getAllAdminMacros());
+		$allMacros = $this->prepareAdminMacros($this->getAdminMacros(array(), array('order' => 'display_order')));
 
 		$inUsergroups = explode(',', $viewingUser['secondary_group_ids']);
 		$inUsergroups[] = $viewingUser['user_group_id'];
 
 		foreach ($allMacros as $key => $macro)
 		{
+			// If the difference between the authorized usergroups of the macro and the usergroups the user is in is the same
+			// as the authorized usergroups of the macro, then none of them overlap so the user can't use the macro.
 			if (array_diff($macro['authorized_usergroups'], $inUsergroups) === $macro['authorized_usergroups'])
 			{
 				unset($allMacros[$key]);
@@ -93,6 +91,27 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 			'user' => $this->getMacrosForDisplay($viewingUser),
 			'admin' => $this->getAdminMacrosForPublicDisplay($viewingUser)
 		);
+	}
+
+	public function massUpdateAdminMacroDisplayOrder(array $order)
+	{
+		$sqlOrder = '';
+
+		$db = $this->_getDb();
+
+		foreach ($order AS $displayOrder => $data)
+		{
+			$adminMacroId = $db->quote((int)$data[0]);
+
+			$sqlOrder .= "WHEN $adminMacroId THEN " . $db->quote((int)$displayOrder * 10) . "\n";
+		}
+
+		$db->query("
+			UPDATE liam_post_macros_admin SET
+			display_order = CASE admin_macro_id
+			 $sqlOrder
+			ELSE 0 END
+		");
 	}
 
 	public function prepareAdminMacros(array $macros)
@@ -179,9 +198,30 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 		return $this->getConditionsForClause($sqlConditions);
 	}
 
+	protected function _prepareAdminMacrosConditions(array $conditions)
+	{
+		$sqlConditions = array();
+
+		$db = $this->_getDb();
+
+		if (!empty($conditions['admin_macro_id']))
+		{
+			if (is_array($conditions['admin_macro_id']))
+			{
+				$sqlConditions[] = 'admin_macro_id IN (' . $db->quote($conditions['admin_macro_id']) . ')';
+			}
+			else
+			{
+				$sqlConditions[] = 'admin_macro_id = ' . $db->quote($conditions['admin_macro_id']);
+			}
+		}
+
+		return $this->getConditionsForClause($sqlConditions);
+	}
+
 	public function macrosEnabledInForum(array $forum)
 	{
-		return $forum['post_macros_enable'];
+		return isset($forum['post_macros_enable']) && $forum['post_macros_enable'];
 	}
 
 	public function canUseMacro(array $macro, $type = 'user', array $viewingUser = null)
@@ -284,7 +324,7 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 		return false;
 	}
 
-	public function showMacrosSelect(XenForo_View $view, array $viewingUser = null)
+	public function showMacrosSelect(XenForo_ViewPublic_Base $view, array $viewingUser = null)
 	{
 		$this->standardizeViewingUserReference($viewingUser);
 
@@ -316,7 +356,7 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 				$shouldDisplay = !$viewingUser['post_macros_hide_conversation_quick_reply'];
 				break;
 			default:
-				$shouldDisplay = $options->get('liam_postMacros_all_editors');
+				$shouldDisplay = $options->get('liam_postMacros_all_editors') && !$viewingUser['post_macros_hide_other'];
 		}
 
 		if (in_array($viewClass, $excludedViews))
