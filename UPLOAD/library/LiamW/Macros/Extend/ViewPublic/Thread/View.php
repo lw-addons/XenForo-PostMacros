@@ -64,7 +64,8 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 					$show = !$macrosModel->hiddenOnConvoNcNr($userId);
 					break;
 				default:
-					throw new XenForo_Exception("Invalid Show Content ($type)");
+					// Shouldn't happen
+					$show = false;
 			}
 
 			if (!$forum)
