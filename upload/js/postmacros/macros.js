@@ -145,21 +145,22 @@
 				this.titleField.val(ajaxData.threadTitle);
 			}
 
-			if (ajaxData.lockThread)
-			{
-				console.log('Locking thread');
+            if (ajaxData.lockThread)
+            {
+                console.log('Locking thread');
                 var existingLockInput = $('#ctrl_macros_set_locked');
                 if (existingLockInput) existingLockInput.remove();
-				$('<input id="ctrl_macros_set_locked" type="hidden" name="macros_set_locked" value="1" />').appendTo(this.$form);
-			}
+                $('<input id="ctrl_macros_set_locked" type="hidden" name="macros_set_locked" value="1" />').appendTo(this.$form);
+            }
 
-			if (ajaxData.threadPrefix)
-			{
-				console.log('Setting prefix...');
+            if (ajaxData.threadPrefix)
+            {
+                console.log('Setting prefix...');
                 var existingPrefixInput = $('#ctrl_macros_set_prefix');
                 if (existingPrefixInput) existingPrefixInput.remove();
+
                 $('<input id="ctrl_macros_set_prefix" type="hidden" name="macros_set_prefix" value="' + ajaxData.threadPrefix + '" />').appendTo(this.$form);
-			}
+            }
 
 			this.$macros.val(0);
 		},

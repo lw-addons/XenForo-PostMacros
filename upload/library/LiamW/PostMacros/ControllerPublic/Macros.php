@@ -173,6 +173,12 @@ class LiamW_PostMacros_ControllerPublic_Macros extends XenForo_ControllerPublic_
 
 		$this->_assertCanUseMacro($macro, $data['type']);
 
+		// Work around the baseUrl funkiness.
+		if (strpos($data['formAction'], 'index.php') === false)
+		{
+			$data['formAction'] = 'index.php?' . $data['formAction'];
+		}
+
 		$parsedRoute = $this->parseRouteUrl(XenForo_Link::convertUriToAbsoluteUri($data['formAction'], true));
 
 		$thread = array();
