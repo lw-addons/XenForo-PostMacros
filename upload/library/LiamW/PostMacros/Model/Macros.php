@@ -63,7 +63,7 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 		$joinOptions = $this->prepareMacrosFetchOptions($fetchOptions);
 
 		return $this->_getDb()->fetchRow(
-			'SELECT * ' . $joinOptions['selectFields'] . ' FROM liam_post_macros AS macro' . $joinOptions['joinTables'] . 'WHERE macro_id=?',
+			'SELECT * ' . $joinOptions['selectFields'] . ' FROM liam_post_macros AS macro' . $joinOptions['joinTables'] . ' WHERE macro_id=?',
 			$macroId
 		);
 	}

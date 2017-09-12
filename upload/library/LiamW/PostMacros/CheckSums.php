@@ -34,7 +34,7 @@ class LiamW_PostMacros_CheckSums
 			'library/LiamW/PostMacros/Installer.php' => '7e396ca2c073e50e38484d9fdc5fc8b5',
 			'library/LiamW/PostMacros/Listener.php' => '12580f970012a3643414814c7150bd3a',
 			'library/LiamW/PostMacros/Model/Import.php' => '368c0dcdce246ef8b84c72b9adf3dabd',
-			'library/LiamW/PostMacros/Model/Macros.php' => 'f9650d54c7fd880d985fde644dba726d',
+			'library/LiamW/PostMacros/Model/Macros.php' => 'dfa6283591d0f281e3803ebb0c6ef527',
 			'library/LiamW/PostMacros/Route/Prefix/PostMacros.php' => '3f32c218109df16db5aef192c7680199',
 			'library/LiamW/PostMacros/Route/PrefixAdmin/PostMacros.php' => '271d14a8afd30a75eeea57cd4b4666d8',
 			'library/LiamW/PostMacros/TemplateModification.php' => '57dda03f5c7ef4e84620cd5cd9ec7351',
