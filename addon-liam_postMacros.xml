@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.0.13" version_id="400130" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.1.0" version_id="4010070" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
   <admin_navigation>
-    <navigation navigation_id="liam_postMacros" parent_navigation_id="options" display_order="500" link="post-macros" admin_permission_id="lw_manageAdminMacros" debug_only="0" hide_no_children="0"/>
+    <navigation navigation_id="liam_postMacros" parent_navigation_id="liam_postMacros_main" display_order="1" link="post-macros/admin" admin_permission_id="lw_manageAdminMacros" debug_only="0" hide_no_children="0"/>
+    <navigation navigation_id="liam_postMacros_main" parent_navigation_id="applications" display_order="16" link="" admin_permission_id="lw_manageAdminMacros" debug_only="0" hide_no_children="1"/>
+    <navigation navigation_id="liam_postMacros_user" parent_navigation_id="liam_postMacros_main" display_order="10" link="post-macros/user" admin_permission_id="lw_manageAdminMacros" debug_only="0" hide_no_children="0"/>
   </admin_navigation>
   <admin_permissions>
     <admin_permission admin_permission_id="lw_manageAdminMacros" display_order="300"/>
@@ -31,8 +33,8 @@
 </xen:form>]]></template>
     <template title="postMacros_delete_confirm"><![CDATA[<xen:title>{xen:phrase liam_postMacros_delete_admin_macro}</xen:title>
 
-<form action="{xen:adminlink 'post-macros/delete'}" method="post" class="xenForm deleteConfirmForm formOverlay">
-	<p>{xen:phrase liam_postMacros_confirm_deletion_of_admin_macro}: <b><a href="{xen:adminlink post-macros/edit, $macro}">{$macro.title}</a></b></p>
+<form action="{xen:adminlink 'post-macros/admin/delete'}" method="post" class="xenForm deleteConfirmForm formOverlay">
+	<p>{xen:phrase liam_postMacros_confirm_deletion_of_admin_macro}: <b><a href="{xen:adminlink post-macros/admin/edit, $macro}">{$macro.title}</a></b></p>
 	
 	<dl class="ctrlUnit submitUnit">
 		<dt></dt>
@@ -49,11 +51,11 @@
     <template title="postMacros_edit"><![CDATA[<xen:title><xen:if is="{$macro.admin_macro_id}">{xen:phrase liam_postMacros_edit_macro}: {$macro.title}<xen:else />{xen:phrase liam_postMacros_new_macro}</xen:if></xen:title>
 
 <xen:navigation>
-	<xen:breadcrumb href="{xen:adminlink index}">{xen:phrase home}</xen:breadcrumb>
-	<xen:breadcrumb href="{xen:adminlink post-macros}">{xen:phrase liam_postMacros_admin_macros}</xen:breadcrumb>
+	<xen:breadcrumb>{xen:phrase liam_postMacros}</xen:breadcrumb>
+	<xen:breadcrumb href="{xen:adminlink post-macros/admin}">{xen:phrase liam_postMacros_admin_macros}</xen:breadcrumb>
 </xen:navigation>
 
-<xen:form action="{xen:adminlink 'post-macros/save'}" method="post" class="AutoValidator" data-redirect="on">
+<xen:form action="{xen:adminlink 'post-macros/admin/save'}" method="post" class="AutoValidator" data-redirect="on">
 
 	<fieldset>
 		<xen:textboxunit label="{xen:phrase liam_postMacros_title}:" name="title" value="{$macro.title}" data-livetitletemplate="{xen:if {$macro.admin_macro_id},
@@ -90,11 +92,11 @@
     <template title="postMacros_index"><![CDATA[<xen:title>{xen:phrase liam_postMacros_admin_macros}</xen:title>
 
 <xen:navigation>
-	<xen:breadcrumb href="{xen:adminlink index}">{xen:phrase home}</xen:breadcrumb>
+	<xen:breadcrumb>{xen:phrase liam_postMacros}</xen:breadcrumb>
 </xen:navigation>
 
 <xen:topctrl>
-	<a href="{xen:adminlink 'post-macros/new'}" class="button">+ {xen:phrase liam_postMacros_add_macro}</a>
+	<a href="{xen:adminlink 'post-macros/admin/new'}" class="button">+ {xen:phrase liam_postMacros_add_macro}</a>
 </xen:topctrl>
 
 <xen:require css="filter_list.css" />
@@ -102,29 +104,136 @@
 <xen:require js="js/sortable/jquery.sortable.min.js" />
 
 <xen:if is="{$macros}">
-	<xen:form action="{xen:adminlink 'post-macros'}" class="section">
+	<xen:form action="{xen:adminlink 'post-macros/admin'}" class="section">
 		<h2 class="subHeading">
 			<xen:include template="filter_list_controls" />
 			{xen:phrase liam_postMacros_admin_macros}
 		</h2>
 		
-		<ul class="FilterList" data-sort-url="{xen:adminlink post-macros/display-order}">
+		<ul class="FilterList" data-sort-url="{xen:adminlink post-macros/admin/display-order}">
 			<ol class="Sortable">
 				<xen:foreach loop="$macros" value="$macro">
 					<xen:listitem
 						id="{$macro.admin_macro_id}"
-						href="{xen:adminlink 'post-macros/edit', $macro}"
+						href="{xen:adminlink 'post-macros/admin/edit', $macro}"
 						label="{$macro.title}"
-						delete="{xen:adminlink 'post-macros/delete', $macro}"
+						delete="{xen:adminlink 'post-macros/admin/delete', $macro}"
 						data-item-id="{$macro.admin_macro_id}" />
 				</xen:foreach>
 			</ol>
 		</ul>
 	
-		<p class="sectionFooter">{xen:phrase showing_x_of_y_items, 'count=<span class="FilterListCount">{xen:count $macros}</span>', 'total={xen:count $macros}'}</p>
+		<p class="sectionFooter">{xen:phrase showing_x_of_y_items, 'count=<span class="FilterListCount">{xen:count $macros}</span>', 'total={$totalMacros}'}</p>
 	</xen:form>
+	
+	{xen:adminpagenav $perPage, $totalMacros, $page, 'post-macros/admin'}
 <xen:else />
 	<p>{xen:phrase liam_postMacros_no_admin_macros}</p>
+</xen:if>]]></template>
+    <template title="postMacros_user_delete_confirm"><![CDATA[<xen:title>{xen:phrase liam_postMacros_delete_user_macro}</xen:title>
+
+<form action="{xen:adminlink 'post-macros/user/delete'}" method="post" class="xenForm deleteConfirmForm formOverlay">
+	<p>{xen:phrase liam_postMacros_confirm_deletion_of_user_macro}: <b><a href="{xen:adminlink post-macros/user/edit, $macro}">{$macro.title}</a></b></p>
+	
+	<dl class="ctrlUnit submitUnit">
+		<dt></dt>
+		<dd>
+			<input type="submit" value="{xen:phrase liam_postMacros_delete_user_macro}" class="button primary" accesskey="s">
+			<input type="reset" class="button OverlayCloser" value="{xen:phrase cancel}">
+		</dd>
+	</dl>
+	
+	<input type="hidden" name="macro_id" value="{$macro.macro_id}" />
+	<input type="hidden" name="_xfConfirm" value="1">	
+	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+</form>]]></template>
+    <template title="postMacros_user_edit"><![CDATA[<xen:title><xen:if is="{$macro.macro_id}">{xen:phrase liam_postMacros_edit_macro}: {$macro.title}<xen:else />{xen:phrase liam_postMacros_new_macro}</xen:if></xen:title>
+
+<xen:navigation>
+	<xen:breadcrumb>{xen:phrase liam_postMacros}</xen:breadcrumb>
+	<xen:breadcrumb href="{xen:adminlink post-macros/user}">{xen:phrase liam_postMacros_user_macros}</xen:breadcrumb>
+</xen:navigation>
+
+<xen:form action="{xen:adminlink 'post-macros/user/save'}" method="post" class="AutoValidator" data-redirect="on">
+
+	<fieldset>
+		<xen:textboxunit label="{xen:phrase liam_postMacros_owner}:" name="username" value="{$macro.username}" inputclass="AutoComplete AcSingle">
+			<xen:explain>
+				{xen:if $macro.user_id, '<a href="{xen:adminlink users/edit, $macro}" target="_blank">{xen:phrase liam_postMacros_view_user}</a>'}
+			</xen:explain>
+		</xen:textboxunit>
+	</fieldset>
+
+	<fieldset>
+		<xen:textboxunit label="{xen:phrase liam_postMacros_title}:" name="title" value="{$macro.title}" data-livetitletemplate="{xen:if {$macro.admin_macro_id},
+			'{xen:phrase liam_postMacros_edit_macro}: <em>%s</em>',
+			'{xen:phrase liam_postMacros_new_macro}: <em>%s</em>'}" />
+			
+		<xen:textboxunit label="{xen:phrase liam_postMacros_thread_title}:" name="thread_title" value="{$macro.thread_title}" />
+		
+		<xen:textboxunit label="{xen:phrase liam_postMacros_content}:" name="content" hint="{xen:phrase liam_postMacros_you_may_use_bbcode}" value="{$macro.content}" rows="5" />
+		
+		<xen:checkboxunit label="" name="lock_thread">
+			<xen:option value="1" selected="{$macro.lock_thread}">{xen:phrase liam_postMacros_lock_thread}</xen:option>
+		</xen:checkboxunit>
+		
+		<xen:selectunit label="{xen:phrase liam_postMacros_apply_prefix}:" name="thread_prefix" value="{$macro.thread_prefix}">
+			<xen:option value="0">({xen:phrase liam_postMacros_choose_prefix})</xen:option>
+			<xen:options source="{$threadPrefixes}" />
+		</xen:selectunit>
+	</fieldset>
+	
+	<xen:spinboxunit label="{xen:phrase liam_postMacros_display_order}:" name="display_order" value="{$macro.display_order}" />
+	
+	<xen:submitunit save="{xen:phrase save}" />
+	
+	<input type="hidden" name="macro_id" value="{$macro.macro_id}" />
+</xen:form>]]></template>
+    <template title="postMacros_user_index"><![CDATA[<xen:title><xen:if is="{$filterName}">{xen:phrase liam_postMacros_user_macros_by_x, 'name={$filterName}'}<xen:else />{xen:phrase liam_postMacros_user_macros}</xen:if></xen:title>
+
+<xen:navigation>
+	<xen:breadcrumb>{xen:phrase liam_postMacros}</xen:breadcrumb>
+</xen:navigation>
+
+<xen:topctrl>
+	<xen:form action="{xen:adminlink 'post-macros/user'}">
+		<xen:textbox name="username" inputclass="quickSearchText AutoComplete AcSingle" placeholder="{xen:phrase user_name}..." type="search" value="{$filterName}" />
+		<input type="submit" class="button primary quickSearchButton" value="{xen:phrase liam_postMacros_show_macros_by_user}" />
+		<a href="{xen:adminlink 'post-macros/user/new'}" class="button">+ {xen:phrase liam_postMacros_add_macro}</a>
+	</xen:form>
+</xen:topctrl>
+
+<xen:require css="filter_list.css" />
+<xen:require js="js/xenforo/filter_list.js" />
+<xen:require js="js/sortable/jquery.sortable.min.js" />
+
+<xen:if is="{$macros}">
+	<xen:form action="{xen:adminlink 'post-macros/user'}" class="section">
+		<h2 class="subHeading">
+			<xen:include template="filter_list_controls" />
+			{xen:phrase liam_postMacros_admin_macros}
+		</h2>
+		
+		<ul class="FilterList">
+			<xen:foreach loop="$macros" value="$macro">
+				<xen:listitem
+					id="{$macro.macro_id}"
+					href="{xen:adminlink 'post-macros/user/edit', $macro}"
+					label="{$macro.title}"
+					snippet="{$macro.username}"
+					delete="{xen:adminlink 'post-macros/user/delete', $macro}"
+					data-item-id="{$macro.macro_id}" />
+			</xen:foreach>
+		</ul>
+	
+		<p class="sectionFooter">{xen:phrase showing_x_of_y_items, 'count=<span class="FilterListCount">{xen:count $macros}</span>', 'total={$totalMacros}'}</p>
+	</xen:form>
+	
+	{xen:adminpagenav $perPage, $totalMacros, $page, 'post-macros/user', '', 'username={$filterName}'}
+<xen:elseif is="{$filterName}" />
+	<p>{xen:phrase liam_postMacros_no_user_macros_by_x, 'name={$filterName}'}</p>
+<xen:else />
+	<p>{xen:phrase liam_postMacros_no_user_macros}</p>
 </xen:if>]]></template>
   </admin_templates>
   <admin_template_modifications>
@@ -173,6 +282,12 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
       <sub_options></sub_options>
       <relation group_id="liam_postMacros" display_order="1"/>
     </option>
+    <option option_id="liam_postMacros_perPage" edit_format="spinbox" data_type="integer" can_backup="1">
+      <default_value>20</default_value>
+      <edit_format_params>min=5</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="liam_postMacros" display_order="200"/>
+    </option>
     <option option_id="postMacros_collapsable" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>1</default_value>
       <edit_format_params></edit_format_params>
@@ -200,6 +315,8 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
   </permissions>
   <phrases>
     <phrase title="admin_navigation_liam_postMacros" version_id="40000" version_string="4.0.0"><![CDATA[Admin Macros]]></phrase>
+    <phrase title="admin_navigation_liam_postMacros_main" version_id="400130" version_string="4.0.13"><![CDATA[Post Macros]]></phrase>
+    <phrase title="admin_navigation_liam_postMacros_user" version_id="400130" version_string="4.0.13"><![CDATA[User's Macros]]></phrase>
     <phrase title="admin_permission_lw_manageAdminMacros" version_id="400090" version_string="4.0.9"><![CDATA[Manage admin macros]]></phrase>
     <phrase title="liam_postMacros" version_id="40000" version_string="4.0.0"><![CDATA[Post Macros]]></phrase>
     <phrase title="liam_postMacros_add_macro" version_id="40000" version_string="4.0.0"><![CDATA[Add Macro]]></phrase>
@@ -210,12 +327,14 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
     <phrase title="liam_postMacros_choose_prefix" version_id="40000" version_string="4.0.0"><![CDATA[Choose prefix]]></phrase>
     <phrase title="liam_postMacros_confirm_deletion_of_admin_macro" version_id="40000" version_string="4.0.0"><![CDATA[Confirm deletion of admin macro]]></phrase>
     <phrase title="liam_postMacros_confirm_deletion_of_macro" version_id="40000" version_string="4.0.0"><![CDATA[Confirm deletion of macro]]></phrase>
+    <phrase title="liam_postMacros_confirm_deletion_of_user_macro" version_id="400130" version_string="4.0.13"><![CDATA[Confirm deletion of user macro]]></phrase>
     <phrase title="liam_postMacros_content" version_id="40000" version_string="4.0.0"><![CDATA[Content]]></phrase>
     <phrase title="liam_postMacros_controls_not_available" version_id="40000" version_string="4.0.0"><![CDATA[Controls not available.]]></phrase>
     <phrase title="liam_postMacros_default_only" version_id="400110" version_string="4.0.11"><![CDATA[Default Only]]></phrase>
     <phrase title="liam_postMacros_delete" version_id="40000" version_string="4.0.0"><![CDATA[Delete]]></phrase>
     <phrase title="liam_postMacros_delete_admin_macro" version_id="40000" version_string="4.0.0"><![CDATA[Delete Admin Macro]]></phrase>
     <phrase title="liam_postMacros_delete_macro" version_id="40000" version_string="4.0.0"><![CDATA[Delete Macro]]></phrase>
+    <phrase title="liam_postMacros_delete_user_macro" version_id="400130" version_string="4.0.13"><![CDATA[Delete User Macro]]></phrase>
     <phrase title="liam_postMacros_display_order" version_id="400070" version_string="4.0.7"><![CDATA[Display Order]]></phrase>
     <phrase title="liam_postMacros_display_order_explain" version_id="400070" version_string="4.0.7"><![CDATA[This is the display order for this macro. Macros will appear in the selector in ascending display order. <b>This is only designed for the macro creator, it will not work for staff macros.</b>]]></phrase>
     <phrase title="liam_postMacros_edit" version_id="40000" version_string="4.0.0"><![CDATA[Edit]]></phrase>
@@ -235,29 +354,35 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
     <phrase title="liam_postMacros_master_name" version_id="40000" version_string="4.0.0"><![CDATA[Choose a macro...]]></phrase>
     <phrase title="liam_postMacros_new_macro" version_id="40000" version_string="4.0.0"><![CDATA[Create New Macro]]></phrase>
     <phrase title="liam_postMacros_no_admin_macros" version_id="40000" version_string="4.0.0"><![CDATA[There are no admin macros!]]></phrase>
+    <phrase title="liam_postMacros_no_user_macros" version_id="400130" version_string="4.0.13"><![CDATA[There are no user macros.]]></phrase>
+    <phrase title="liam_postMacros_no_user_macros_by_x" version_id="400130" version_string="4.0.13"><![CDATA[There are no user macros by {name}.]]></phrase>
     <phrase title="liam_postMacros_options_explain" version_id="40000" version_string="4.0.0"><![CDATA[You can use these options to choose where to display the macro selector.]]></phrase>
     <phrase title="liam_postMacros_opt_in" version_id="400110" version_string="4.0.11"><![CDATA[Opt In]]></phrase>
     <phrase title="liam_postMacros_opt_in_default" version_id="400110" version_string="4.0.11"><![CDATA[Opt In + Default]]></phrase>
     <phrase title="liam_postMacros_opt_out" version_id="400110" version_string="4.0.11"><![CDATA[Opt Out]]></phrase>
     <phrase title="liam_postMacros_opt_out_default" version_id="400110" version_string="4.0.11"><![CDATA[Opt Out + Default]]></phrase>
     <phrase title="liam_postMacros_others_staff_macro" version_id="40000" version_string="4.0.0"><![CDATA[This is an other's staff macro.]]></phrase>
+    <phrase title="liam_postMacros_owner" version_id="400130" version_string="4.0.13"><![CDATA[Owner]]></phrase>
     <phrase title="liam_postMacros_own_staff_macro" version_id="40000" version_string="4.0.0"><![CDATA[This is your own staff macro.]]></phrase>
     <phrase title="liam_postMacros_please_enter_valid_content" version_id="40001" version_string="4.0.1"><![CDATA[Please enter valid content.]]></phrase>
     <phrase title="liam_postMacros_please_enter_valid_title" version_id="40001" version_string="4.0.1"><![CDATA[Please enter a valid title.]]></phrase>
     <phrase title="liam_postMacros_requested_macro_not_found" version_id="40000" version_string="4.0.0"><![CDATA[The requested macro could not be found!]]></phrase>
     <phrase title="liam_postMacros_save_macro" version_id="40000" version_string="4.0.0"><![CDATA[Save Macro]]></phrase>
+    <phrase title="liam_postMacros_show_macros_by_user" version_id="400130" version_string="4.0.13"><![CDATA[Show macros by user...]]></phrase>
     <phrase title="liam_postMacros_staff_macro" version_id="40000" version_string="4.0.0"><![CDATA[Staff Macro]]></phrase>
     <phrase title="liam_postMacros_table_x_does_not_exist" version_id="40000" version_string="4.0.0"><![CDATA[The table '{tablename}' does not exist! You may have a too old version of Post Macros.]]></phrase>
     <phrase title="liam_postMacros_there_are_no_macros_you_can_use" version_id="400061" version_string="4.0.6 Fix 1"><![CDATA[There are no macros you can use.]]></phrase>
     <phrase title="liam_postMacros_thread_title" version_id="40000" version_string="4.0.0"><![CDATA[Thread Title]]></phrase>
     <phrase title="liam_postMacros_title" version_id="40000" version_string="4.0.0"><![CDATA[Macro Title]]></phrase>
     <phrase title="liam_postMacros_user_macros" version_id="40000" version_string="4.0.0"><![CDATA[User Macros]]></phrase>
+    <phrase title="liam_postMacros_user_macros_by_x" version_id="400130" version_string="4.0.13"><![CDATA[User Macros by {name}]]></phrase>
     <phrase title="liam_postMacros_variables" version_id="40000" version_string="4.0.0"><![CDATA[<ul>
 <li>{threadcreator} - Thread creator username.</li>
 <li>{threadtitle} - Title of thread.</li>
 <li>{forumtitle} - Title of forum.</li>
 </ul>]]></phrase>
     <phrase title="liam_postMacros_variables_available" version_id="40000" version_string="4.0.0"><![CDATA[Available Variables]]></phrase>
+    <phrase title="liam_postMacros_view_user" version_id="4010070" version_string="4.1.0"><![CDATA[View User]]></phrase>
     <phrase title="liam_postMacros_you_have_no_macros" version_id="40000" version_string="4.0.0"><![CDATA[There are no macros you can view!]]></phrase>
     <phrase title="liam_postMacros_you_may_use_bbcode" version_id="40000" version_string="4.0.0"><![CDATA[You may use BBCode.]]></phrase>
     <phrase title="option_group_liam_postMacros" version_id="40005" version_string="4.0.5"><![CDATA[Post Macros]]></phrase>
@@ -279,6 +404,8 @@ Opt In: Opt in to which views display select.<br />
 <span style="padding-left: 2em;">
 Opt Out: Show select everywhere, choose where not to display.<br />
 </span>]]></phrase>
+    <phrase title="option_liam_postMacros_perPage" version_id="400130" version_string="4.0.13"><![CDATA[Macros Per Page]]></phrase>
+    <phrase title="option_liam_postMacros_perPage_explain" version_id="400130" version_string="4.0.13"><![CDATA[Number of macros to show per page. Only used in Admin Panel currently.]]></phrase>
     <phrase title="option_postMacros_collapsable" version_id="400110" version_string="4.0.11"><![CDATA[Collapsable macros]]></phrase>
     <phrase title="option_postMacros_collapsable_explain" version_id="400110" version_string="4.0.11"><![CDATA[If enabled, macros on the macro page will be collapsed. The actual content will be fetched via AJAX when the Expand link is clicked.]]></phrase>
     <phrase title="permission_group_liam_postMacros" version_id="40000" version_string="4.0.0"><![CDATA[Post Macros]]></phrase>
@@ -296,7 +423,7 @@ Opt Out: Show select everywhere, choose where not to display.<br />
   </phrases>
   <route_prefixes>
     <route_type type="admin">
-      <prefix original_prefix="post-macros" class="LiamW_PostMacros_Route_PrefixAdmin_PostMacros" build_link="data_only"/>
+      <prefix original_prefix="post-macros" class="LiamW_PostMacros_Route_PrefixAdmin_PostMacros" build_link="all"/>
     </route_type>
     <route_type type="public">
       <prefix original_prefix="post-macros" class="LiamW_PostMacros_Route_Prefix_PostMacros" build_link="data_only"/>

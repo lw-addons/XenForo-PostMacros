@@ -2,17 +2,36 @@
 
 class LiamW_PostMacros_Model_Macros extends XenForo_Model
 {
+	const FETCH_USER = 0x01;
+
 	protected $_orderOptions = array(
 		'display_order' => 'display_order'
 	);
 
 	public function getMacros(array $conditions = array(), array $fetchOptions = array())
 	{
-		$whereConditions = $this->_prepareMacrosConditions($conditions);
+		$whereConditions = $this->_prepareMacrosConditions($conditions, $fetchOptions);
 		$orderByClause = ' ' . $this->getOrderByClause($this->_orderOptions, $fetchOptions);
 
-		return $this->fetchAllKeyed(
-			'SELECT * FROM liam_post_macros WHERE ' . $whereConditions . $orderByClause, 'macro_id'
+		$limitOptions = $this->prepareLimitFetchOptions($fetchOptions);
+		$joinOptions = $this->prepareMacrosFetchOptions($fetchOptions);
+
+		return $this->fetchAllKeyed($this->limitQueryResults(
+			'SELECT *' . $joinOptions['selectFields'] . ' FROM liam_post_macros AS macro' . $joinOptions['joinTables'] . ' WHERE ' . $whereConditions . $orderByClause,
+			$limitOptions['limit'], $limitOptions['offset']),
+			'macro_id'
+		);
+	}
+
+	public function countMacros(array $conditions = array(), array $fetchOptions = array())
+	{
+		$whereConditions = $this->_prepareMacrosConditions($conditions, $fetchOptions);
+		$orderByClause = ' ' . $this->getOrderByClause($this->_orderOptions, $fetchOptions);
+
+		$joinOptions = $this->prepareMacrosFetchOptions($fetchOptions);
+
+		return $this->_getDb()->fetchOne(
+			'SELECT COUNT(*)' . $joinOptions['selectFields'] . ' FROM liam_post_macros AS macro' . $joinOptions['joinTables'] . ' WHERE ' . $whereConditions . $orderByClause
 		);
 	}
 
@@ -21,15 +40,31 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 		$whereConditions = $this->_prepareAdminMacrosConditions($conditions);
 		$orderByClause = ' ' . $this->getOrderByClause($this->_orderOptions, $fetchOptions);
 
-		return $this->fetchAllKeyed(
-			'SELECT * FROM liam_post_macros_admin WHERE ' . $whereConditions . $orderByClause, 'admin_macro_id'
+		$limitOptions = $this->prepareLimitFetchOptions($fetchOptions);
+
+		return $this->fetchAllKeyed($this->limitQueryResults(
+			'SELECT * FROM liam_post_macros_admin WHERE ' . $whereConditions . $orderByClause, $limitOptions['limit'],
+			$limitOptions['offset']), 'admin_macro_id'
 		);
 	}
 
-	public function getMacroById($macroId)
+	public function countAdminMacros(array $conditions = array(), array $fetchOptions = array())
 	{
+		$whereConditions = $this->_prepareAdminMacrosConditions($conditions);
+		$orderByClause = ' ' . $this->getOrderByClause($this->_orderOptions, $fetchOptions);
+
+		return $this->_getDb()->fetchOne(
+			'SELECT COUNT(*) FROM liam_post_macros_admin WHERE ' . $whereConditions . $orderByClause
+		);
+	}
+
+	public function getMacroById($macroId, array $fetchOptions = array())
+	{
+		$joinOptions = $this->prepareMacrosFetchOptions($fetchOptions);
+
 		return $this->_getDb()->fetchRow(
-			'SELECT * FROM liam_post_macros WHERE macro_id=?', $macroId
+			'SELECT * ' . $joinOptions['selectFields'] . ' FROM liam_post_macros AS macro' . $joinOptions['joinTables'] . 'WHERE macro_id=?',
+			$macroId
 		);
 	}
 
@@ -160,7 +195,30 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 		return $macro;
 	}
 
-	protected function _prepareMacrosConditions(array $conditions)
+	public function prepareMacrosFetchOptions(array $fetchOptions)
+	{
+		$selectFields = '';
+		$joinTables = '';
+
+		if (!empty($fetchOptions['join']))
+		{
+			if ($fetchOptions['join'] & self::FETCH_USER)
+			{
+				$selectFields .= ', user.username';
+				$joinTables .= '
+					LEFT JOIN xf_user AS user ON
+						(user.user_id = macro.user_id)
+				';
+			}
+		}
+
+		return array(
+			'selectFields' => $selectFields,
+			'joinTables' => $joinTables
+		);
+	}
+
+	protected function _prepareMacrosConditions(array $conditions, array &$fetchOptions = array())
 	{
 		$sqlConditions = array();
 
@@ -176,6 +234,12 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 			{
 				$sqlConditions[] = 'macro_id = ' . $db->quote($conditions['macro_id']);
 			}
+		}
+
+		if (!empty($conditions['username']))
+		{
+			$sqlConditions[] = 'username = ' . $db->quote($conditions['username']);
+			$this->addFetchOptionJoin($fetchOptions, self::FETCH_USER);
 		}
 
 		if (!empty($conditions['user_id']))

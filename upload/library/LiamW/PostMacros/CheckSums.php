@@ -16,7 +16,9 @@ class LiamW_PostMacros_CheckSums
 	{
 		return array(
 			'library/LiamW/PostMacros/BbCode/Formatter/Reversible.php' => 'e617d013c11f54bcd3d1f38e562af2bb',
-			'library/LiamW/PostMacros/ControllerAdmin/AdminMacros.php' => 'bc6967053866dc114ef7a99e93a979df',
+			'library/LiamW/PostMacros/ControllerAdmin/Abstract.php' => '42958daa8e2b24f87a893bedbda8e40f',
+			'library/LiamW/PostMacros/ControllerAdmin/AdminMacros.php' => '0948d97669d8750abfca723185c1aa00',
+			'library/LiamW/PostMacros/ControllerAdmin/UserMacros.php' => '08ea9755f1adbb51ea69d2987d91988f',
 			'library/LiamW/PostMacros/ControllerPublic/Macros.php' => '4c29f8355366ec75e15ca591e9ac5bf3',
 			'library/LiamW/PostMacros/DataWriter/AdminMacros.php' => '7ef626371aef654aa7a650ca2bcb3fc9',
 			'library/LiamW/PostMacros/DataWriter/Macros.php' => '1b5a80a6e0e941121d524c2f8685f618',
@@ -32,9 +34,9 @@ class LiamW_PostMacros_CheckSums
 			'library/LiamW/PostMacros/Installer.php' => '7e396ca2c073e50e38484d9fdc5fc8b5',
 			'library/LiamW/PostMacros/Listener.php' => '12580f970012a3643414814c7150bd3a',
 			'library/LiamW/PostMacros/Model/Import.php' => '368c0dcdce246ef8b84c72b9adf3dabd',
-			'library/LiamW/PostMacros/Model/Macros.php' => 'caee62251ebd1702e291f06f7205d404',
+			'library/LiamW/PostMacros/Model/Macros.php' => 'f9650d54c7fd880d985fde644dba726d',
 			'library/LiamW/PostMacros/Route/Prefix/PostMacros.php' => '3f32c218109df16db5aef192c7680199',
-			'library/LiamW/PostMacros/Route/PrefixAdmin/PostMacros.php' => '2bc6de5f0454e0cba8d76ef665b3723f',
+			'library/LiamW/PostMacros/Route/PrefixAdmin/PostMacros.php' => '271d14a8afd30a75eeea57cd4b4666d8',
 			'library/LiamW/PostMacros/TemplateModification.php' => '57dda03f5c7ef4e84620cd5cd9ec7351',
 			'library/LiamW/PostMacros/ViewPublic/Create.php' => '7facc7ddbfbaea42d77293934751e1b0',
 			'library/LiamW/PostMacros/ViewPublic/Edit.php' => '8a51547e2b19d902bca8933303f68b12',

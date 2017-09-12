@@ -1,20 +1,25 @@
 <?php
 
-class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdmin_Abstract
+class LiamW_PostMacros_ControllerAdmin_AdminMacros extends LiamW_PostMacros_ControllerAdmin_Abstract
 {
-	protected function _preDispatch($action)
-	{
-		$this->assertAdminPermission('lw_manageAdminMacros');
-	}
-
 	public function actionIndex()
 	{
-		$this->canonicalizeRequestUrl(XenForo_Link::buildAdminLink('post-macros'));
+		$this->canonicalizeRequestUrl(XenForo_Link::buildAdminLink('post-macros/admin'));
 
-		$macros = $this->_getMacrosModel()->getAdminMacros(array(), array('order' => 'display_order'));
+		$page = $this->_input->filterSingle('page', XenForo_Input::UINT);
+		$perPage = $this->_getMacrosPerPage();
+
+		$macros = $this->_getMacrosModel()->getAdminMacros(array(), array(
+			'order' => 'display_order',
+			'page' => $page,
+			'perPage' => $perPage
+		));
 
 		$viewParams = array(
-			'macros' => $macros
+			'macros' => $macros,
+			'totalMacros' => $this->_getMacrosModel()->countAdminMacros(),
+			'page' => $page,
+			'perPage' => $perPage
 		);
 
 		return $this->responseView('LiamW_PostMacros_ViewAdmin_Index', 'postMacros_index', $viewParams);
@@ -22,7 +27,7 @@ class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdm
 
 	public function actionNew()
 	{
-		$this->canonicalizeRequestUrl(XenForo_Link::buildAdminLink('post-macros/new'));
+		$this->canonicalizeRequestUrl(XenForo_Link::buildAdminLink('post-macros/admin/new'));
 
 		return $this->_getMacroAddEditResponse();
 	}
@@ -31,7 +36,7 @@ class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdm
 	{
 		$macro = $this->_getMacroOrError();
 
-		$this->canonicalizeRequestUrl(XenForo_Link::buildAdminLink('post-macros/edit', $macro));
+		$this->canonicalizeRequestUrl(XenForo_Link::buildAdminLink('post-macros/admin/edit', $macro));
 
 		return $this->_getMacroAddEditResponse($macro);
 	}
@@ -65,7 +70,7 @@ class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdm
 		$lastHash = $this->getLastHash($dw->get('admin_macro_id'));
 
 		return $this->responseRedirect(XenForo_ControllerResponse_Redirect::SUCCESS,
-			XenForo_Link::buildAdminLink('post-macros') . $lastHash);
+			XenForo_Link::buildAdminLink('post-macros/admin') . $lastHash);
 	}
 
 	public function actionDelete()
@@ -79,7 +84,7 @@ class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdm
 			$dw->delete();
 
 			return $this->responseRedirect(XenForo_ControllerResponse_Redirect::SUCCESS,
-				XenForo_Link::buildAdminLink('post-macros'));
+				XenForo_Link::buildAdminLink('post-macros/admin'));
 		}
 		else
 		{
@@ -100,7 +105,7 @@ class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdm
 
 		return $this->responseRedirect(
 			XenForo_ControllerResponse_Redirect::SUCCESS,
-			XenForo_Link::buildAdminLink('post-macros')
+			XenForo_Link::buildAdminLink('post-macros/admin')
 		);
 	}
 
@@ -147,13 +152,5 @@ class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdm
 		{
 			return $this->responseView('LiamW_PostMacros_ViewAdmin_Create', 'postMacros_edit', $viewParams);
 		}
-	}
-
-	/**
-	 * @return LiamW_PostMacros_Model_Macros
-	 */
-	protected function _getMacrosModel()
-	{
-		return $this->getModelFromCache('LiamW_PostMacros_Model_Macros');
 	}
 }
