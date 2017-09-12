@@ -64,6 +64,23 @@ class LiamW_PostMacros_Installer
 			return false;
 		}
 
+		$hashes = LiamW_PostMacros_CheckSums::getHashes();
+		$errors = XenForo_Helper_Hash::compareHashes($hashes);
+
+		if (count($errors) > 0)
+		{
+			$error = "The following file(s) don't exist or contain incorrect content: <ul>";
+
+			foreach ($errors as $file => $errorType)
+			{
+				$error .= "<li>$file - " . ($errorType == 'mismatch' ? 'File content incorrect</li>' : 'File not found</li>');
+			}
+
+			$error .= "</ul> Please ensure that any file listed above exists, and that it contains the correct contents by reuploading it.";
+
+			return false;
+		}
+
 		return true;
 	}
 
@@ -131,8 +148,6 @@ class LiamW_PostMacros_Installer
 
 		foreach (self::$_tables AS $tableName => $installSql)
 		{
-			$tableName = self::$_db->quote($tableName);
-
 			self::$_db->query("DROP TABLE IF EXISTS $tableName");
 		}
 
@@ -145,12 +160,8 @@ class LiamW_PostMacros_Installer
 
 		foreach (self::$_coreChanges AS $tableName => $installSql)
 		{
-			$tableName = self::$_db->quote($tableName);
-
 			foreach ($installSql as $columnName => $sql)
 			{
-				$columnName = self::$_db->quote($columnName);
-
 				self::$_db->query("ALTER TABLE $tableName DROP $columnName");
 			}
 		}
