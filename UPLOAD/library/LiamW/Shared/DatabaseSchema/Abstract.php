@@ -6,91 +6,89 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract
 	/**
 	 * Version id of installed addon
 	 */
-	protected $version;
+	protected $_version;
 
 	/**
 	 * The database object
 	 */
-	protected $db;
+	protected $_db;
 
 	/**
 	 * If true, throw on error
 	 */
-	protected $throw;
+	protected $_throw;
 
-	/**
-	 *
-	 * @param number $addonversion
-	 *        	Version id of the addon being installed. 0 if new install.
-	 * @param string $drop
-	 *        	If true, drops tables. Use in uninstall.
-	 * @param boolean $throw
-	 *        	If true, throws exception when an error occured installing tables.
-	 */
-	public function __construct($addonversion = 0, $throw = true)
+
+	final public function __construct($addonVersion = 0, $throw = true)
 	{
-		$this->version = $addonversion;
-		$this->throw = $throw;
-		$this->db = XenForo_Application::getDb();
+		$this->_version = $addonVersion;
+		$this->_throw = $throw;
+		$this->_db = XenForo_Application::getDb();
 	}
 
 	/**
-	 * Run all sql code since the last update.
+	 * Installs addon, running relevant SQL code.
 	 *
-	 * @return true string true on success, returns exception message if a Zend_Db_Exception occurs.
+	 * @return bool|string
+	 * @throws XenForo_Exception
 	 */
 	final public function install()
 	{
-		$db = $this->db;
+		if (!$this->_shouldRun())
+		{
+			return false;
+		}
+
+		$db = $this->_db;
 		XenForo_Db::beginTransaction($db);
-		
+
 		try
 		{
-			if (! $this->_tableExists($this->_getTableName()) && $this->version > 0)
+			if (!$this->_tableExists($this->_getTableName()) && $this->_version > 0)
 			{
-				$sqlarr = $this->getSql();
-				
-				if (is_array($sqlarr[0]))
+				$sqlArray = $this->getSql();
+
+				if (is_array($sqlArray[0]))
 				{
-					foreach ($sqlarr[0] as $sql)
+					foreach ($sqlArray[0] as $sql)
 					{
 						$db->query($sql);
 					}
 				}
 				else
 				{
-					$db->query($sqlarr[0]);
+					$db->query($sqlArray[0]);
 				}
 			}
 			else
 			{
-				$sqlarr = $this->getSql();
-				
-				if (! is_array($sqlarr) && $this->version == 0)
+				$sqlArray = $this->getSql();
+
+				if (!is_array($sqlArray) && $this->_version == 0)
 				{
-					$db->query($sqlarr);
+					$db->query($sqlArray);
 				}
-				else
+				else if (is_array($sqlArray))
 				{
-					if ($this->version == 0)
+					if ($this->_version == 0)
 					{
-						if (is_array($sqlarr[0]))
+						if (is_array($sqlArray[0]))
 						{
-							if (isset($sqlarr[0]['ignoreerror']))
+							if (isset($sqlArray[0]['ignoreError']))
 							{
-								$ignoreError = $sqlarr[0]['ignoreerror'];
-								unset($sqlarr[0]['ignoreerror']);
+								$ignoreError = $sqlArray[0]['ignoreError'];
+								unset($sqlArray[0]['ignoreError']);
 							}
 							else
 							{
 								$ignoreError = '';
 							}
-							
-							foreach ($sqlarr[0] as $sql)
+
+							foreach ($sqlArray[0] as $sql)
 							{
 								$db->query($sql);
 							}
-							
+
 							if (is_array($ignoreError))
 							{
 								try
@@ -99,8 +97,7 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract
 									{
 										$db->query($sql);
 									}
-								}
-								catch (Exception $e)
+								} catch (Exception $e)
 								{
 								}
 							}
@@ -109,50 +106,48 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract
 								try
 								{
 									$db->query($ignoreError);
-								}
-								catch (Exception $e)
+								} catch (Exception $e)
 								{
 								}
 							}
 						}
 						else
 						{
-							$db->query($sqlarr[0]);
+							$db->query($sqlArray[0]);
 						}
 					}
 					else
 					{
-						foreach ($sqlarr as $version => $sql)
+						foreach ($sqlArray as $version => $sql)
 						{
-							if ($this->version <= $version)
+							if ($this->_version == $version)
 							{
 								if (is_array($sql))
 								{
-									if (isset($sql['ignoreerror']))
+									if (isset($sql['ignoreError']))
 									{
-										$ignoreError = $sql['ignoreerror'];
-										unset($sql['ignoreerror']);
+										$ignoreError = $sql['ignoreError'];
+										unset($sql['ignoreError']);
 									}
 									else
 									{
 										$ignoreError = '';
 									}
-									
-									foreach ($sql as $osql)
+
+									foreach ($sql as $oSql)
 									{
-										$db->query($osql);
+										$db->query($oSql);
 									}
-									
+
 									if (is_array($ignoreError))
 									{
 										try
 										{
-											foreach ($ignoreError as $osql)
+											foreach ($ignoreError as $oSql)
 											{
-												$db->query($osql);
+												$db->query($oSql);
 											}
-										}
-										catch (Exception $e)
+										} catch (Exception $e)
 										{
 										}
 									}
@@ -161,8 +156,7 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract
 										try
 										{
 											$db->query($ignoreError);
-										}
-										catch (Exception $e)
+										} catch (Exception $e)
 										{
 										}
 									}
@@ -176,36 +170,34 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract
 					}
 				}
 			}
-		}
-		catch (Zend_Db_Exception $e)
+		} catch (Zend_Db_Exception $e)
 		{
 			XenForo_Db::rollback($db);
 			XenForo_Error::logException($e);
-			
-			if ($this->throw)
+
+			if ($this->_throw)
 			{
 				print("<!--" . htmlspecialchars($e->getMessage()) . "-->");
-				throw new XenForo_Exception("<!--" . htmlspecialchars($e->getMessage()) . "--> An error occured while installing table " . $this->_getTableName() . ". Contact dev.", true);
+				throw new XenForo_Exception("<!--" . htmlspecialchars($e->getMessage()) . "--> An error occurred while installing table " . $this->_getTableName() . ". Contact dev.", true);
 			}
-			
+
 			return $e->getMessage();
-		}
-		catch (XenForo_Exception $e)
+		} catch (XenForo_Exception $e)
 		{
 			XenForo_Db::rollback($db);
 			XenForo_Error::logException($e);
-			
-			if ($this->throw)
+
+			if ($this->_throw)
 			{
 				print("<!--" . htmlspecialchars($e->getMessage()) . "-->");
-				throw new XenForo_Exception("<!--" . htmlspecialchars($e->getMessage()) . "--> An error occured while installing table " . $this->_getTableName() . ". Contact dev.", true);
+				throw new XenForo_Exception("<!--" . htmlspecialchars($e->getMessage()) . "--> An error occurred while installing table " . $this->_getTableName() . ". Contact dev.", true);
 			}
-			
+
 			return $e->getMessage();
 		}
-		
+
 		XenForo_Db::commit($db);
-		
+
 		return true;
 	}
 
@@ -216,18 +208,23 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract
 	 */
 	final public function uninstall()
 	{
-		if (! $this->_tableExists($this->_getTableName()))
+		if (!$this->_shouldRun())
 		{
-			return;
+			return false;
 		}
-		
-		$db = $this->db;
+
+		if (!$this->_tableExists($this->_getTableName()))
+		{
+			return true;
+		}
+
+		$db = $this->_db;
 		XenForo_Db::beginTransaction($db);
-		
+
 		try
 		{
 			$uninstallSql = $this->getUninstallSql();
-			
+
 			if (is_array($uninstallSql))
 			{
 				foreach ($uninstallSql as $sql)
@@ -239,24 +236,22 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract
 			{
 				$db->query($uninstallSql);
 			}
-		}
-		catch (Zend_Db_Exception $e)
+		} catch (Zend_Db_Exception $e)
 		{
 			XenForo_Db::rollback($db);
 			XenForo_Error::logException($e);
-			
+
 			return $e->getMessage();
-		}
-		catch (XenForo_Exception $e)
+		} catch (XenForo_Exception $e)
 		{
 			XenForo_Db::rollback($db);
 			XenForo_Error::logException($e);
-			
+
 			return $e->getMessage();
 		}
-		
+
 		XenForo_Db::commit($db);
-		
+
 		return true;
 	}
 
@@ -270,22 +265,50 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract
 		return $this->_getInstallSql();
 	}
 
+	/**
+	 * Returns the uninstall SQL from the abstract function.
+	 *
+	 * @return array
+	 */
 	final protected function getUninstallSql()
 	{
 		return $this->_getUninstallSql();
 	}
 
-	final private function _tableExists($tablename)
+	/**
+	 * Confirms table exists.
+	 *
+	 * @param bool $tableName
+	 *
+	 * @return bool
+	 */
+	final protected function _tableExists($tableName = false)
 	{
+		if (!$tableName)
+		{
+			$tableName = $this->_getTableName();
+		}
+
 		try
 		{
-			$this->db->query("SELECT * FROM `$tablename` LIMIT 1");
-		}
-		catch (Zend_Db_Exception $e)
+			$this->_db->query("SELECT * FROM " . $tableName . " LIMIT 1");
+		} catch (Zend_Db_Exception $e)
 		{
 			return false;
 		}
-		
+
+		return true;
+	}
+
+	/**
+	 * Run checks to see if installer should run.
+	 *
+	 * Returns true by default.
+	 *
+	 * @return bool
+	 */
+	protected function _shouldRun()
+	{
 		return true;
 	}
 

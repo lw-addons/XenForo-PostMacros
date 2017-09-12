@@ -4,7 +4,7 @@
  *
  * Contains addon functions, install, uninstall, template hook calls etc.
  *
- * @author Liam W
+ * @author  Liam W
  * @package Post Macros
  *
  */
@@ -20,16 +20,25 @@ class LiamW_Macros_Addon
 	{
 		if (XenForo_Application::$versionId < 1020070)
 		{
-			throw new XenForo_Exception('This addon required XenForo 1.2.0 or higher. You are using XenForo ' . XenForo_Application::$version . '. Please upgrade then install.', true);
+			throw new XenForo_Exception('This addon requires XenForo 1.2.0 or higher. You are using XenForo ' . XenForo_Application::$version . '. Please upgrade and then install.', true);
 		}
-		
+
+		###### License Check. Do not remove on pain of eternal death! ######
+		$licensingCallback = LiamW_Shared_Licensing::getInstance('LiamMacros', 2);
+
+		if (!$licensingCallback->checkLicense())
+		{
+			throw new XenForo_Exception('Your license could not be validated. Please ensure you have entered the correct domain at XF Liam.', true);
+		}
+		###### End license check. You can change things now. ######
+
 		$version = is_array($installedAddon) ? $installedAddon['version_id'] : 0;
-		
+
 		$dbMacros = new LiamW_Macros_DatabaseSchema_Macros($version);
 		$dbAdminMacros = new LiamW_Macros_DatabaseSchema_AdminMacros($version);
 		$dbMacroOptions = new LiamW_Macros_DatabaseSchema_MacroOptions($version);
 		$forum = new LiamW_Macros_DatabaseSchema_Forum($version);
-		
+
 		$dbMacros->install();
 		$dbAdminMacros->install();
 		$dbMacroOptions->install();
@@ -47,22 +56,17 @@ class LiamW_Macros_Addon
 		$dbAdminMacros = new LiamW_Macros_DatabaseSchema_AdminMacros();
 		$dbMacroOptions = new LiamW_Macros_DatabaseSchema_MacroOptions();
 		$forum = new LiamW_Macros_DatabaseSchema_Forum();
-		
+
 		$dbMacros->uninstall();
 		$dbAdminMacros->uninstall();
 		$dbMacroOptions->uninstall();
 		$forum->uninstall();
 	}
 
-	/**
-	 * Listener to extend classes for drop down.
-	 *
-	 * @param unknown $class        	
-	 * @param array $extend        	
-	 */
 	public static function extendClass($class, array &$extend)
 	{
-		switch ($class) {
+		switch ($class)
+		{
 			case "XenForo_ViewPublic_Thread_Create":
 			case "XenForo_ViewPublic_Thread_Reply":
 				XenForo_Application::set('macro_type', 'ntnr');
@@ -89,7 +93,7 @@ class LiamW_Macros_Addon
 				$extend[] = 'LiamW_Macros_Extend_DataWriter_Forum';
 				break;
 		}
-		
+
 		return true;
 	}
 
@@ -97,7 +101,7 @@ class LiamW_Macros_Addon
 	{
 		/* @var $model LiamW_Macros_Model_Macros */
 		$model = XenForo_Model::create('LiamW_Macros_Model_Macros');
-		
+
 		$params['canUseMacros'] = $model->canViewMacros(XenForo_Visitor::getInstance(), true);
 	}
 

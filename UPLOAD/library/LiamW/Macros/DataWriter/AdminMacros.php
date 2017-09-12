@@ -6,30 +6,26 @@ class LiamW_Macros_DataWriter_AdminMacros extends XenForo_DataWriter
 	protected function _getFields()
 	{
 		return array(
-			
 			'liam_macros_admin' => array(
-				
 				'macro_id' => array(
-					
 					'type' => XenForo_Input::UINT,
 					'autoIncrement' => true
 				),
 				'name' => array(
-					
 					'type' => XenForo_Input::STRING,
-					'required' => true
+					'required' => true,
+					'maxLength' => 50
 				),
 				'content' => array(
-					
 					'type' => XenForo_Input::STRING,
 					'required' => true
 				),
 				'thread_title' => array(
 					'type' => XenForo_Input::STRING,
-					'default' => ''
+					'default' => '',
+					'maxLength' => 50
 				),
 				'usergroups' => array(
-					
 					'type' => XenForo_Input::STRING,
 					'required' => true
 				)
@@ -40,7 +36,6 @@ class LiamW_Macros_DataWriter_AdminMacros extends XenForo_DataWriter
 	protected function _getExistingData($data)
 	{
 		return array(
-			
 			'liam_macros_admin' => $this->_getMacrosModel()->getMacroFromId($data, true)
 		);
 	}

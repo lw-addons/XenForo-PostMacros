@@ -9,16 +9,16 @@ class LiamW_Macros_DatabaseSchema_Forum extends LiamW_Shared_DatabaseSchema_Abst
 	{
 		return array(
 			0 => array(
-				"ALTER TABLE  `xf_forum` ADD  `allow_macros` BOOLEAN NOT NULL COMMENT  'Post Macros' AFTER  `find_new`",
-				"UPDATE `xf_forum` SET `allow_macros`='1'"
+				"ALTER TABLE xf_forum ADD allow_macros BOOLEAN NOT NULL COMMENT 'Post Macros' AFTER find_new",
+				"UPDATE xf_forum SET allow_macros='1'"
 			),
 			30600 => array(
-				"ALTER TABLE  `xf_forum` ADD  `allow_macros` BOOLEAN NOT NULL COMMENT  'Post Macros' AFTER  `find_new`",
-				"UPDATE `xf_forum` SET `allow_macros`='1'"
+				"ALTER TABLE xf_forum ADD allow_macros BOOLEAN NOT NULL COMMENT 'Post Macros' AFTER find_new",
+				"UPDATE xf_forum SET allow_macros='1'"
 			)
 		);
 	}
-	
+
 
 	/*
 	 * (non-PHPdoc) @see LiamW_Shared_DatabaseSchema_Abstract::_getTableName()
@@ -27,14 +27,14 @@ class LiamW_Macros_DatabaseSchema_Forum extends LiamW_Shared_DatabaseSchema_Abst
 	{
 		return 'xf_forum';
 	}
-	
+
 
 	/*
 	 * (non-PHPdoc) @see LiamW_Shared_DatabaseSchema_Abstract::_getUninstallSql()
 	 */
 	protected function _getUninstallSql()
 	{
-		return 'ALTER TABLE `xf_forum` DROP `allow_macros`';
+		return 'ALTER TABLE xf_forum DROP allow_macros';
 	}
 
 }
