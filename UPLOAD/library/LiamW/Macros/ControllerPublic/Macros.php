@@ -2,204 +2,186 @@
 
 /**
  * Macros controller.
- * @author Liam W
+ * @author  Liam W
  * @package Post Macros
  *
  */
 class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abstract
 {
 
-	/**
-	 * (non-PHPdoc)
-	 *
-	 * @see XenForo_Controller::_preDispatch()
-	 */
 	protected function _preDispatch($action)
 	{
 		$this->_assertRegistrationRequired();
 	}
 
-	/**
-	 * Index action.
-	 * Display existing macros.
-	 *
-	 * @return Ambigous <XenForo_ControllerResponse_Error, XenForo_ControllerResponse_Reroute>|XenForo_ControllerResponse_View
-	 */
 	public function actionIndex()
 	{
 		$visitor = XenForo_Visitor::getInstance();
-		
-		if (! $visitor->hasPermission('macro_permissions', 'can_use_macros'))
+
+		if (!$visitor->hasPermission('macro_permissions', 'can_use_macros'))
 		{
 			return $this->responseNoPermission();
 		}
-		
-		$macros = $this->_getMacrosModel()->getMacrosForUser(XenForo_Visitor::getUserId(), $visitor->hasPermission('macro_permissions', 'use_staff_macros'));
-		$adminmacros = $this->_getMacrosModel()->getAdminMacrosForUser($this->_getUserOrError(XenForo_Visitor::getUserId()));
-		
+
+		$macrosModel = $this->_getMacrosModel();
+
+		$macros = $macrosModel->getMacrosForUser(XenForo_Visitor::getUserId(),
+			$visitor->hasPermission('macro_permissions', 'use_staff_macros'));
+		$adminMacros = $macrosModel
+			->getAdminMacrosForUser($this->_getUserOrError(XenForo_Visitor::getUserId()));
+
 		foreach ($macros as $key => $macro)
 		{
 			// is a staff macro and no permission to edit all staff macros and it's not their macro
-			if ($macro['user_id'] != $visitor->getUserId() && $this->isStaffMacro($macro) && ! $visitor->hasPermission('macro_permissions', 'can_edit_all_staff_macros'))
+			if ($macro['user_id'] != $visitor->getUserId() && $this->isStaffMacro($macro) && !$visitor->hasPermission('macro_permissions',
+					'can_edit_all_staff_macros')
+			)
 			{
-				$macros[$key]['canedit'] = false;
+				$macros[$key]['canEdit'] = false;
 			}
 			else
 			{
-				$macros[$key]['canedit'] = true;
+				$macros[$key]['canEdit'] = true;
 			}
-			
-			if ($this->isStaffMacro($macro) && $macro['user_id'] != $visitor->getUserId() && ! $visitor->hasPermission('macro_permissions', 'can_delete_staff_macros'))
+
+			if ($this->isStaffMacro($macro) && $macro['user_id'] != $visitor->getUserId() && !$visitor->hasPermission('macro_permissions',
+					'can_delete_staff_macros')
+			)
 			{
-				$macros[$key]['candelete'] = false;
+				$macros[$key]['canDelete'] = false;
 			}
 			else
 			{
-				$macros[$key]['candelete'] = true;
+				$macros[$key]['canDelete'] = true;
 			}
-			
-			$user = XenForo_Model::create('XenForo_Model_User')->getUserById($macro['user_id']);
-			
+
+			$user = $this->_getUserModel()->getUserById($macro['user_id']);
+
 			$macros[$key]['username'] = $user['username'];
 		}
-		
+
 		$viewParams = array(
 			'macros' => $macros,
-			'adminmacros' => $adminmacros,
+			'adminMacros' => $adminMacros,
 			'canUseMacros' => $this->_getMacrosModel()->canAddMacro($visitor)
 		);
-		
+
 		return $this->responseView('LiamW_Macros_ViewPublic_View', 'macros', $viewParams);
 	}
 
-	/**
-	 * Write the macros to the database.
-	 */
-	public function actionWrite()
+	public function actionSave()
 	{
 		$this->_assertPostOnly();
-		
+
 		/* @var $macrosDW LiamW_Macros_DataWriter_Macros */
 		$macrosDW = XenForo_DataWriter::create('LiamW_Macros_DataWriter_Macros');
-		
+
 		$visitor = XenForo_Visitor::getInstance();
-		
+
 		/* Check the visitor has permission to use macros */
-		if (! $visitor->hasPermission('macro_permissions', 'can_use_macros'))
+		if (!$visitor->hasPermission('macro_permissions', 'can_use_macros'))
 		{
 			return $this->responseNoPermission();
 		}
-		
-		/* Gather data */
-		$userid = XenForo_Visitor::getUserId();
-		
+
+		$userId = XenForo_Visitor::getUserId();
+
 		$input = $this->_input->filter(array(
 			'name' => XenForo_Input::STRING,
-			'thread_title' => XenForo_Input::STRING
+			'thread_title' => XenForo_Input::STRING,
 		));
-		
-		$input['macro'] = $this->getHelper('Editor')->getMessageText('macro', $this->_input);
-		$input['macro'] = XenForo_Helper_String::autoLinkBbCode($input['macro'], false);
-		
+
+		$input['content'] = $this->getHelper('Editor')->getMessageText('content', $this->_input);
+		$input['content'] = XenForo_Helper_String::autoLinkBbCode($input['content'], false);
+
 		$macroId = $this->_input->filterSingle('macro_id', XenForo_Input::UINT);
-		
+
 		/* Check if we're editing an existing macro */
 		if ($macroId)
 		{
-			// existing macro being edited
-			$existingmacro = $this->_getMacrosModel()->getMacroFromId($macroId);
-			$macrosDW->setExistingData($macroId, true);
-			$input['staff_macro'] = ($userid == $existingmacro['user_id']) ? $this->_input->filterSingle('staff_macro', XenForo_Input::BOOLEAN) : $existingmacro['staff_macro'];
+			$existingMacro = $this->_getMacrosModel()->getMacroFromId($macroId);
+			$macrosDW->setExistingData($existingMacro, true);
+			$input['staff_macro'] = ($userId == $existingMacro['user_id']) ? $this->_input->filterSingle('staff_macro',
+				XenForo_Input::BOOLEAN) : $existingMacro['staff_macro'];
 		}
 		else
 		{
-			// new macro
-			$macrosDW->set('user_id', $userid);
+			$macrosDW->set('user_id', $userId);
 			$input['staff_macro'] = $this->_input->filterSingle('staff_macro', XenForo_Input::BOOLEAN);
 		}
-		
-		/* Set data */
+
 		$macrosDW->bulkSet($input);
-		
-		/* Save macro */
 		$macrosDW->save();
-		
-		/* Redirect to macros page */
-		return $this->responseRedirect(XenForo_ControllerResponse_Redirect::SUCCESS, XenForo_Link::buildPublicLink('macros'));
+
+		return $this->responseRedirect(XenForo_ControllerResponse_Redirect::SUCCESS,
+			XenForo_Link::buildPublicLink('macros'));
 	}
 
-	/**
-	 * New Macro
-	 */
 	public function actionNew()
 	{
 		$visitor = XenForo_Visitor::getInstance();
-		
-		if (! $this->_getMacrosModel()->canAddMacro($visitor))
+
+		if (!$this->_getMacrosModel()->canAddMacro($visitor))
 		{
 			return $this->responseError(new XenForo_Phrase('macro_cant_add'));
 		}
-		
+
 		$visitor = XenForo_Visitor::getInstance();
-		
-		$viewsm = $visitor->hasPermission('macro_permissions', 'can_create_staff_macros');
-		
-		$viewparams = array(
-			'viewsm' => $viewsm
+
+		$addStaffMacro = $visitor->hasPermission('macro_permissions', 'can_create_staff_macros');
+
+		$viewParams = array(
+			'addStaffMacro' => $addStaffMacro
 		);
-		
-		return $this->responseView('LiamW_Macros_ViewPublic_View', 'macros_modify', $viewparams);
+
+		return $this->responseView('LiamW_Macros_ViewPublic_Edit', 'macros_modify', $viewParams);
 	}
 
-	/**
-	 * Edit macro.
-	 */
 	public function actionEdit()
 	{
 		$macroId = $this->_input->filterSingle('macro_id', XenForo_Input::UINT);
-		
+
 		$macro = $this->_getMacrosModel()->getMacroFromId($macroId);
-		
-		if (! $macro)
+
+		if (!$macro)
 		{
-			return $this->responseError(new XenForo_Phrase('macro_doesnt_exist'), 404);
+			return $this->responseError(new XenForo_Phrase('the_requested_macro_could_not_be_found'), 404);
 		}
-		
+
 		$visitor = XenForo_Visitor::getInstance();
-		
-		$viewsm = $visitor->hasPermission('macro_permissions', 'can_create_staff_macros');
-		
-		/* Staff Macro Disable */
-		$smdis = ($visitor->getUserId() == $macro['user_id']) ? 0 : 1;
-		
-		if ($this->isStaffMacro($macro) && ! $visitor->hasPermission('macro_permissions', 'can_edit_all_staff_macros') && $smdis)
+
+		$addStaffMacro = $visitor->hasPermission('macro_permissions', 'can_create_staff_macros');
+		$disableStaffMacro = ($visitor->getUserId() == $macro['user_id']) ? 0 : 1;
+
+		if ($this->isStaffMacro($macro) && !$visitor->hasPermission('macro_permissions',
+				'can_edit_all_staff_macros') && $disableStaffMacro
+		)
 		{
 			return $this->responseNoPermission();
 		}
-		
-		$viewparams = array(
+
+		$viewParams = array(
 			'macro' => $macro,
-			'smdis' => $smdis,
-			'viewsm' => $viewsm
+			'disableStaffMacro' => $disableStaffMacro,
+			'addStaffMacro' => $addStaffMacro
 		);
-		
-		return $this->responseView('LiamW_Macros_ViewPublic_View', 'macros_modify', $viewparams);
+
+		return $this->responseView('LiamW_Macros_ViewPublic_Edit', 'macros_modify', $viewParams);
 	}
 
-	/**
-	 * Delete macro.
-	 */
 	public function actionDelete()
 	{
 		$macroId = $this->_input->filterSingle('macro_id', XenForo_Input::UINT);
 		$macro = $this->_getMacrosModel()->getMacroFromId($macroId);
-		
-		if ($macro['user_id'] != XenForo_Visitor::getUserId() && ! XenForo_Visitor::getInstance()->hasPermission('macro_permissions', 'can_delete_staff_macros'))
+
+		if ($macro['user_id'] != XenForo_Visitor::getUserId() && !XenForo_Visitor::getInstance()
+				->hasPermission('macro_permissions', 'can_delete_staff_macros')
+		)
 		{
 			return $this->responseError(new XenForo_Phrase("postmacros_only_delete_own"));
 		}
-		
-		if (! $this->isConfirmedPost())
+
+		if (!$this->isConfirmedPost())
 		{
 			return $this->responseView('XenForo_ViewPublic_View', 'macros_confirm_delete', array(
 				'macro' => $macro
@@ -210,88 +192,22 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 			$macroDW = XenForo_DataWriter::create('LiamW_Macros_DataWriter_Macros');
 			$macroDW->setExistingData($macroId, true);
 			$macroDW->delete();
-			
+
 			return $this->responseRedirect(XenForo_ControllerResponse_Redirect::SUCCESS, $this->getDynamicRedirect());
 		}
 	}
 
 	/**
-	 * Gets macro and adds data to redirect javascript.
-	 *
-	 * @deprecated No longer needed. Cannot be extended.
-	 * @return XenForo_ControllerResponse_Error
-	 */
-	final public function actionUseMacro()
-	{
-		// no longer used. If this has been called, something is wrong.
-		return $this->responseError(new XenForo_Phrase("postmacros_usemacro_gone"), 410);
-	}
-
-	/**
-	 * Action for macro options.
-	 *
-	 * @return XenForo_ControllerResponse_View
-	 */
-	public function actionOptions()
-	{
-		$model = $this->_getMacrosModel();
-		$userid = XenForo_Visitor::getUserId();
-		$viewParams = array(
-			'macros_hide_qr' => $model->hiddenOnQr($userid),
-			'macros_hide_ntnr' => $model->hiddenOnNtNr($userid),
-			'macros_hide_convo_qr' => $model->hiddenOnConvoQr($userid),
-			'macros_hide_convo_ncnr' => $model->hiddenOnConvoNcNr($userid),
-			'existing' => $model->optionsSaved($userid)
-		);
-		
-		return $this->responseView('', 'macros_options', $viewParams);
-	}
-
-	/**
-	 * Action for saving macro options.
-	 *
-	 * @return XenForo_ControllerResponse_Redirect
-	 */
-	public function actionSaveOptions()
-	{
-		$this->_assertPostOnly();
-		
-		$input = $this->_input->filter(array(
-			'macros_hide_qr' => XenForo_Input::BOOLEAN,
-			'macros_hide_ntnr' => XenForo_Input::BOOLEAN,
-			'macros_hide_convo_qr' => XenForo_Input::BOOLEAN,
-			'macros_hide_convo_ncnr' => XenForo_Input::BOOLEAN
-		));
-		
-		/* @var $dw LiamW_Macros_DataWriter_MacrosOptions */
-		$dw = XenForo_DataWriter::create('LiamW_Macros_DataWriter_MacrosOptions');
-		
-		if ($this->_input->filterSingle('existing', XenForo_Input::UINT))
-		{
-			$dw->setExistingData(XenForo_Visitor::getUserId(), true);
-		}
-		else
-		{
-			$dw->set('user_id', XenForo_Visitor::getUserId());
-		}
-		
-		$dw->bulkSet($input);
-		$dw->save();
-		
-		return $this->responseRedirect(XenForo_ControllerResponse_Redirect::SUCCESS, $this->getDynamicRedirect());
-	}
-
-	/**
 	 * Gets the specified user or throws an exception.
 	 *
-	 * @param string $id        	
+	 * @param string $id
 	 *
 	 * @return array
 	 */
 	protected function _getUserOrError($id)
 	{
 		$userModel = $this->_getUserModel();
-		
+
 		return $this->getRecordOrError($id, $userModel, 'getFullUserById', 'requested_user_not_found');
 	}
 
@@ -324,5 +240,4 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 	{
 		return $macro['staff_macro'];
 	}
-
 }

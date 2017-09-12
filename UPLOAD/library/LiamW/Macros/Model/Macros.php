@@ -24,15 +24,12 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 	{
 		if ($includeStaff)
 		{
-			return $this->_getDb()
-				->fetchAssoc('SELECT * FROM liam_macros WHERE user_id=? OR staff_macro=1 ORDER BY macro_id', array(
-					$userId
-				));
+			return $this->fetchAllKeyed('SELECT * FROM liam_macros WHERE user_id=? OR staff_macro=1 ORDER BY macro_id',
+				'macro_id', $userId);
 		}
 
-		return $this->_getDb()->fetchAssoc('SELECT * FROM liam_macros WHERE user_id=?', array(
-			$userId
-		));
+		return $this->fetchAllKeyed('SELECT * FROM liam_macros WHERE user_id=? ORDER BY macro_id',
+			'macro_id', $userId);
 	}
 
 	/**
@@ -54,8 +51,6 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 
 		$userGroups = explode(',',
 			implode(',', array_merge((array)$user['user_group_id'], (array)$user['secondary_group_ids'])));
-
-		unset($user);
 
 		$allowed = array();
 
@@ -89,16 +84,14 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 
 		if ($adminMacro)
 		{
-			$macroArray = $this->_getDb()->fetchRow('SELECT * from liam_macros_admin WHERE macro_id=?', array(
-				$macroId
-			));
+			$macroArray = $this->_getDb()->fetchRow('SELECT * FROM liam_macros_admin WHERE macro_id=?', $macroId);
 			$macroArray['usergroups'] = explode(',', $macroArray['usergroups']);
 
 			return $macroArray;
 		}
 		else
 		{
-			return $this->_getDb()->fetchRow('SELECT * from liam_macros WHERE macro_id=?', array(
+			return $this->_getDb()->fetchRow('SELECT * FROM liam_macros WHERE macro_id=?', array(
 				$macroId
 			));
 		}
@@ -167,51 +160,24 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 		return true;
 	}
 
-	public function optionsSaved($userId)
-	{
-		$db = $this->_getDb()->fetchOne("SELECT user_id FROM liam_macros_options WHERE user_id=?", array(
-			$userId
-		));
-
-		if ($db)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
 	public function hiddenOnQr($userId)
 	{
-		return $this->_getDb()->fetchOne("SELECT macros_hide_qr FROM liam_macros_options WHERE user_id=?", array(
-			$userId
-		));
+		return $this->_getDb()->fetchOne("SELECT macros_hide_qr FROM xf_user_option WHERE user_id=?", $userId);
 	}
 
 	public function hiddenOnNtNr($userId)
 	{
-		return $this->_getDb()
-			->fetchOne("SELECT macros_hide_ntnr FROM liam_macros_options WHERE user_id=?", array(
-				$userId
-			));
+		return $this->_getDb()->fetchOne("SELECT macros_hide_ntnr FROM xf_user_option WHERE user_id=?", $userId);
 	}
 
 	public function hiddenOnConvoQr($userId)
 	{
-		return $this->_getDb()
-			->fetchOne("SELECT macros_hide_convo_qr FROM liam_macros_options WHERE user_id=?", array(
-				$userId
-			));
+		return $this->_getDb()->fetchOne("SELECT macros_hide_convo_qr FROM xf_user_option WHERE user_id=?", $userId);
 	}
 
 	public function hiddenOnConvoNcNr($userId)
 	{
-		return $this->_getDb()
-			->fetchOne("SELECT macros_hide_convo_ncnr FROM liam_macros_options WHERE user_id=?", array(
-				$userId
-			));
+		return $this->_getDb()->fetchOne("SELECT macros_hide_convo_ncnr FROM xf_user_option WHERE user_id=?", $userId);
 	}
 
 	/**
@@ -247,26 +213,21 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 	 */
 	public function getUserModel()
 	{
-		$model = XenForo_Model::create('XenForo_Model_User');
-
-		return $model;
+		return $this->getModelFromCache('XenForo_Model_User');
 	}
 
 	public function getOptionsForUser($userId)
 	{
-		$db = $this->_getDb();
-
-		return $db->fetchRow("SELECT * FROM liam_macros_options WHERE user_id=?", array(
-			$userId
-		));
+		return $this->_getDb()
+			->fetchRow("SELECT macros_hide_convo_qr, macros_hide_convo_ncnr, macros_hide_ntnr, macros_hide_qr FROM xf_user_option WHERE user_id=?",
+				$userId);
 	}
 
 	/**
-	 * Formats arrays for use in drop down selector.
-	 *
-	 * @param array $a
-	 * @param array $b
-	 * @param array $_
+	 * @param XenForo_View $view
+	 * @param array        $a
+	 * @param array        $b
+	 * @param array        $_
 	 *
 	 * @return array
 	 */
@@ -300,25 +261,20 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 				continue;
 			}
 
-			if (array_key_exists('content', $macro))
-			{
-				$macros[$key]['macro'] = $macros[$key]['content'];
-				unset($macros[$key]['content']);
-			}
-
-			$macros[$key]['macrohtml'] = new XenForo_BbCode_TextWrapper($macros[$key]['macro'], $bbCodeParser);
+			$macros[$key]['content_parsed'] = new XenForo_BbCode_TextWrapper($macro['content'], $bbCodeParser);
 		}
 
 		$tmp = array();
 		foreach ($macros as &$ma)
-			$tmp[] = & $ma["name"];
+			$tmp[] = &$ma["name"];
 		array_multisort($tmp, $macros);
 
 		$start = array(
+			'macro_id' => 0,
 			'name' => new XenForo_Phrase("postmacros_master_name"),
 			'thread_title' => '-',
-			'macrohtml' => '-',
-			'macro' => '-'
+			'content_parsed' => '-',
+			'content' => '-'
 		);
 
 		array_unshift($macros, $start);

@@ -1,6 +1,6 @@
 <?php
 
-class LiamW_Macros_DatabaseSchema_Macros extends LiamW_Shared_DatabaseSchema_Abstract
+class LiamW_Macros_DatabaseSchema_Macros extends LiamW_Shared_DatabaseSchema_Abstract2
 {
 
 	/*
@@ -11,21 +11,24 @@ class LiamW_Macros_DatabaseSchema_Macros extends LiamW_Shared_DatabaseSchema_Abs
 		return array(
 			0 => "
 			CREATE TABLE IF NOT EXISTS liam_macros (
-				macro_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+				macro_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				user_id INT(10) UNSIGNED NOT NULL,
 				name VARCHAR(50) NOT NULL,
-				macro TEXT NOT NULL,
+				content TEXT NOT NULL,
 				thread_title VARCHAR(50) NOT NULL,
 				staff_macro BOOLEAN NOT NULL,
 				PRIMARY KEY (macro_id)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8;",
-			5 => "ALTER TABLE  xf_liam_macros ADD staff_macro BOOLEAN NOT NULL DEFAULT FALSE",
+			5 => "ALTER TABLE xf_liam_macros ADD staff_macro BOOLEAN NOT NULL DEFAULT FALSE",
 			30201 => "ALTER TABLE xf_liam_macros CONVERT TO CHARACTER SET utf8",
 			30401 => "ALTER TABLE xf_liam_macros ADD COLUMN thread_title VARCHAR(50) NOT NULL AFTER macro;",
 			30501 => array(
 				"RENAME TABLE xf_liam_macros TO liam_macros",
-				"ALTER TABLE liam_macros CHANGE macroid macro_id int(10) unsigned NOT NULL AUTO_INCREMENT",
-				"ALTER TABLE liam_macros CHANGE userid user_id int(10) unsigned NOT NULL"
+				"ALTER TABLE liam_macros CHANGE macroid macro_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+				"ALTER TABLE liam_macros CHANGE userid user_id INT(10) UNSIGNED NOT NULL"
+			),
+			30603 => array(
+				"ALTER TABLE liam_macros CHANGE macro content TEXT NOT NULL"
 			)
 		);
 	}
@@ -35,15 +38,6 @@ class LiamW_Macros_DatabaseSchema_Macros extends LiamW_Shared_DatabaseSchema_Abs
 	 */
 	protected function _getUninstallSql()
 	{
-		return 'DROP TABLE IF EXISTS xf_liam_macros';
+		return array('DROP TABLE IF EXISTS liam_macros');
 	}
-
-	/*
-	 * (non-PHPdoc) @see LiamW_Shared_DatabaseSchema_Abstract::_getTableName()
-	 */
-	protected function _getTableName()
-	{
-		return "xf_liam_macros";
-	}
-
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="LiamMacros" title="Post Macros" version_string="3.6.3" version_id="30603" url="https://xf-liam.com/products/post-macros.2/" install_callback_class="LiamW_Macros_Addon" install_callback_method="install" uninstall_callback_class="LiamW_Macros_Addon" uninstall_callback_method="uninstall">
+<addon addon_id="LiamMacros" title="Post Macros" version_string="3.6.4" version_id="30604" url="https://xf-liam.com/products/post-macros.2/" install_callback_class="LiamW_Macros_Addon" install_callback_method="install" uninstall_callback_class="LiamW_Macros_Addon" uninstall_callback_method="uninstall">
   <admin_navigation>
     <navigation navigation_id="macros" parent_navigation_id="options" display_order="500000" link="macros" admin_permission_id="" debug_only="0" hide_no_children="0"/>
   </admin_navigation>
@@ -130,7 +130,7 @@
     <phrase title="macros_hide_new_thread_new_reply" version_id="30201" version_string="3.2.1"><![CDATA[Hide macro selector on create thread and reply to thread pages]]></phrase>
     <phrase title="macros_hide_qr" version_id="30201" version_string="3.2.1"><![CDATA[Hide macro selector on quick reply]]></phrase>
     <phrase title="macros_managing_macros" version_id="30304" version_string="3.3.4"><![CDATA[Managing macros]]></phrase>
-    <phrase title="macros_no_macro" version_id="1" version_string="1.0"><![CDATA[You must enter macro content!]]></phrase>
+    <phrase title="macros_no_content" version_id="30603" version_string="3.6.3"><![CDATA[You must enter macro content!]]></phrase>
     <phrase title="macros_no_name" version_id="0" version_string="1.0"><![CDATA[Please enter a name for the macro!]]></phrase>
     <phrase title="macros_options" version_id="30200" version_string="3.2.0"><![CDATA[Macro Options]]></phrase>
     <phrase title="macros_other_macro" version_id="30304" version_string="3.3.4"><![CDATA[<i>This is a staff macro provided by {name}</i>]]></phrase>
@@ -176,16 +176,15 @@
   </route_prefixes>
   <style_properties/>
   <templates>
-    <template title="macros" version_id="30401" version_string="3.4.1"><![CDATA[<xen:require css="macros.css" />
+    <template title="macros" version_id="30603" version_string="3.6.3"><![CDATA[<xen:require css="macros.css" />
 
 <xen:title>{xen:phrase macros}</xen:title>
 <xen:description>{xen:phrase post_macros}</xen:description>
 
 <xen:if is="{$canUseMacros}">
-	<xen:set var="$newMacroButton"><a href="{xen:link 'macros/new'}" class="callToAction"><span>{xen:phrase new_macro}</span></a></xen:set>
-	<xen:topctrl>{xen:raw $newMacroButton}</xen:topctrl>
-	<xen:set var="$macroOptions"><a href="{xen:link 'macros/options'}" style="width: 100%" class="callToAction OverlayTrigger"><span>{xen:phrase macros_options}</span></a></xen:set>
-	{xen:raw $macroOptions}
+	<xen:topctrl>
+		<a href="{xen:link 'macros/new'}" class="callToAction"><span>{xen:phrase new_macro}</span></a>
+	</xen:topctrl>
 </xen:if>
 
 <xen:foreach loop="$macros" value="$macro">
@@ -194,7 +193,7 @@
 
 		<div class="subHeading">
 			<h3 class="nodeTitle">
-				{$macro.name} <xen:if is="{$macro.staff_macro}"><xen:if is="{$visitor.user_id} == {$macro.userid}"> - {xen:phrase macros_own_staff_macro}<xen:else /> - {xen:phrase macros_other_macro, 'name={$macro.username}'}</xen:if></xen:if>
+				{$macro.name} <xen:if is="{$macro.staff_macro}"><xen:if is="{$visitor.user_id} == {$macro.user_id}"> - {xen:phrase macros_own_staff_macro}<xen:else /> - {xen:phrase macros_other_macro, 'name={$macro.username}'}</xen:if></xen:if>
 			</h3>
 		</div>
 
@@ -203,14 +202,14 @@
 		</div>
 
 		<div class="primaryContent">
-			{xen:raw $macro.macro}
+			{xen:raw $macro.content}
 		</div>
 
 		<div class="sectionFooter macroControls">
-			<xen:if is="{$macro.candelete}"><span><a href="{xen:link 'macros/delete', $macro}" class="OverlayTrigger">{xen:phrase delete_macro}</a></span></xen:if>
-			<xen:if is="{$macro.canedit}"><span><a href="{xen:link 'macros/edit', $macro}" class="OverlayTrigger">{xen:phrase edit_macro}</a></span></xen:if>
+			<xen:if is="{$macro.canDelete}"><span><a href="{xen:link 'macros/delete', $macro}" class="OverlayTrigger">{xen:phrase delete_macro}</a></span></xen:if>
+			<xen:if is="{$macro.canEdit}"><span><a href="{xen:link 'macros/edit', $macro}">{xen:phrase edit_macro}</a></span></xen:if>
 			
-			<xen:if is="!{$macro.canedit} && !{$macro.candelete}">
+			<xen:if is="!{$macro.canEdit} && !{$macro.canDelete}">
 				<i>{xen:phrase controls_not_available}</i>
 			</xen:if>
 		</div>
@@ -219,27 +218,27 @@
 
 </xen:foreach>
 
-<xen:if is="{$adminmacros}">
+<xen:if is="{$adminMacros}">
 	<div class="titleBar macroHeader">
 		<h1>{xen:phrase admin_macros}</h1>
 		<p id="pageDescription" class="muted baseHtml">{xen:phrase admin_macros_description}</p>
 	</div>
 
-	<xen:foreach loop="$adminmacros" value="$name">
+	<xen:foreach loop="$adminMacros" value="$adminMacro">
 		<ol class="section sectionMain">
 	
 			<div class="subHeading">
 				<h3 class="nodeTitle">
-					{$name.name}
+					{$adminMacro.name}
 				</h3>
 			</div>
 	
 			<div class="primaryContent">
-				<p class="muted">{xen:phrase macros_thread_title}: {xen:raw $name.thread_title}</p>
+				<p class="muted">{xen:phrase macros_thread_title}: {xen:raw $adminMacro.thread_title}</p>
 			</div>
 			
 			<div class="primaryContent">
-				{xen:raw $name.content}
+				{xen:raw $adminMacro.content}
 			</div>
 	
 			<div class="sectionFooter macroControls">
@@ -273,7 +272,7 @@
 	<input type="hidden" name="_xfConfirm" value="1">	
 	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
 </form>]]></template>
-    <template title="macros_modify" version_id="30501" version_string="3.5.1"><![CDATA[<xen:if is="{$macro.macro_id}">
+    <template title="macros_modify" version_id="30603" version_string="3.6.3"><![CDATA[<xen:if is="{$macro.macro_id}">
 	<xen:title>{xen:phrase macro_edit} {$macro.name}</xen:title>
 <xen:else />
 	<xen:title>{xen:phrase new_macro}</xen:title>
@@ -290,7 +289,7 @@
 	</xen:navigation>
 </xen:if>
 
-<form action="{xen:link 'macros/write'}" method="post" class="xenForm AutoValidator formOverlay" data-redirect="on">
+<form action="{xen:link 'macros/save'}" method="post" class="xenForm AutoValidator" data-redirect="on">
 	<fieldset>
 				
 		<dl class="ctrlUnit fullWidth">
@@ -308,9 +307,9 @@
 			{xen:raw $editorTemplate}
 		</dl>
 		
-		<xen:if is="{$viewsm}">
+		<xen:if is="{$createStaffMacro}">
 			<dl>
-				<dd><input type="checkbox" id="ctrl_staff_macro" name="staff_macro" value="true" <xen:if is="{$macro.staff_macro}">checked="checked"</xen:if> <xen:if is="{$smdis}">disabled="true"</xen:if>> <label for="ctrl_staff_macro">{xen:phrase staff_macro}</label></dd>
+				<dd><input type="checkbox" id="ctrl_staff_macro" name="staff_macro" value="true" <xen:if is="{$macro.staff_macro}">checked="checked"</xen:if> <xen:if is="{$disableStaffMacro}">disabled="true"</xen:if>> <label for="ctrl_staff_macro">{xen:phrase staff_macro}</label></dd>
 				<dt></dt>
 			</dl>
 		</xen:if>
@@ -333,61 +332,36 @@
 		<dd>{xen:phrase macros_vars}</dd>
 	</dl>
 </form>]]></template>
-    <template title="macros_options" version_id="30201" version_string="3.2.1"><![CDATA[<xen:title>{xen:phrase macros_options}</xen:title>
-
-<form method="post" action="{xen:link macros/save-options}" class="xenForm formOverlay AutoValidator">
-	<fieldset>
-		
-		<dl class="ctrlUnit fullWidth">
-			<dt></dt>
-			<dd style="padding-left: 0px; padding-right: 0px;">
-				<label for="macros_hide_qr">{xen:phrase macros_hide_qr}:</label>
-				<input type="checkbox" value="1" id="macros_hide_qr" name="macros_hide_qr" {xen:checked {$macros_hide_qr}} />
-			</dd>
-		</dl>
-		
-		<dl class="ctrlUnit fullWidth">
-			<dt></dt>
-			<dd style="padding-left: 0px; padding-right: 0px;">
-				<label for="macros_hide_ntnr">{xen:phrase macros_hide_new_thread_new_reply}:</label>
-				<input type="checkbox" value="1" id="macros_hide_ntnr" name="macros_hide_ntnr" {xen:checked {$macros_hide_ntnr}} />		
-			</dd>
-		</dl>
-		
-		<dl class="ctrlUnit fullWidth">
-			<dt></dt>
-			<dd style="padding-left: 0px; padding-right: 0px;">
-				<label for="macros_hide_convo_qr">{xen:phrase macros_hide_convo_qr}:</label>
-				<input type="checkbox" value="1" id="macros_hide_convo_qr" name="macros_hide_convo_qr" {xen:checked {$macros_hide_convo_qr}} />
-			</dd>
-		</dl>
-		
-		<dl class="ctrlUnit fullWidth">
-			<dt></dt>
-			<dd style="padding-left: 0px; padding-right: 0px;">
-				<label for="macros_hide_convo_ncnr">{xen:phrase macros_hide_convo_ncnr}:</label>
-				<input type="checkbox" value="1" id="macros_hide_convo_ncnr" name="macros_hide_convo_ncnr" {xen:checked {$macros_hide_convo_ncnr}} />
-			</dd>
-		</dl>
-	</fieldset>
+    <template title="macros_options" version_id="30603" version_string="3.6.3"><![CDATA[<dl class="ctrlUnit">
+	<dt></dt>
+	<dd>
+		<ul>
+			<li>
+				<input type="checkbox" value="1" id="macros_hide_qr" name="macros_hide_qr" {xen:checked {$visitor.macros_hide_qr}} />
+				<label for="macros_hide_qr">{xen:phrase macros_hide_qr}</label>
+			</li>				
+			<li>
+				<input type="checkbox" value="1" id="macros_hide_ntnr" name="macros_hide_ntnr" {xen:checked {$visitor.macros_hide_ntnr}} />		
+				<label for="macros_hide_ntnr">{xen:phrase macros_hide_new_thread_new_reply}</label>
+			</li>			
+			<li>
+				<input type="checkbox" value="1" id="macros_hide_convo_qr" name="macros_hide_convo_qr" {xen:checked {$visitor.macros_hide_convo_qr}} />
+				<label for="macros_hide_convo_qr">{xen:phrase macros_hide_convo_qr}</label>
+			</li>		
+			<li>
+				<input type="checkbox" value="1" id="macros_hide_convo_ncnr" name="macros_hide_convo_ncnr" {xen:checked {$visitor.macros_hide_convo_ncnr}} />
+				<label for="macros_hide_convo_ncnr">{xen:phrase macros_hide_convo_ncnr}</label>		
+			</li>
+		</ul>
+	</dd>
+</dl>]]></template>
+    <template title="macros_select" version_id="30603" version_string="3.6.3"><![CDATA[<xen:require js="js/macros/macros.js" />
 	
-	<input type="hidden" name="existing" value="{$existing}" />
-	
-	<dl class="ctrlUnit submitUnit">
-		<dt></dt>
-		<dd>
-			<input type="submit" value="{xen:phrase save}" class="button primary" accesskey="s">
-			<input type="reset" class="button OverlayCloser" value="{xen:phrase cancel}">
-		</dd>
-	</dl>
-</form>]]></template>
-    <template title="macros_select" version_id="30401" version_string="3.4.1"><![CDATA[<xen:require js="js/macros/macros.js" />
-	
-<xen:if is="{$canviewmacros}">
+<xen:if is="{$canViewMacros}">
 	<span {xen:if '{$qreply}', 'style="float: left;"'}>
 		<select name="macros" class="textCtrl" id="macroSelect" {xen:if '!{$qreply}', 'style="width: 100%;"'}>
 			<xen:foreach loop="$macros" value="$macro">
-				<option data-valuehtml="{$macro.macrohtml}" data-valuetitle="{$macro.thread_title}" value="{$macro.macro}">{$macro.name}</option>
+				<option data-content-parsed="{$macro.content_parsed}" data-title="{$macro.thread_title}" data-content="{$macro.content}" value="{$macro.macro_id}">{$macro.name}</option>
 			</xen:foreach>
 		</select>
 	</span>
@@ -409,6 +383,11 @@
     <modification template="conversation_reply" modification_key="convoreply_macros" description="" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[{xen:raw $editorTemplate}</dd>]]></find>
       <replace><![CDATA[<xen:include template="macros_select" />$0]]></replace>
+    </modification>
+    <modification template="account_preferences" modification_key="liam_macros_account_preferences" description="" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<xen:include template="custom_fields_edit" />]]></find>
+      <replace><![CDATA[<xen:include template="macros_options" />
+$0]]></replace>
     </modification>
     <modification template="thread_create" modification_key="macros_select" description="" execution_order="1" enabled="1" action="preg_replace">
       <find><![CDATA[/<form action="{xen:link 'forums\/add-thread', \$forum}"(.*?)data-redirect="on"
@@ -444,5 +423,4 @@ $0]]></replace>
   </public_template_modifications>
   <bb_code_media_sites/>
   <bb_codes/>
-  <brc_actions/>
 </addon>

@@ -2,35 +2,36 @@
 
 class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Extend_ViewPublic_Thread_View
 {
-
 	public function renderHtml()
 	{
 		$visitor = XenForo_Visitor::getInstance();
-
-		/* Get current userId */
 		$userId = $visitor->getUserId();
 
-		/* @var $model LiamW_Macros_Model_Macros */
-		$model = XenForo_Model::create('LiamW_Macros_Model_Macros');
+		/** @var LiamW_Macros_Model_Macros $macrosModel */
+		$macrosModel = XenForo_Model::create('LiamW_Macros_Model_Macros');
 
-		/* @var $usermode XenForo_Model_User */
-		$userModel = XenForo_Model::create('XenForo_Model_User');
+		$userMacros = $macrosModel->getMacrosForUser($userId,
+			$visitor->hasPermission('macro_permissions', 'use_staff_macros'));
+		$adminMacros = $macrosModel->getAdminMacrosForUser($visitor->toArray(), true);
 
-		/* Get user macros */
-		$userMacros = $model->getMacrosForUser($userId,
-			XenForo_Visitor::getInstance()->hasPermission('macro_permissions', 'use_staff_macros'));
+		$forum = null;
+		$thread = null;
 
-		/* and admin ones... */
-		$adminMacros = $model->getAdminMacrosForUser($userModel->getFullUserById($userId), true);
+		if (isset($this->_params['forum']))
+		{
+			$forum = $this->_params['forum'];
+		}
 
-		$forum = @$this->_params['forum'];
-		$thread = @$this->_params['thread'];
+		if (isset($this->_params['thread']))
+		{
+			$thread = $this->_params['thread'];
+		}
 
 		foreach ($userMacros as &$macro)
 		{
 			if ($thread && $forum)
 			{
-				$macro['macro'] = $this->compileVariables($macro['macro'], $thread, $forum);
+				$macro['content'] = $this->compileVariables($macro['content'], $thread, $forum);
 			}
 		}
 
@@ -46,21 +47,24 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 
 		if ($userId)
 		{
-			$this->_params['macros'] = $model->prepareArrayForDropDown($this, $userMacros, $adminMacros);
+			$this->_params['macros'] = $macrosModel->prepareArrayForDropDown($this, $userMacros, $adminMacros);
 
 			switch ($type)
 			{
 				case "qr":
-					$show = !($model->hiddenOnQr($userId));
+					$show = !$macrosModel->hiddenOnQr($userId);
 					break;
 				case "ntnr":
-					$show = !($model->hiddenOnNtNr($userId));
+					$show = !$macrosModel->hiddenOnNtNr($userId);
 					break;
 				case "covoqr":
-					$show = !($model->hiddenOnConvoQr($userId));
+					$show = !$macrosModel->hiddenOnConvoQr($userId);
 					break;
 				case "convoncnr":
-					$show = !($model->hiddenOnConvoNcNr($userId));
+					$show = !$macrosModel->hiddenOnConvoNcNr($userId);
+					break;
+				default:
+					throw new XenForo_Exception("Invalid Show Content ($type)");
 			}
 
 			if (!$forum)
@@ -69,17 +73,17 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 				$forum['allow_macros'] = true;
 			}
 
-			$this->_params['canviewmacros'] = ($model->canViewMacros($visitor) && $show && $forum['allow_macros']);
+			$this->_params['canViewMacros'] = ($macrosModel->canViewMacros($visitor) && $show && $forum['allow_macros']);
 			XenForo_CodeEvent::fire('liammacros_macro_ready', array(
 				&$this->_params['macros'],
-				&$this->_params['canviewmacros'],
+				&$this->_params['canViewMacros'],
 				$thread,
 				$forum,
 				$type
 			));
 		}
 
-		return parent::renderHtml();
+		parent::renderHtml();
 	}
 
 	private function compileVariables($macro, array $thread, array $forum)
@@ -103,4 +107,9 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 
 }
 
-//class XFCP_LiamW_Macros_ViewPublic_Thread_View extends XenForo_ViewPublic_Thread_View {}
+if (false)
+{
+	class XFCP_LiamW_Macros_Extend_ViewPublic_Thread_View extends XenForo_ViewPublic_Thread_View
+	{
+	}
+}

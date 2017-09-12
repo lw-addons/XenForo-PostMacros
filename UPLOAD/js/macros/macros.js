@@ -1,58 +1,54 @@
 /**
  * @param {jQuery} $
- *            jQuoery Object
+ *            jQuery Object
  */
-!function($, window, document, _undefined) {
+!function ($, window, document, _undefined)
+{
 	$('document')
-			.ready(
-					function() {
-						$("#macroSelect")
-								.change(
-										function(e) {
-											var macrotexthtml = $(
-													'#macroSelect option:selected')
-													.attr('data-valuehtml');
+		.ready(
+		function ()
+		{
+			$("#macroSelect")
+				.change(
+				function (e)
+				{
+					var selectedOption = $(
+						'#macroSelect option:selected');
 
-											macrotext = $(
-													'#macroSelect option:selected')
-													.val();
+					var htmlContent = selectedOption.attr('data-content-parsed');
+					var plainContent = selectedOption.attr('data-content');
+					var titleText = selectedOption
+						.attr('data-title');
 
-											var editor = XenForo
-													.getEditorInForm($('#ThreadCreate'));
-											if (!editor) {
-												editor = XenForo
-														.getEditorInForm($('#QuickReply'));
-											}
-											if (!editor) {
-												editor = XenForo
-														.getEditorInForm($('#main_form'));
-											}
-											if (typeof (editor.val) == "undefined"
-													&& macrotext != '-') {
-
-												editor
-														.insertHtml(macrotexthtml);
-
-												var titleText = $(
-														'#macroSelect option:selected')
-														.attr('data-valuetitle');
-												var threadTitleBox = $('#ctrl_title_thread_create');
-												threadTitleBox.val(titleText);
-											} else if (macrotext != '-') {
-												editor
-														.val(editor.val()
-																+ macrotext
-																		.replace(
-																				/<br \/>/g,
-																				''));
-
-												var titleText = $(
-														'#macroSelect option:selected')
-														.attr('data-valuetitle');
-												var threadTitleBox = $('#ctrl_title_thread_create');
-												threadTitle.val(titleText);
-											}
-											$('#macroSelect').val('-');
-										});
-					});
+					var editor = XenForo
+						.getEditorInForm($('#ThreadCreate'));
+					if (!editor)
+					{
+						editor = XenForo
+							.getEditorInForm($('#QuickReply'));
+					}
+					if (!editor)
+					{
+						editor = XenForo
+							.getEditorInForm($('#main_form'));
+					}
+					if (typeof (editor.val) == "undefined"
+						&& plainContent != '-')
+					{
+						editor
+							.insertHtml(htmlContent);
+						$('#ctrl_title_thread_create').val(titleText);
+					} else if (macrotext != '-')
+					{
+						editor
+							.val(editor.val()
+							+ macrotext
+								.replace(
+								/<br \/>/g,
+								''));
+						$('#ctrl_title_thread_create').val(titleText);
+					}
+					$('#macroSelect').val(0);
+				});
+		});
 }(jQuery, this, document);

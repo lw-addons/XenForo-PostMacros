@@ -32,10 +32,10 @@ class LiamW_Macros_DataWriter_Macros extends XenForo_DataWriter
 					'requiredError' => 'macros_no_name',
 					'maxLength' => 50
 				),
-				'macro' => array(
+				'content' => array(
 					'type' => self::TYPE_STRING,
 					'required' => true,
-					'requiredError' => 'macros_no_macro'
+					'requiredError' => 'macros_no_content'
 				),
 				'thread_title' => array(
 					'type' => self::TYPE_STRING,
