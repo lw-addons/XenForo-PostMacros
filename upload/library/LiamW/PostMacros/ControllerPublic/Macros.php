@@ -215,12 +215,15 @@ class LiamW_PostMacros_ControllerPublic_Macros extends XenForo_ControllerPublic_
 	{
 		$visitor = XenForo_Visitor::getInstance();
 
+		/** @var XenForo_Model_ThreadPrefix $prefixModel */
+		$prefixModel = XenForo_Model::create('XenForo_Model_ThreadPrefix');
+
 		$viewParams = array(
 			'macro' => $macro,
 			'canCreateStaffMacro' => $visitor->hasPermission('liam_postMacros', 'liamMacros_createStaff'),
 			'canLockThread' => $visitor->hasPermission('forum', 'lockUnlockThread'),
 			'canEditThread' => $visitor->hasPermission('forum', 'editAnyPost'),
-			'threadPrefixes' => (new XenForo_Model_ThreadPrefix())->preparePrefixes((new XenForo_Model_ThreadPrefix())->getAllPrefixes())
+			'threadPrefixes' => $prefixModel->preparePrefixes($prefixModel->getAllPrefixes())
 		);
 
 		if ($macro)

@@ -101,7 +101,7 @@
 						} catch (TypeError)
 						{
 							// TinyMce Support
-							this.editor.execCommand('mceInsertContent', false, ajaxData.macroContent.toString());
+							this.$editor.execCommand('mceInsertContent', false, ajaxData.macroContent.toString());
 						}
 						break;
 					case "plain":
@@ -136,7 +136,7 @@
 
 			this.$macros.val(0);
 		}
-	}
+	};
 
 	XenForo.register('#MacroSelect', 'XenForo.PostMacros');
 }
