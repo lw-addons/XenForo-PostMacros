@@ -21,12 +21,14 @@ class LiamW_PostMacros_ViewPublic_Use extends XenForo_ViewPublic_Base
 			$macroContent = new XenForo_BbCode_TextWrapper($macroContent, $bbCodeParser);
 		}
 
-		return XenForo_ViewRenderer_Json::jsonEncodeForOutput(array(
+		$output = array(
 			'macroContent' => $macroContent,
 			'threadTitle' => $macro['thread_title'],
 			'threadPrefix' => $macro['thread_prefix'],
 			'lockThread' => $macro['lock_thread']
-		), false);
+		);
+
+		return XenForo_ViewRenderer_Json::jsonEncodeForOutput($output, false);
 	}
 
 	protected function _compileVariables($macro, array $thread, array $forum)

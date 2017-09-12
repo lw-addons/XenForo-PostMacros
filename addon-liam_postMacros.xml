@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.0.6" version_id="40006" url="https://xf-liam.com/products/post-macros.2/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.0.7" version_id="400070" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
   <admin_navigation>
     <navigation navigation_id="liam_postMacros" parent_navigation_id="options" display_order="500" link="post-macros" admin_permission_id="" debug_only="0" hide_no_children="0"/>
   </admin_navigation>
@@ -171,7 +171,7 @@
       <permission permission_group_id="liam_postMacros" permission_id="liamMacros_createStaff" permission_type="flag" default_value="unset" interface_group_id="liam_postMacrosMod" display_order="2"/>
       <permission permission_group_id="liam_postMacros" permission_id="liamMacros_deleteAllStaff" permission_type="flag" default_value="unset" interface_group_id="liam_postMacrosMod" display_order="4"/>
       <permission permission_group_id="liam_postMacros" permission_id="liamMacros_editAllStaff" permission_type="flag" default_value="unset" interface_group_id="liam_postMacrosMod" display_order="3"/>
-      <permission permission_group_id="liam_postMacros" permission_id="liamMacros_maxMacros" permission_type="integer" default_value_int="0" interface_group_id="liam_postMacros" display_order="3"/>
+      <permission permission_group_id="liam_postMacros" permission_id="liamMacros_maxMacros" permission_type="integer" default_value_int="0" interface_group_id="liam_postMacros" display_order="4"/>
       <permission permission_group_id="liam_postMacros" permission_id="liamMacros_useStaff" permission_type="flag" default_value="unset" interface_group_id="liam_postMacrosMod" display_order="1"/>
     </permissions>
     <interface_groups>
@@ -219,6 +219,7 @@
     <phrase title="liam_postMacros_save_macro" version_id="40000" version_string="4.0.0"><![CDATA[Save Macro]]></phrase>
     <phrase title="liam_postMacros_staff_macro" version_id="40000" version_string="4.0.0"><![CDATA[Staff Macro]]></phrase>
     <phrase title="liam_postMacros_table_x_does_not_exist" version_id="40000" version_string="4.0.0"><![CDATA[The table '{tablename}' does not exist! You may have a too old version of Post Macros.]]></phrase>
+    <phrase title="liam_postMacros_there_are_no_macros_you_can_use" version_id="400061" version_string="4.0.6 Fix 1"><![CDATA[There are no macros you can use.]]></phrase>
     <phrase title="liam_postMacros_thread_title" version_id="40000" version_string="4.0.0"><![CDATA[Thread Title]]></phrase>
     <phrase title="liam_postMacros_title" version_id="40000" version_string="4.0.0"><![CDATA[Macro Title]]></phrase>
     <phrase title="liam_postMacros_user_macros" version_id="40000" version_string="4.0.0"><![CDATA[User Macros]]></phrase>
@@ -350,7 +351,7 @@
 		<dd>{xen:phrase liam_postMacros_variables}</dd>
 	</dl>
 </form>]]></template>
-    <template title="postMacros_index" version_id="40000" version_string="4.0.0"><![CDATA[<xen:title>{xen:phrase liam_postMacros}</xen:title>
+    <template title="postMacros_index" version_id="400061" version_string="4.0.6 Fix 1"><![CDATA[<xen:title>{xen:phrase liam_postMacros}</xen:title>
 
 <xen:if is="{$canCreate}">
 	<xen:topctrl>
@@ -359,72 +360,78 @@
 </xen:if>
 
 <xen:if hascontent="true">
-	<xen:h1></xen:h1>
-	<div class="titleBar macroHeader">
-		<h1>{xen:phrase liam_postMacros_user_macros}</h1>
-		<p id="pageDescription" class="muted baseHtml">{xen:phrase liam_postMacros_macros_description}</p>
-	</div>
-
 	<xen:contentcheck>
-	<xen:foreach loop="$macros.user" value="$macro">	
-		<ol class="section sectionMain">	
-			<div class="subHeading">
-				<h3 class="nodeTitle">
-					{$macro.title} <xen:if is="{$macro.staff_macro}"><xen:if is="{$visitor.user_id} == {$macro.user_id}"> - {xen:phrase liam_postMacros_own_staff_macro}<xen:else /> - {xen:phrase liam_postMacros_others_staff_macro}</xen:if></xen:if>
-				</h3>
+		<xen:if hascontent="true">
+			<xen:h1></xen:h1>
+			<div class="titleBar macroHeader">
+				<h1>{xen:phrase liam_postMacros_user_macros}</h1>
+				<p id="pageDescription" class="muted baseHtml">{xen:phrase liam_postMacros_macros_description}</p>
 			</div>
-	
-			<div class="primaryContent">
-				<p class="muted">{xen:phrase liam_postMacros_thread_title}: {$macro.thread_title}</p>
+		
+			<xen:contentcheck>
+			<xen:foreach loop="$macros.user" value="$macro">	
+				<ol class="section sectionMain">	
+					<div class="subHeading">
+						<h3 class="nodeTitle">
+							{$macro.title} <xen:if is="{$macro.staff_macro}"><xen:if is="{$visitor.user_id} == {$macro.user_id}"> - {xen:phrase liam_postMacros_own_staff_macro}<xen:else /> - {xen:phrase liam_postMacros_others_staff_macro}</xen:if></xen:if>
+						</h3>
+					</div>
+			
+					<div class="primaryContent">
+						<p class="muted">{xen:phrase liam_postMacros_thread_title}: {$macro.thread_title}</p>
+					</div>
+			
+					<div class="primaryContent">
+						{xen:raw $macro.content}
+					</div>
+			
+					<div class="sectionFooter">
+						<xen:if is="{$macro.canEdit}"><a href="{xen:link 'post-macros/edit', $macro}">{xen:phrase liam_postMacros_edit}</a></xen:if>
+						<xen:if is="{$macro.canDelete}"><a href="{xen:link 'post-macros/delete', $macro}" class="OverlayTrigger">{xen:phrase liam_postMacros_delete}</a></xen:if>
+						
+						<xen:if is="!{$macro.canEdit} && !{$macro.canDelete}">
+							<i>{xen:phrase liam_postMacros_controls_not_available}</i>
+						</xen:if>
+					</div>
+				</ol>	
+			</xen:foreach>
+			</xen:contentcheck>
+		</xen:if>
+		
+		<xen:if hascontent="true">
+			<xen:h1></xen:h1>
+			<div class="titleBar macroHeader">
+				<h1>{xen:phrase liam_postMacros_admin_macros}</h1>
+				<p id="pageDescription" class="muted baseHtml">{xen:phrase liam_postMacros_admin_macros_description}</p>
 			</div>
-	
-			<div class="primaryContent">
-				{xen:raw $macro.content}
-			</div>
-	
-			<div class="sectionFooter">
-				<xen:if is="{$macro.canEdit}"><a href="{xen:link 'post-macros/edit', $macro}">{xen:phrase liam_postMacros_edit}</a></xen:if>
-				<xen:if is="{$macro.canDelete}"><a href="{xen:link 'post-macros/delete', $macro}" class="OverlayTrigger">{xen:phrase liam_postMacros_delete}</a></xen:if>
-				
-				<xen:if is="!{$macro.canEdit} && !{$macro.canDelete}">
-					<i>{xen:phrase liam_postMacros_controls_not_available}</i>
-				</xen:if>
-			</div>
-		</ol>	
-	</xen:foreach>
+		
+			<xen:contentcheck>
+			<xen:foreach loop="$macros.admin" value="$macro">	
+				<ol class="section sectionMain">	
+					<div class="subHeading">
+						<h3 class="nodeTitle">
+							{$macro.title}
+						</h3>
+					</div>
+			
+					<div class="primaryContent">
+						<p class="muted">{xen:phrase liam_postMacros_thread_title}: {$macro.thread_title}</p>
+					</div>
+			
+					<div class="primaryContent">
+						{xen:raw $macro.content}
+					</div>
+			
+					<div class="sectionFooter">
+						<i>{xen:phrase liam_postMacros_controls_not_available}</i>
+					</div>
+				</ol>	
+			</xen:foreach>
+			</xen:contentcheck>
+		</xen:if>
 	</xen:contentcheck>
-</xen:if>
-
-<xen:if hascontent="true">
-	<xen:h1></xen:h1>
-	<div class="titleBar macroHeader">
-		<h1>{xen:phrase liam_postMacros_admin_macros}</h1>
-		<p id="pageDescription" class="muted baseHtml">{xen:phrase liam_postMacros_admin_macros_description}</p>
-	</div>
-
-	<xen:contentcheck>
-	<xen:foreach loop="$macros.admin" value="$macro">	
-		<ol class="section sectionMain">	
-			<div class="subHeading">
-				<h3 class="nodeTitle">
-					{$macro.title}
-				</h3>
-			</div>
-	
-			<div class="primaryContent">
-				<p class="muted">{xen:phrase liam_postMacros_thread_title}: {$macro.thread_title}</p>
-			</div>
-	
-			<div class="primaryContent">
-				{xen:raw $macro.content}
-			</div>
-	
-			<div class="sectionFooter">
-				<i>{xen:phrase liam_postMacros_controls_not_available}</i>
-			</div>
-		</ol>	
-	</xen:foreach>
-	</xen:contentcheck>
+<xen:else />
+	<p>{xen:phrase liam_postMacros_there_are_no_macros_you_can_use}</p>
 </xen:if>]]></template>
     <template title="postMacros_options" version_id="40000" version_string="4.0.0"><![CDATA[<xen:if is="{$canUseMacros}">
 	<h3 class="sectionHeader">{xen:phrase liam_postMacros}</h3>
@@ -504,9 +511,9 @@
 </xen:if>
 $0]]></replace>
     </modification>
-    <modification template="footer" modification_key="liam_postMacros_footer" description="Branding. If you have a branding removal license for this license, you may disable this." execution_order="10" enabled="1" action="str_replace">
-      <find><![CDATA[{xen:phrase extra_copyright}]]></find>
-      <replace><![CDATA[| <a href="https://xf-liam.com" target="_blank" class="concealed">Post Macros <span>&copy2015</span></a> $0]]></replace>
+    <modification template="footer" modification_key="liam_postMacros_footer" description="Branding. If you have a branding removal license for this license, you may disable this." execution_order="10" enabled="1" action="callback">
+      <find><![CDATA[#{xen:phrase extra_copyright}#]]></find>
+      <replace><![CDATA[LiamW_PostMacros_TemplateModification::footer]]></replace>
     </modification>
     <modification template="navigation_visitor_tab" modification_key="liam_postMacros_navigation_visitor_tab" description="" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<xen:if is="{$canEditSignature}"><li><a href="{xen:link account/signature}">{xen:phrase signature}</a></li></xen:if>]]></find>

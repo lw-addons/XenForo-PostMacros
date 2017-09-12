@@ -2,9 +2,6 @@
 
 class LiamW_PostMacros_Installer
 {
-	/** @var Zend_Db_Adapter_Abstract */
-	protected static $_db = null;
-
 	protected static $_tables = array(
 		'liam_post_macros' => "
 			CREATE TABLE IF NOT EXISTS liam_post_macros (
@@ -33,7 +30,7 @@ class LiamW_PostMacros_Installer
 		"
 	);
 
-	protected static $_coreChanges = array(
+	protected static $_coreAlters = array(
 		'xf_user_option' => array(
 			'post_macros_hide_new_thread_reply' => "
 				ALTER TABLE xf_user_option ADD post_macros_hide_new_thread_reply TINYINT(1) UNSIGNED NOT NULL DEFAULT 0
@@ -64,16 +61,15 @@ class LiamW_PostMacros_Installer
 			return false;
 		}
 
-		$hashes = LiamW_PostMacros_CheckSums::getHashes();
-		$errors = XenForo_Helper_Hash::compareHashes($hashes);
+		$errors = XenForo_Helper_Hash::compareHashes(LiamW_PostMacros_CheckSums::getHashes());
 
-		if (count($errors) > 0)
+		if ($errors)
 		{
 			$error = "The following file(s) don't exist or contain incorrect content: <ul>";
 
 			foreach ($errors as $file => $errorType)
 			{
-				$error .= "<li>$file - " . ($errorType == 'mismatch' ? 'File content incorrect</li>' : 'File not found</li>');
+				$error .= "<li>$file - " . ($errorType == 'mismatch' ? 'File content incorrect' : 'File not found') . '</li>';
 			}
 
 			$error .= "</ul> Please ensure that any file listed above exists, and that it contains the correct contents by reuploading it.";
@@ -91,81 +87,84 @@ class LiamW_PostMacros_Installer
 			throw new XenForo_Exception($error, true);
 		}
 
-		self::$_db = XenForo_Application::getDb();
-		XenForo_Db::beginTransaction(self::$_db);
+		$db = XenForo_Application::getDb();
+		XenForo_Db::beginTransaction($db);
 
-		self::_installTables();
+		self::_installTables($db);
+		self::_installCoreAlters($db);
 
-		if (!$installedAddon)
+		if ($installedAddon)
 		{
-			self::_installCoreAlters();
+			$installedVersion = $installedAddon['version_id'];
+
+			// For future.
 		}
 
-		XenForo_Db::commit(self::$_db);
+		XenForo_Db::commit($db);
 	}
 
 	public static function uninstall()
 	{
-		self::$_db = XenForo_Application::getDb();
-		XenForo_Db::beginTransaction(self::$_db);
+		$db = XenForo_Application::getDb();
+		XenForo_Db::beginTransaction($db);
 
-		self::_uninstallTables();
-		self::_uninstallCoreAlters();
+		self::_uninstallTables($db);
+		self::_uninstallCoreAlters($db);
 
-		XenForo_Db::commit(self::$_db);
+		XenForo_Db::commit($db);
 	}
 
-	protected static function _installTables()
+	protected static function _installTables(Zend_Db_Adapter_Abstract $db = null)
 	{
-		XenForo_Db::beginTransaction(self::$_db);
-
 		foreach (self::$_tables AS $tableName => $installSql)
 		{
-			self::$_db->query($installSql);
+			self::_runQuery($installSql, $db);
 		}
-
-		XenForo_Db::commit(self::$_db);
 	}
 
-	protected static function _installCoreAlters()
+	protected static function _installCoreAlters(Zend_Db_Adapter_Abstract $db = null)
 	{
-		XenForo_Db::beginTransaction(self::$_db);
-
-		foreach (self::$_coreChanges as $installSql)
+		foreach (self::$_coreAlters as $tableName => $coreAlters)
 		{
-			foreach ($installSql as $sql)
+			foreach ($coreAlters as $columnName => $installSql)
 			{
-				self::$_db->query($sql);
+				self::_runQuery($installSql, $db);
 			}
 		}
-
-		XenForo_Db::commit(self::$_db);
 	}
 
-	protected static function _uninstallTables()
+	protected static function _uninstallTables(Zend_Db_Adapter_Abstract $db = null)
 	{
-		XenForo_Db::beginTransaction(self::$_db);
-
 		foreach (self::$_tables AS $tableName => $installSql)
 		{
-			self::$_db->query("DROP TABLE IF EXISTS $tableName");
+			self::_runQuery("DROP TABLE IF EXISTS $tableName", $db);
 		}
-
-		XenForo_Db::commit(self::$_db);
 	}
 
-	protected static function _uninstallCoreAlters()
+	protected static function _uninstallCoreAlters(Zend_Db_Adapter_Abstract $db = null)
 	{
-		XenForo_Db::beginTransaction(self::$_db);
-
-		foreach (self::$_coreChanges AS $tableName => $installSql)
+		foreach (self::$_coreAlters AS $tableName => $coreAlters)
 		{
-			foreach ($installSql as $columnName => $sql)
+			foreach ($coreAlters as $columnName => $sql)
 			{
-				self::$_db->query("ALTER TABLE $tableName DROP $columnName");
+				self::_runQuery("ALTER TABLE $tableName DROP $columnName", $db);
 			}
 		}
+	}
 
-		XenForo_Db::commit(self::$_db);
+	protected static function _runQuery($sql, Zend_Db_Adapter_Abstract $db = null)
+	{
+		if ($db == null)
+		{
+			$db = XenForo_Application::getDb();
+		}
+
+		try
+		{
+			$db->query($sql);
+		} catch (Zend_Db_Exception $e)
+		{
+
+		}
 	}
 }

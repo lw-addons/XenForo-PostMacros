@@ -14,6 +14,13 @@
 		{
 			console.log($macros);
 			this.$macros = $macros;
+
+			if (!this.$macros.data('editorid'))
+			{
+				console.error('Invalid Editor Id!');
+				return;
+			}
+
 			this.$macros.bind('change', $.context(this, 'macroSelected'));
 
 			this.updateVars();

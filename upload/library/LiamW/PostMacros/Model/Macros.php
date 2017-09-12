@@ -287,7 +287,7 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 		$viewParams = $view->getParams();
 		$viewClass = XenForo_Application::resolveDynamicClassToRoot($view);
 		$excludedViews = preg_split('/\r?\n/',
-			$options->get('liam_postMacros_excluded_views'), PREG_SPLIT_NO_EMPTY);
+			$options->get('liam_postMacros_excluded_views'), -1, PREG_SPLIT_NO_EMPTY);
 
 		switch ($viewClass)
 		{

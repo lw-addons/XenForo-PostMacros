@@ -60,13 +60,16 @@ class LiamW_PostMacros_Listener
 		$editorOptions['macros'] = $macrosModel->getMacrosForSelect();
 		$editorOptions['canUseMacros'] = XenForo_Visitor::getInstance()
 			->hasPermission('liam_postMacros', 'liamMacros_canUseMacros');
-		$editorOptions['showMacrosSelect'] = $macrosModel->showMacrosSelect($view);
+		$editorOptions['showMacrosSelect'] = $macrosModel->showMacrosSelect($view) && (count($editorOptions['macros']['user']) || count($editorOptions['macros']['admin']));
 		$editorOptions['debug'] = XenForo_Application::debugMode();
 
 		if (!$editorOptions['height'])
 		{
 			// For quick reply - we have to use the quick_reply template, which doesn't normally have access to the editorOptions array.
-			$view->setParams(array('editorOptions' => $editorOptions));
+			$view->setParams(array(
+				'editorOptions' => $editorOptions,
+				'editorId' => 'ctrl_' . $formCtrlName
+			));
 		}
 	}
 
@@ -76,7 +79,7 @@ class LiamW_PostMacros_Listener
 			->hasPermission('liam_postMacros', 'liamMacros_canUseMacros');
 	}
 
-	// The view extension functions are still here because XF has a habit of not letting install go through
+	// The view extension functions are still here because XF has a habit of not letting installs go through
 	// if a function for a listener that has been removed doesn't exist...
 
 	public static function extendThreadViewView($class, array &$extend)
