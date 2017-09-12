@@ -224,7 +224,7 @@ class LiamW_PostMacros_ControllerPublic_Macros extends XenForo_ControllerPublic_
 			'canCreateStaffMacro' => $visitor->hasPermission('liam_postMacros', 'liamMacros_createStaff'),
 			'canLockThread' => $visitor->hasPermission('forum', 'lockUnlockThread'),
 			'canEditThread' => $visitor->hasPermission('forum', 'editAnyPost'),
-			'threadPrefixes' => $prefixModel->preparePrefixes($prefixModel->getAllPrefixes())
+			'threadPrefixes' => $prefixModel->getPrefixOptions()
 		);
 
 		if ($macro)

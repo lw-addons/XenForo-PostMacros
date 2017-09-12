@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.0.9" version_id="400090" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.0.10" version_id="400100" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
   <admin_navigation>
-    <navigation navigation_id="liam_postMacros" parent_navigation_id="options" display_order="500" link="post-macros" admin_permission_id="" debug_only="0" hide_no_children="0"/>
+    <navigation navigation_id="liam_postMacros" parent_navigation_id="options" display_order="500" link="post-macros" admin_permission_id="lw_manageAdminMacros" debug_only="0" hide_no_children="0"/>
   </admin_navigation>
-  <admin_permissions/>
+  <admin_permissions>
+    <admin_permission admin_permission_id="lw_manageAdminMacros" display_order="300"/>
+  </admin_permissions>
   <admin_style_properties/>
   <admin_templates>
     <template title="liam_postMacros_import_macros"><![CDATA[<xen:title>{xen:phrase configure_importer}: {$name}</xen:title>
@@ -65,11 +67,9 @@
 		<xen:option value="1" selected="{$macro.lock_thread}">{xen:phrase liam_postMacros_lock_thread}</xen:option>
 	</xen:checkboxunit>
 	
-	<xen:selectunit label="{xen:phrase liam_postMacros_apply_prefix}:" name="thread_prefix">
+	<xen:selectunit label="{xen:phrase liam_postMacros_apply_prefix}:" name="thread_prefix" value="{$macro.thread_prefix}">
 		<xen:option value="0">({xen:phrase liam_postMacros_choose_prefix})</xen:option>
-		<xen:foreach loop="$threadPrefixes" value="$prefix">
-			<xen:option value="{$prefix.prefix_id}" selected="{$prefix.prefix_id} == {$macro.thread_prefix}">{$prefix.title}</xen:option>
-		</xen:foreach>
+		<xen:options source="{$threadPrefixes}" />
 	</xen:selectunit>
 	
 	<xen:checkboxunit label="{xen:phrase liam_postMacros_authorized_usergroups}:" name="authorized_usergroups">
@@ -77,6 +77,7 @@
 	</xen:checkboxunit>
 	
 	<xen:submitunit save="{xen:phrase save}" />
+	
 	<input type="hidden" name="admin_macro_id" value="{$macro.admin_macro_id}" />
 </xen:form>]]></template>
     <template title="postMacros_index"><![CDATA[<xen:title>{xen:phrase liam_postMacros_admin_macros}</xen:title>
@@ -181,6 +182,7 @@
   </permissions>
   <phrases>
     <phrase title="admin_navigation_liam_postMacros" version_id="40000" version_string="4.0.0"><![CDATA[Admin Macros]]></phrase>
+    <phrase title="admin_permission_lw_manageAdminMacros" version_id="400090" version_string="4.0.9"><![CDATA[Manage admin macros]]></phrase>
     <phrase title="liam_postMacros" version_id="40000" version_string="4.0.0"><![CDATA[Post Macros]]></phrase>
     <phrase title="liam_postMacros_add_macro" version_id="40000" version_string="4.0.0"><![CDATA[Add Macro]]></phrase>
     <phrase title="liam_postMacros_admin_macros" version_id="40000" version_string="4.0.0"><![CDATA[Admin Macros]]></phrase>
@@ -278,7 +280,7 @@
 	<input type="hidden" name="_xfConfirm" value="1">	
 	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
 </form>]]></template>
-    <template title="postMacros_edit" version_id="400070" version_string="4.0.7"><![CDATA[<xen:if is="{$macro.macro_id}"><xen:title>{xen:phrase liam_postMacros_edit_macro}: {$macro.title}</xen:title><xen:else /><xen:title>{xen:phrase liam_postMacros_new_macro}</xen:title></xen:if>
+    <template title="postMacros_edit" version_id="400090" version_string="4.0.9"><![CDATA[<xen:if is="{$macro.macro_id}"><xen:title>{xen:phrase liam_postMacros_edit_macro}: {$macro.title}</xen:title><xen:else /><xen:title>{xen:phrase liam_postMacros_new_macro}</xen:title></xen:if>
 
 <xen:if is="{$macro.macro_id}">
 	<xen:navigation>
@@ -315,8 +317,12 @@
 				<dd>
 					<select id="ctrl_thread_prefix" class="textCtrl" name="thread_prefix">
 						<option value="0">{xen:phrase liam_postMacros_choose_prefix}...</option>
-						<xen:foreach loop="$threadPrefixes" value="$threadPrefix">
-							<option value="{$threadPrefix.prefix_id}" {xen:selected '{$macro.thread_prefix} == {$threadPrefix.prefix_id}'}>{$threadPrefix.title}</option>
+						<xen:foreach loop="$threadPrefixes" key="$groupTitle" value="$prefixGroup">
+							<optgroup label="{$groupTitle}">
+								<xen:foreach loop="$prefixGroup" value="$threadPrefix">
+									<option value="{$threadPrefix.value}" {xen:selected '{$macro.thread_prefix} == {$threadPrefix.value}'}>{$threadPrefix.label}</option>
+								</xen:foreach>
+							</optgroup>
 						</xen:foreach>
 					</select>
 				</dd>

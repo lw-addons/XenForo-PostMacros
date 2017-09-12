@@ -2,6 +2,11 @@
 
 class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdmin_Abstract
 {
+	protected function _preDispatch($action)
+	{
+		$this->assertAdminPermission('lw_manageAdminMacros');
+	}
+
 	public function actionIndex()
 	{
 		$this->canonicalizeRequestUrl(XenForo_Link::buildAdminLink('post-macros'));
@@ -117,7 +122,7 @@ class LiamW_PostMacros_ControllerAdmin_AdminMacros extends XenForo_ControllerAdm
 			'canCreateStaffMacro' => $visitor->hasPermission('liam_postMacros', 'liamMacros_createStaff'),
 			'canLockThread' => $visitor->hasPermission('forum', 'lockUnlockThread'),
 			'canEditThread' => $visitor->hasPermission('forum', 'editAnyPost'),
-			'threadPrefixes' => $threadPrefixModel->preparePrefixes($threadPrefixModel->getAllPrefixes())
+			'threadPrefixes' => $threadPrefixModel->getPrefixOptions()
 		);
 
 		if ($macro)
