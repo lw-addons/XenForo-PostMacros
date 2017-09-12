@@ -8,17 +8,12 @@ class LiamW_PostMacros_ViewPublic_Use extends XenForo_ViewPublic_Base
 
 		$macroContent = $macro['content'];
 
-		$options = array(
-			'bbCode' => array(
-				'bbCodes' => array(),
-			),
-			'view' => $this
-		);
-
 		if ($this->_params['render'])
 		{
-			$bbCodeParser = new XenForo_BbCode_Parser(XenForo_BbCode_Formatter_Base::create('LiamW_PostMacros_BbCode_Formatter_Reversible',
-				$options));
+			$bbCodeParser = XenForo_BbCode_Parser::create(XenForo_BbCode_Formatter_Base::create('Wysiwyg',
+				array(
+					'view' => $this
+				)));
 			$macroContent = new XenForo_BbCode_TextWrapper($macroContent, $bbCodeParser);
 		}
 

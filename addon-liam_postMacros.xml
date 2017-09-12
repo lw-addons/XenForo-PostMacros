@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.1.1" version_id="4010170" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.2.0" version_id="4020070" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
   <admin_navigation>
     <navigation navigation_id="liam_postMacros" parent_navigation_id="liam_postMacros_main" display_order="1" link="post-macros/admin" admin_permission_id="lw_manageAdminMacros" debug_only="0" hide_no_children="0"/>
     <navigation navigation_id="liam_postMacros_main" parent_navigation_id="applications" display_order="16" link="" admin_permission_id="lw_manageAdminMacros" debug_only="0" hide_no_children="1"/>
@@ -256,11 +256,13 @@
     <listener event_id="load_class_controller" execute_order="10" callback_class="LiamW_PostMacros_Listener" callback_method="extendForumAdminController" active="1" hint="XenForo_ControllerAdmin_Forum" description="XenForo_ControllerAdmin_Forum"/>
     <listener event_id="load_class_controller" execute_order="10" callback_class="LiamW_PostMacros_Listener" callback_method="extendThreadController" active="1" hint="XenForo_ControllerPublic_Thread" description="XenForo_ControllerPublic_Thread"/>
     <listener event_id="load_class_controller" execute_order="10" callback_class="LiamW_PostMacros_Listener" callback_method="extendForumController" active="1" hint="XenForo_ControllerPublic_Forum" description="XenForo_ControllerPublic_Forum"/>
+    <listener event_id="load_class_controller" execute_order="10" callback_class="LiamW_PostMacros_Listener" callback_method="extendEditorController" active="1" hint="XenForo_ControllerPublic_Editor" description="XenForo_ControllerPublic_Editor"/>
     <listener event_id="load_class_datawriter" execute_order="10" callback_class="LiamW_PostMacros_Listener" callback_method="extendUserDataWriter" active="1" hint="XenForo_DataWriter_User" description="XenForo_DataWriter_User"/>
     <listener event_id="load_class_datawriter" execute_order="10" callback_class="LiamW_PostMacros_Listener" callback_method="extendForumDataWriter" active="1" hint="XenForo_DataWriter_Forum" description="XenForo_DataWriter_Forum"/>
     <listener event_id="load_class_datawriter" execute_order="10" callback_class="LiamW_PostMacros_Listener" callback_method="extendPostDataWriter" active="1" hint="XenForo_DataWriter_DiscussionMessage_Post" description="XenForo_DataWriter_DiscussionMessage_Post"/>
     <listener event_id="load_class_datawriter" execute_order="10" callback_class="LiamW_PostMacros_Listener" callback_method="extendThreadDataWriter" active="1" hint="XenForo_DataWriter_Discussion_Thread" description="XenForo_DataWriter_Discussion_Thread"/>
     <listener event_id="load_class_model" execute_order="10" callback_class="LiamW_PostMacros_Listener" callback_method="extendImportModel" active="1" hint="XenForo_Model_Import" description="XenForo_Model_Import"/>
+    <listener event_id="load_class_view" execute_order="10" callback_class="LiamW_PostMacros_Listener" callback_method="extendEditorDialogView" active="1" hint="XenForo_ViewPublic_Editor_Dialog" description="XenForo_ViewPublic_Editor_Dialog"/>
   </code_event_listeners>
   <cron/>
   <email_templates/>
@@ -271,7 +273,7 @@
       <default_value></default_value>
       <edit_format_params>rows=5</edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="liam_postMacros" display_order="10"/>
+      <relation group_id="liam_postMacros" display_order="110"/>
     </option>
     <option option_id="liam_postMacros_mode" edit_format="radio" data_type="string" can_backup="1">
       <default_value>opt_out</default_value>
@@ -280,19 +282,26 @@ opt_in_default={xen:phrase liam_postMacros_opt_in_default}
 opt_in={xen:phrase liam_postMacros_opt_in}
 opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="liam_postMacros" display_order="1"/>
+      <relation group_id="liam_postMacros" display_order="100"/>
     </option>
     <option option_id="liam_postMacros_perPage" edit_format="spinbox" data_type="integer" can_backup="1">
       <default_value>20</default_value>
       <edit_format_params>min=5</edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="liam_postMacros" display_order="200"/>
+      <relation group_id="liam_postMacros" display_order="300"/>
+    </option>
+    <option option_id="liam_postMacros_selector_mode" edit_format="radio" data_type="string" can_backup="1">
+      <default_value>classic</default_value>
+      <edit_format_params>classic={xen:phrase liam_postMacros_classic}
+new={xen:phrase new}</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="liam_postMacros" display_order="1"/>
     </option>
     <option option_id="postMacros_collapsable" edit_format="onoff" data_type="boolean" can_backup="1">
       <default_value>1</default_value>
       <edit_format_params></edit_format_params>
       <sub_options></sub_options>
-      <relation group_id="liam_postMacros" display_order="100"/>
+      <relation group_id="liam_postMacros" display_order="200"/>
     </option>
   </optiongroups>
   <permissions>
@@ -325,6 +334,7 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
     <phrase title="liam_postMacros_apply_prefix" version_id="40000" version_string="4.0.0"><![CDATA[Apply Prefix]]></phrase>
     <phrase title="liam_postMacros_authorized_usergroups" version_id="40000" version_string="4.0.0"><![CDATA[Authorized Usergroups]]></phrase>
     <phrase title="liam_postMacros_choose_prefix" version_id="40000" version_string="4.0.0"><![CDATA[Choose prefix]]></phrase>
+    <phrase title="liam_postMacros_classic" version_id="4010170" version_string="4.1.1"><![CDATA[Classic]]></phrase>
     <phrase title="liam_postMacros_confirm_deletion_of_admin_macro" version_id="40000" version_string="4.0.0"><![CDATA[Confirm deletion of admin macro]]></phrase>
     <phrase title="liam_postMacros_confirm_deletion_of_macro" version_id="40000" version_string="4.0.0"><![CDATA[Confirm deletion of macro]]></phrase>
     <phrase title="liam_postMacros_confirm_deletion_of_user_macro" version_id="400130" version_string="4.0.13"><![CDATA[Confirm deletion of user macro]]></phrase>
@@ -348,7 +358,9 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
     <phrase title="liam_postMacros_hide_other" version_id="400100" version_string="4.0.10"><![CDATA[when viewing, creating or editing any other content]]></phrase>
     <phrase title="liam_postMacros_hide_thread_quick_reply" version_id="40000" version_string="4.0.0"><![CDATA[when viewing a thread (quick reply)]]></phrase>
     <phrase title="liam_postMacros_import_config_explain" version_id="40000" version_string="4.0.0"><![CDATA[This is the database you're importing from. These values have been taken from your config.php file and are read only.]]></phrase>
+    <phrase title="liam_postMacros_insert_macro" version_id="4010170" version_string="4.1.1"><![CDATA[Insert Macro]]></phrase>
     <phrase title="liam_postMacros_lock_thread" version_id="40000" version_string="4.0.0"><![CDATA[Lock Thread]]></phrase>
+    <phrase title="liam_postMacros_macro" version_id="4010170" version_string="4.1.1"><![CDATA[Macro]]></phrase>
     <phrase title="liam_postMacros_macros_description" version_id="40000" version_string="4.0.0"><![CDATA[These are macros created by you or others members.]]></phrase>
     <phrase title="liam_postMacros_managing_macros" version_id="400070" version_string="4.0.7"><![CDATA[Managing macros]]></phrase>
     <phrase title="liam_postMacros_master_name" version_id="40000" version_string="4.0.0"><![CDATA[Choose a macro...]]></phrase>
@@ -406,6 +418,12 @@ Opt Out: Show select everywhere, choose where not to display.<br />
 </span>]]></phrase>
     <phrase title="option_liam_postMacros_perPage" version_id="400130" version_string="4.0.13"><![CDATA[Macros Per Page]]></phrase>
     <phrase title="option_liam_postMacros_perPage_explain" version_id="400130" version_string="4.0.13"><![CDATA[Number of macros to show per page. Only used in Admin Panel currently.]]></phrase>
+    <phrase title="option_liam_postMacros_selector_mode" version_id="4010170" version_string="4.1.1"><![CDATA[Selector Mode]]></phrase>
+    <phrase title="option_liam_postMacros_selector_mode_explain" version_id="4010170" version_string="4.1.1"><![CDATA[<p class="explain">There are two ways to insert macros. The 'classic' way is via a drop down select box prepended to the top of the editor template, that appears for all editors (depending on the options), with a smaller box for the quick reply editor.</p>
+
+<p class="explain">The new way is integrated directly into the editor, via a button in the 'Insert' drop down list. Clicking 'Insert'->'Macro' will bring up an overlay, with the macros drop down, allowing a macro to be inserted.</p>
+
+<p class="explain">The new way saves space, and makes the add-on seem more tightly integrated, however, because it's directly linked into the editor, the display options are disabled and the macro inserter is displayed in <i>all</i> editors (except when disabled by the author of the add-on the editor belongs to). All other things work, including thread title setting.</p>]]></phrase>
     <phrase title="option_postMacros_collapsable" version_id="400110" version_string="4.0.11"><![CDATA[Collapsable macros]]></phrase>
     <phrase title="option_postMacros_collapsable_explain" version_id="400110" version_string="4.0.11"><![CDATA[If enabled, macros on the macro page will be collapsed. The actual content will be fetched via AJAX when the Expand link is clicked.]]></phrase>
     <phrase title="permission_group_liam_postMacros" version_id="40000" version_string="4.0.0"><![CDATA[Post Macros]]></phrase>
@@ -431,6 +449,40 @@ Opt Out: Show select everywhere, choose where not to display.<br />
   </route_prefixes>
   <style_properties/>
   <templates>
+    <template title="editor_dialog_liam_postmacros" version_id="4010170" version_string="4.1.1"><![CDATA[<dl class="ctrlUnit fullWidth surplusLabel">
+	<dt><label for="liam_postmacros_select">{xen:phrase liam_postMacros_select_macro}</label></dt>
+	<dd>
+		<select id="liam_postmacros_select" class="textCtrl MacroSelect">
+			<option value="0">{xen:phrase liam_postMacros_master_name}</option>
+			<xen:if hascontent="true">
+				<optgroup label="{xen:phrase liam_postMacros_user_macros}">
+					<xen:contentcheck>
+						<xen:foreach loop="$macros.user" value="$userMacro">
+							<option value="{$userMacro.macro_id}" data-type="user">{$userMacro.title}</option>
+						</xen:foreach>
+					</xen:contentcheck>
+				</optgroup>
+			</xen:if>
+			<xen:if hascontent="true">
+				<optgroup label="{xen:phrase liam_postMacros_admin_macros}">
+					<xen:contentcheck>
+						<xen:foreach loop="$macros.admin" value="$adminMacro">
+							<option value="{$adminMacro.admin_macro_id}" data-type="admin">{$adminMacro.title}</option>
+						</xen:foreach>
+					</xen:contentcheck>
+				</optgroup>
+			</xen:if>
+		</select>
+	</dd>
+</dl>
+
+<dl class="ctrlUnit submitUnit">
+	<dt></dt>
+	<dd>
+		<input type="button" name="upload" class="redactor_modal_btn button primary" id="liam_postmacros_insert_btn" value="{xen:phrase insert}" />
+		<a href="javascript:void(null);" class="redactor_modal_btn redactor_btn_modal_close button">{xen:phrase cancel}</a>
+	</dd>
+</dd>]]></template>
     <template title="postMacros.css" version_id="400110" version_string="4.0.11"><![CDATA[.ExpandLink {
 	position: relative;
 	height: 100%;
@@ -639,7 +691,7 @@ jQuery.extend(XenForo.phrases,
 	postMacros_collapse: "{xen:jsescape {xen:phrase postMacros_collapse}}",
 });
 </script>]]></template>
-    <template title="postMacros_options" version_id="400110" version_string="4.0.11"><![CDATA[<xen:if is="{$canUseMacros}">
+    <template title="postMacros_options" version_id="4010170" version_string="4.1.1"><![CDATA[<xen:if is="{$canUseMacros} && {$xenOptions.liam_postMacros_selector_mode} == 'classic'">
 	<h3 class="sectionHeader">{xen:phrase liam_postMacros}</h3>
 	
 	<dl class="ctrlUnit">
@@ -682,7 +734,7 @@ jQuery.extend(XenForo.phrases,
 	<h3 class="subHeading">{xen:phrase preview}</h3>
 	<div class="primaryContent baseHtml">{xen:raw $contentParsed}</div>
 </div>]]></template>
-    <template title="postMacros_select" version_id="400110" version_string="4.0.11"><![CDATA[<xen:if is="{$editorOptions.canUseMacros} && {$editorOptions.showMacrosSelect}">
+    <template title="postMacros_select" version_id="4010170" version_string="4.1.1"><![CDATA[<xen:if is="{$editorOptions.canUseMacros} && {$editorOptions.showMacrosSelect} && {$xenOptions.liam_postMacros_selector_mode} == 'classic'">
 	<xen:require js="js/postmacros/macros{xen:if '!{$debugMode}', '.min'}.js" />
 	<span {xen:if '!{$editorOptions.height}', 'style="float: left;"'}>
 		<select class="textCtrl MacroSelect" data-editorid="{$editorId}" {xen:if '{$editorOptions.height}', 'style="width: 100%;"'}>
@@ -722,6 +774,34 @@ jQuery.extend(XenForo.phrases,
 <xen:include template="postMacros_select" />
 </xen:if>
 $0]]></replace>
+    </modification>
+    <modification template="editor_js_setup" modification_key="liam_postMacros_editor_js_setup" description="" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<xen:require js="js/xenforo/bb_code_edit.js" />]]></find>
+      <replace><![CDATA[<xen:if is="{$xenOptions.liam_postMacros_selector_mode} == 'new'">
+	 <xen:if is="{$debugMode}">
+	 	 <xen:require js="js/postmacros/macros_editor.js" />
+	 <xen:else />
+	 	 <xen:require js="js/postmacros/macros_editor.min.js" />
+	 </xen:if>
+</xen:if>
+$0]]></replace>
+    </modification>
+    <modification template="editor_js_setup" modification_key="liam_postMacros_editor_js_setup_phrases" description="" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[RELANG.xf = {]]></find>
+      <replace><![CDATA[$0
+liam_postMacros_macro: "{xen:jsescape {xen:phrase liam_postMacros_macro}}",
+liam_postMacros_insert_macro: "{xen:jsescape {xen:phrase liam_postMacros_insert_macro}}",]]></replace>
+    </modification>
+    <modification template="editor_ui.css" modification_key="liam_postMacros_editor_ui" description="" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[.redactor_dropdown a.code
+		{
+			background-position: {xen:if $pageIsRtl, '97%', '3%'} -{xen:calc '{$redactorButtons.redactor_btn_code} * 32 - 3'}px;
+		}]]></find>
+      <replace><![CDATA[$0
+.redactor_dropdown a.insertMacro
+		{
+			background-position: {xen:if $pageIsRtl, '97%', '3%'} -892px;
+		}]]></replace>
     </modification>
     <modification template="footer" modification_key="liam_postMacros_footer" description="Branding. If you have a branding removal license for this license, you may disable this." execution_order="10" enabled="1" action="callback">
       <find><![CDATA[#{xen:phrase extra_copyright}#]]></find>

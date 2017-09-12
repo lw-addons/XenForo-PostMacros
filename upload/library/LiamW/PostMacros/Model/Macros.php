@@ -433,6 +433,8 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 	{
 		$shouldDisplay = true;
 
+		$isDefault = true;
+
 		switch ($viewClass)
 		{
 			case 'XenForo_ViewPublic_Thread_Create':

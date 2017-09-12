@@ -17,6 +17,11 @@ class LiamW_PostMacros_Listener
 		$extend[] = 'LiamW_PostMacros_Extend_ControllerAdmin_Forum';
 	}
 
+	public static function extendEditorController($class, array &$extend)
+	{
+		$extend[] = 'LiamW_PostMacros_Extend_ControllerPublic_Editor';
+	}
+
 	public static function extendForumDataWriter($class, array &$extend)
 	{
 		$extend[] = 'LiamW_PostMacros_Extend_DataWriter_Forum';
@@ -45,6 +50,11 @@ class LiamW_PostMacros_Listener
 	public static function extendImportModel($class, array &$extend)
 	{
 		XenForo_Model_Import::$extraImporters[] = 'LiamW_PostMacros_Importer_Macros';
+	}
+
+	public static function extendEditorDialogView($class, array &$extend)
+	{
+		$extend[] = 'LiamW_PostMacros_Extend_ViewPublic_Editor_Dialog';
 	}
 
 	public static function editorSetup(XenForo_View $view, $formCtrlName, &$message, array &$editorOptions, &$showWysiwyg)
