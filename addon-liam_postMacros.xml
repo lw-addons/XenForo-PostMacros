@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.0.7" version_id="400070" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.0.8" version_id="400080" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
   <admin_navigation>
     <navigation navigation_id="liam_postMacros" parent_navigation_id="options" display_order="500" link="post-macros" admin_permission_id="" debug_only="0" hide_no_children="0"/>
   </admin_navigation>
@@ -195,6 +195,8 @@
     <phrase title="liam_postMacros_delete" version_id="40000" version_string="4.0.0"><![CDATA[Delete]]></phrase>
     <phrase title="liam_postMacros_delete_admin_macro" version_id="40000" version_string="4.0.0"><![CDATA[Delete Admin Macro]]></phrase>
     <phrase title="liam_postMacros_delete_macro" version_id="40000" version_string="4.0.0"><![CDATA[Delete Macro]]></phrase>
+    <phrase title="liam_postMacros_display_order" version_id="400070" version_string="4.0.7"><![CDATA[Display Order]]></phrase>
+    <phrase title="liam_postMacros_display_order_explain" version_id="400070" version_string="4.0.7"><![CDATA[This is the display order for this macro. Macros will appear in the selector in ascending display order. <b>This is only designed for the macro creator, it will not work for staff macros.</b>]]></phrase>
     <phrase title="liam_postMacros_edit" version_id="40000" version_string="4.0.0"><![CDATA[Edit]]></phrase>
     <phrase title="liam_postMacros_edit_macro" version_id="40000" version_string="4.0.0"><![CDATA[Edit Macro]]></phrase>
     <phrase title="liam_postMacros_enable" version_id="40000" version_string="4.0.0"><![CDATA[Enable post macros]]></phrase>
@@ -207,6 +209,7 @@
     <phrase title="liam_postMacros_import_config_explain" version_id="40000" version_string="4.0.0"><![CDATA[This is the database you're importing from. These values have been taken from your config.php file and are read only.]]></phrase>
     <phrase title="liam_postMacros_lock_thread" version_id="40000" version_string="4.0.0"><![CDATA[Lock Thread]]></phrase>
     <phrase title="liam_postMacros_macros_description" version_id="40000" version_string="4.0.0"><![CDATA[These are macros created by you or others members.]]></phrase>
+    <phrase title="liam_postMacros_managing_macros" version_id="400070" version_string="4.0.7"><![CDATA[Managing macros]]></phrase>
     <phrase title="liam_postMacros_master_name" version_id="40000" version_string="4.0.0"><![CDATA[Choose a macro...]]></phrase>
     <phrase title="liam_postMacros_new_macro" version_id="40000" version_string="4.0.0"><![CDATA[Create New Macro]]></phrase>
     <phrase title="liam_postMacros_no_admin_macros" version_id="40000" version_string="4.0.0"><![CDATA[There are no admin macros!]]></phrase>
@@ -275,7 +278,7 @@
 	<input type="hidden" name="_xfConfirm" value="1">	
 	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
 </form>]]></template>
-    <template title="postMacros_edit" version_id="40000" version_string="4.0.0"><![CDATA[<xen:if is="{$macro.macro_id}"><xen:title>{xen:phrase liam_postMacros_edit_macro}: {$macro.title}</xen:title><xen:else /><xen:title>{xen:phrase liam_postMacros_new_macro}</xen:title></xen:if>
+    <template title="postMacros_edit" version_id="400070" version_string="4.0.7"><![CDATA[<xen:if is="{$macro.macro_id}"><xen:title>{xen:phrase liam_postMacros_edit_macro}: {$macro.title}</xen:title><xen:else /><xen:title>{xen:phrase liam_postMacros_new_macro}</xen:title></xen:if>
 
 <xen:if is="{$macro.macro_id}">
 	<xen:navigation>
@@ -334,6 +337,14 @@
 			</dl>
 		</xen:if>
 		
+		<dl class="ctrlUnit">
+			<dt><label for="ctrl_display_order">{xen:phrase liam_postMacros_display_order}:</label></dt>
+			<dd>
+				<input id="ctrl_display_order" type="number" name="display_order" min="1" step="10" value="{$macro.display_order}" class="textCtrl" />
+				<p class="explain">{xen:phrase liam_postMacros_display_order_explain}</p>
+			</dd>
+		</dl>
+		
 		<input type="hidden" name="macro_id" value="{$macro.macro_id}" />
 		<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
 	</fieldset>
@@ -351,7 +362,7 @@
 		<dd>{xen:phrase liam_postMacros_variables}</dd>
 	</dl>
 </form>]]></template>
-    <template title="postMacros_index" version_id="400061" version_string="4.0.6 Fix 1"><![CDATA[<xen:title>{xen:phrase liam_postMacros}</xen:title>
+    <template title="postMacros_index" version_id="400070" version_string="4.0.7"><![CDATA[<xen:title>{xen:phrase liam_postMacros}</xen:title>
 
 <xen:if is="{$canCreate}">
 	<xen:topctrl>

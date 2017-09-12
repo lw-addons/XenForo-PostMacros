@@ -53,7 +53,8 @@ class LiamW_PostMacros_ControllerPublic_Macros extends XenForo_ControllerPublic_
 			'thread_title' => XenForo_Input::STRING,
 			'thread_prefix' => XenForo_Input::UINT,
 			'lock_thread' => XenForo_Input::BOOLEAN,
-			'staff_macro' => XenForo_Input::BOOLEAN
+			'staff_macro' => XenForo_Input::BOOLEAN,
+			'display_order' => XenForo_Input::UINT
 		));
 
 		$data['content'] = $this->_getEditorHelper()->getMessageText('content', $this->_input);
@@ -234,6 +235,11 @@ class LiamW_PostMacros_ControllerPublic_Macros extends XenForo_ControllerPublic_
 		{
 			return $this->responseView('LiamW_PostMacros_ViewPublic_Create', 'postMacros_edit', $viewParams);
 		}
+	}
+
+	public static function getSessionActivityDetailsForList(array $activities)
+	{
+		return new XenForo_Phrase('liam_postMacros_managing_macros');
 	}
 
 	/**

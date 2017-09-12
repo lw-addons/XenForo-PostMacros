@@ -31,8 +31,7 @@
 
 		updateVars: function ()
 		{
-			$forms = $('form');
-
+			var $forms = $('form');
 			var thisClass = this;
 
 			jQuery.each($forms, function (index, form)
@@ -103,7 +102,7 @@
 			if (ajaxData.templateHtml)
 			{
 				this.$macros.val(0);
-				XenForo.createOverlay(null, ajaxData.templateHtml, {'title': XenForo.phrases['error']}).xfShow();
+				XenForo.ajaxError(ajaxData);
 				return;
 			}
 

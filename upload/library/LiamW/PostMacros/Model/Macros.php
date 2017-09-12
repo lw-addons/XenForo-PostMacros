@@ -2,12 +2,17 @@
 
 class LiamW_PostMacros_Model_Macros extends XenForo_Model
 {
-	public function getMacros(array $conditions = array())
+	protected $_orderOptions = array(
+		'display_order' => 'ORDER BY display_order'
+	);
+
+	public function getMacros(array $conditions = array(), array $fetchOptions = array())
 	{
 		$whereConditions = $this->_prepareMacrosConditions($conditions);
+		$orderByClause = $this->getOrderByClause($this->_orderOptions, $fetchOptions);
 
 		return $this->fetchAllKeyed(
-			'SELECT * FROM liam_post_macros WHERE ' . $whereConditions, 'macro_id'
+			'SELECT * FROM liam_post_macros WHERE ' . $whereConditions . $orderByClause, 'macro_id'
 		);
 	}
 
@@ -43,12 +48,13 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 
 		if (XenForo_Permission::hasPermission($viewingUser['permissions'], 'liam_postMacros', 'liamMacros_createStaff'))
 		{
-			return $this->fetchAllKeyed('SELECT * FROM liam_post_macros WHERE user_id=? OR staff_macro=1', 'macro_id',
+			return $this->fetchAllKeyed('SELECT * FROM liam_post_macros WHERE user_id=? OR staff_macro=1 ORDER BY display_order ASC',
+				'macro_id',
 				$viewingUser['user_id']);
 		}
 		else
 		{
-			return $this->getMacros(array('user_id' => $viewingUser['user_id']));
+			return $this->getMacros(array('user_id' => $viewingUser['user_id']), array('order' => 'display_order'));
 		}
 	}
 

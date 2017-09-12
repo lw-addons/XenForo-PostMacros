@@ -4,7 +4,7 @@ class LiamW_PostMacros_Extend_DataWriter_Discussion_Thread extends XFCP_LiamW_Po
 {
 	protected function _discussionPreSave()
 	{
-		if (XenForo_Application::isRegistered('liam_postMacros_set_prefix'))
+		if (XenForo_Application::isRegistered('liam_postMacros_set_prefix') && XenForo_Application::get('liam_postMacros_set_prefix'))
 		{
 			$this->set('prefix_id', XenForo_Application::get('liam_postMacros_set_prefix'));
 		}

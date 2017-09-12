@@ -87,20 +87,18 @@ class LiamW_PostMacros_Installer
 			throw new XenForo_Exception($error, true);
 		}
 
-		$db = XenForo_Application::getDb();
-		XenForo_Db::beginTransaction($db);
-
-		self::_installTables($db);
-		self::_installCoreAlters($db);
+		self::_installTables();
+		self::_installCoreAlters();
 
 		if ($installedAddon)
 		{
 			$installedVersion = $installedAddon['version_id'];
 
-			// For future.
+			if ($installedVersion <= 400070)
+			{
+				self::_runQuery("ALTER TABLE liam_post_macros ADD display_order INT(10) UNSIGNED NOT NULL DEFAULT 1");
+			}
 		}
-
-		XenForo_Db::commit($db);
 	}
 
 	public static function uninstall()
