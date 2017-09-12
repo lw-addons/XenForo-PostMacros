@@ -9,6 +9,14 @@
 						$("#macroSelect")
 								.change(
 										function(e) {
+											var macrotexthtml = $(
+													'#macroSelect option:selected')
+													.attr('data-valuehtml');
+
+											macrotext = $(
+													'#macroSelect option:selected')
+													.val();
+
 											var editor = XenForo
 													.getEditorInForm($('#ThreadCreate'));
 											if (!editor) {
@@ -19,10 +27,9 @@
 												editor = XenForo
 														.getEditorInForm($('#main_form'));
 											}
-											if (typeof (editor.val) == "undefined") {
-												var macrotext = $(
-														'#macroSelect option:selected')
-														.attr('data-valuehtml');
+											if (typeof (editor.val) == "undefined"
+													&& macrotext != '-') {
+
 												editor.insertHtml(macrotext);
 
 												var titleText = $(
@@ -30,10 +37,7 @@
 														.attr('data-valuetitle');
 												var threadTitleBox = $('#ctrl_title_thread_create');
 												threadTitleBox.val(titleText);
-											} else {
-												macrotext = $(
-														'#macroSelect option:selected')
-														.val();
+											} else if (macrotext != '-') {
 												editor
 														.val(editor.val()
 																+ macrotext

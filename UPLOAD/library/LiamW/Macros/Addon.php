@@ -20,32 +20,20 @@ class LiamW_Macros_Addon
 	{
 		if (XenForo_Application::$versionId < 1020070)
 		{
-			throw new XenForo_Exception('This addon is compatible with xenForo 1.2.0+ only!', true);
+			throw new XenForo_Exception('This addon required XenForo 1.2.0 or higher. You are using XenForo ' . XenForo_Application::$version . '. Please upgrade then install.', true);
 		}
 		
-		if (is_array($installedAddon))
-		{
-			$version = $installedAddon["version_id"];
-		}
-		else
-		{
-			$version = 0;
-		}
-		
-		// this new system is much cleaner, don't you think?
+		$version = is_array($installedAddon) ? $installedAddon['version_id'] : 0;
 		
 		$dbMacros = new LiamW_Macros_DatabaseSchema_Macros($version);
 		$dbAdminMacros = new LiamW_Macros_DatabaseSchema_AdminMacros($version);
 		$dbMacroOptions = new LiamW_Macros_DatabaseSchema_MacroOptions($version);
+		$forum = new LiamW_Macros_DatabaseSchema_Forum($version);
 		
-		$r1 = $dbMacros->run();
-		$r2 = $dbAdminMacros->run();
-		$r3 = $dbMacroOptions->run();
-		
-		if ($r1 !== true || $r2 !== true || $r3 !== true)
-		{
-			throw new XenForo_Exception("An error occured while installing/updating tables. Please check the server error log for more info.", true);
-		}
+		$dbMacros->install();
+		$dbAdminMacros->install();
+		$dbMacroOptions->install();
+		$forum->install();
 	}
 
 	/**
@@ -55,13 +43,15 @@ class LiamW_Macros_Addon
 	 */
 	public static function uninstall($installedAddon)
 	{
-		$dbMacros = new LiamW_Macros_DatabaseSchema_Macros(0, true);
-		$dbAdminMacros = new LiamW_Macros_DatabaseSchema_AdminMacros(0, true);
-		$dbMacroOptions = new LiamW_Macros_DatabaseSchema_MacroOptions(0, true);
+		$dbMacros = new LiamW_Macros_DatabaseSchema_Macros();
+		$dbAdminMacros = new LiamW_Macros_DatabaseSchema_AdminMacros();
+		$dbMacroOptions = new LiamW_Macros_DatabaseSchema_MacroOptions();
+		$forum = new LiamW_Macros_DatabaseSchema_Forum();
 		
-		$dbMacros->run();
-		$dbAdminMacros->run();
-		$dbMacroOptions->run();
+		$dbMacros->uninstall();
+		$dbAdminMacros->uninstall();
+		$dbMacroOptions->uninstall();
+		$forum->uninstall();
 	}
 
 	/**
@@ -76,21 +66,27 @@ class LiamW_Macros_Addon
 			case "XenForo_ViewPublic_Thread_Create":
 			case "XenForo_ViewPublic_Thread_Reply":
 				XenForo_Application::set('macro_type', 'ntnr');
-				$extend[] = 'LiamW_Macros_ViewPublic_Thread_View';
+				$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_View';
 				break;
 			case "XenForo_ViewPublic_Conversation_View":
 			case "XenForo_ViewPublic_Thread_View":
 				XenForo_Application::set('macro_type', 'qr');
-				$extend[] = 'LiamW_Macros_ViewPublic_Thread_View';
+				$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_View';
 				break;
 			case "XenForo_ViewPublic_Conversation_View":
 				XenForo_Application::set('macro_type', 'convoqr');
-				$extend[] = 'LiamW_Macros_ViewPublic_Thread_View';
+				$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_View';
 				break;
 			case "XenForo_ViewPublic_Conversation_Reply":
 			case "XenForo_ViewPublic_Conversation_Add":
 				XenForo_Application::set('macro_type', 'convoncnr');
-				$extend[] = 'LiamW_Macros_ViewPublic_Thread_View';
+				$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_View';
+				break;
+			case "XenForo_ControllerAdmin_Forum":
+				$extend[] = 'LiamW_Macros_Extend_ControllerAdmin_Forum';
+				break;
+			case "XenForo_DataWriter_Forum":
+				$extend[] = 'LiamW_Macros_Extend_DataWriter_Forum';
 				break;
 		}
 		

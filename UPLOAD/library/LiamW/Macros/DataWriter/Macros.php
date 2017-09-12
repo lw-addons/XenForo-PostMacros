@@ -8,7 +8,7 @@
  * @see XenForo_DataWriter
  *
  */
-class LiamW_Macros_DataWriter_DataWriter extends XenForo_DataWriter
+class LiamW_Macros_DataWriter_Macros extends XenForo_DataWriter
 {
 	
 	/*
@@ -18,17 +18,17 @@ class LiamW_Macros_DataWriter_DataWriter extends XenForo_DataWriter
 	{
 		return array(
 			
-			'xf_liam_macros' => array(
+			'liam_macros' => array(
 				
-				'userid' => array(
-					
-					'type' => self::TYPE_UINT,
-					'required' => true
-				),
-				'macroid' => array(
+				'macro_id' => array(
 					
 					'type' => self::TYPE_UINT,
 					'autoIncrement' => true
+				),
+				'user_id' => array(
+					
+					'type' => self::TYPE_UINT,
+					'required' => true
 				),
 				'name' => array(
 					
@@ -60,13 +60,13 @@ class LiamW_Macros_DataWriter_DataWriter extends XenForo_DataWriter
 	 */
 	protected function _getExistingData($data)
 	{
-		if (! $macroid = $this->_getExistingPrimaryKey($data, 'macroid'))
+		if (! $macroid = $this->_getExistingPrimaryKey($data, 'macro_id'))
 		{
 			return false;
 		}
 		
 		return array(
-			'xf_liam_macros' => $this->_getMacrosModel()->getMacroFromId($macroid)
+			'liam_macros' => $this->_getMacrosModel()->getMacroFromId($macroid)
 		);
 	}
 	
@@ -75,7 +75,7 @@ class LiamW_Macros_DataWriter_DataWriter extends XenForo_DataWriter
 	 */
 	protected function _getUpdateCondition($tableName)
 	{
-		return 'macroid = ' . $this->_db->quote($this->getExisting('macroid'));
+		return 'macro_id = ' . $this->_db->quote($this->getExisting('macro_id'));
 	}
 
 	/**

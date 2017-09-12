@@ -13,17 +13,21 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 	/**
 	 * Gets the macros for a specific user.
 	 *
-	 * @param int $userId
-	 *        	UserID of the user to get macros for.
+	 * @param int $userid
+	 *        	userid of the user to get macros for.
 	 */
-	public function getMacrosForUser($userId, $includestaff = false)
+	public function getMacrosForUser($userid, $includestaff = false)
 	{
 		if ($includestaff)
 		{
-			return $this->_getDb()->fetchAssoc('SELECT * FROM xf_liam_macros WHERE userid=' . $userId . ' OR staff_macro=1 ORDER BY macroid');
+			return $this->_getDb()->fetchAssoc('SELECT * FROM liam_macros WHERE `user_id`=? OR staff_macro=1 ORDER BY macro_id', array(
+				$userid
+			));
 		}
 		
-		return $this->_getDb()->fetchAssoc('SELECT * FROM xf_liam_macros WHERE userid=' . $userId);
+		return $this->_getDb()->fetchAssoc('SELECT * FROM liam_macros WHERE `user_id`=?', array(
+			$userid
+		));
 	}
 
 	/**
@@ -41,7 +45,7 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 			return array();
 		}
 		
-		$macros = $this->_getDb()->fetchAssoc('SELECT * FROM xf_liam_macros_admin');
+		$macros = $this->_getDb()->fetchAssoc('SELECT * FROM liam_macros_admin');
 		
 		$usergroups = explode(',', implode(',', array_merge((array) $user['user_group_id'], (array) $user['secondary_group_ids'])));
 		
@@ -75,14 +79,18 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 		
 		if ($adminmacro)
 		{
-			$macroarray = $this->_getDb()->fetchRow('SELECT * from xf_liam_macros_admin WHERE id=' . $macroid);
+			$macroarray = $this->_getDb()->fetchRow('SELECT * from liam_macros_admin WHERE macro_id=?', array(
+				$macroid
+			));
 			$macroarray['usergroups'] = explode(',', $macroarray['usergroups']);
 			
 			return $macroarray;
 		}
 		else
 		{
-			return $this->_getDb()->fetchRow('SELECT * from xf_liam_macros WHERE macroid=' . $macroid);
+			return $this->_getDb()->fetchRow('SELECT * from liam_macros WHERE macro_id=?', array(
+				$macroid
+			));
 		}
 	}
 
@@ -93,7 +101,7 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 	 */
 	public function getAdminMacros()
 	{
-		return $this->_getDb()->fetchAssoc('SELECT * FROM xf_liam_macros_admin');
+		return $this->_getDb()->fetchAssoc('SELECT * FROM liam_macros_admin');
 	}
 
 	/**
@@ -111,7 +119,7 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 		{
 			return false;
 		}
-		else if (($visitor->hasPermission('macro_permissions', 'max_macros') <= $this->numMacros($visitor->getUserId()) && ($visitor->hasPermission('macro_permissions', 'max_macros') != - 1)))
+		else if (($visitor->hasPermission('macro_permissions', 'max_macros') <= $this->numMacros($visitor->getuserid()) && ($visitor->hasPermission('macro_permissions', 'max_macros') != - 1)))
 		{
 			return false;
 		}
@@ -133,8 +141,8 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 		{
 			return false;
 		}
-		if (! $permissionOnly && $this->numMacros($visitor->getUserId()) <= 0 && (count($this->getAdminMacrosForUser($this->getUserModel()
-			->getFullUserById($visitor->getUserId()))) <= 0))
+		if (! $permissionOnly && $this->numMacros($visitor->getuserid()) <= 0 && (count($this->getAdminMacrosForUser($this->getUserModel()
+			->getFullUserById($visitor->getuserid()))) <= 0))
 		{
 			return false;
 		}
@@ -144,48 +152,58 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 
 	public function optionsSaved($userid)
 	{
-		$db = $this->_getDb()->fetchOne("SELECT `userid` FROM `xf_liam_macros_options` WHERE `userid`='$userid'");
+		$db = $this->_getDb()->fetchOne("SELECT `user_id` FROM `liam_macros_options` WHERE `user_id`=?", array(
+			$userid
+		));
 		
 		if ($db)
 		{
-			return 1;
+			return true;
 		}
 		else
 		{
-			return 0;
+			return false;
 		}
 	}
 
 	public function hiddenOnQr($userid)
 	{
-		return $this->_getDb()->fetchOne("SELECT `macros_hide_qr` FROM `xf_liam_macros_options` WHERE `userid`='$userid'");
+		return $this->_getDb()->fetchOne("SELECT `macros_hide_qr` FROM `liam_macros_options` WHERE `user_id`=?", array(
+			$userid
+		));
 	}
 
 	public function hiddenOnNtNr($userid)
 	{
-		return $this->_getDb()->fetchOne("SELECT `macros_hide_ntnr` FROM `xf_liam_macros_options` WHERE `userid`='$userid'");
+		return $this->_getDb()->fetchOne("SELECT `macros_hide_ntnr` FROM `liam_macros_options` WHERE `user_id`=?", array(
+			$userid
+		));
 	}
 
 	public function hiddenOnConvoQr($userid)
 	{
-		return $this->_getDb()->fetchOne("SELECT `macros_hide_convo_qr` FROM `xf_liam_macros_options` WHERE `userid`='$userid'");
+		return $this->_getDb()->fetchOne("SELECT `macros_hide_convo_qr` FROM `liam_macros_options` WHERE `user_id`=?", array(
+			$userid
+		));
 	}
 
 	public function hiddenOnConvoNcNr($userid)
 	{
-		return $this->_getDb()->fetchOne("SELECT `macros_hide_convo_ncnr` FROM `xf_liam_macros_options` WHERE `userid`='$userid'");
+		return $this->_getDb()->fetchOne("SELECT `macros_hide_convo_ncnr` FROM `liam_macros_options` WHERE `user_id`=?", array(
+			$userid
+		));
 	}
 
 	/**
 	 * Gets the amount of macros associated with a user.
 	 *
-	 * @param int $userId
+	 * @param int $userid
 	 *        	User ID of user to check
 	 * @return int Number of macros that belong to the user id specified.
 	 */
-	public function numMacros($userId)
+	public function numMacros($userid)
 	{
-		return count($this->getMacrosForUser($userId));
+		return count($this->getMacrosForUser($userid));
 	}
 
 	private function r_in_array(array $needle, array $haystack)
@@ -217,16 +235,18 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 	{
 		$db = $this->_getDb();
 		
-		return $db->fetchRow("SELECT * FROM `xf_liam_macros_options` WHERE `userid`='$userid'");
+		return $db->fetchRow("SELECT * FROM `liam_macros_options` WHERE `user_id`=?", array(
+			$userid
+		));
 	}
 
 	/**
 	 * Formats arrays for use in drop down selector.
 	 *
-	 * @param array $a 	
-	 * @param array $b
-	 * @param array $_
-	 * 
+	 * @param array $a        	
+	 * @param array $b        	
+	 * @param array $_        	
+	 *
 	 * @return array
 	 */
 	public function prepareArrayForDropDown(array $a, array $b, array $_ = null)

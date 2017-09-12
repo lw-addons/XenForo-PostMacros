@@ -1,6 +1,6 @@
 <?php
 
-class LiamW_Macros_ViewPublic_Thread_View extends XFCP_LiamW_Macros_ViewPublic_Thread_View
+class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Extend_ViewPublic_Thread_View
 {
 
 	public function renderHtml()
@@ -22,16 +22,19 @@ class LiamW_Macros_ViewPublic_Thread_View extends XFCP_LiamW_Macros_ViewPublic_T
 		/* and admin ones... */
 		$adminmacros = $model->getAdminMacrosForUser($usermodel->getFullUserById($userid), true);
 		
+		$forum = @$this->_params['forum'];
+		$thread = @$this->_params['thread'];
+		
 		foreach ($usermacros as &$macro)
 		{
-			if (array_key_exists('thread', $this->_params) && array_key_exists('forum', $this->_params))
-				$macro['macro'] = $this->compileVariables($macro['macro'], $this->_params['thread'], $this->_params['forum']);
+			if ($thread && $forum)
+				$macro['macro'] = $this->compileVariables($macro['macro'], $thread, $forum);
 		}
 		
 		foreach ($adminmacros as &$macro)
 		{
-			if (array_key_exists('thread', $this->_params) && array_key_exists('forum', $this->_params))
-				$macro['content'] = $this->compileVariables($macro['content'], $this->_params['thread'], $this->_params['forum']);
+			if ($thread && $forum)
+				$macro['content'] = $this->compileVariables($macro['content'], $thread, $forum);
 		}
 		
 		$type = XenForo_Application::get('macro_type');
@@ -54,11 +57,19 @@ class LiamW_Macros_ViewPublic_Thread_View extends XFCP_LiamW_Macros_ViewPublic_T
 					$show = ! ($model->hiddenOnConvoNcNr($userid));
 			}
 			
-			$this->_params['canviewmacros'] = ($model->canViewMacros($visitor) && $show);
+			if (! $forum)
+			{
+				$forum = array();
+				$forum['allow_macros'] = true;
+			}
+			
+			$this->_params['canviewmacros'] = ($model->canViewMacros($visitor) && $show && $forum['allow_macros']);
 			XenForo_CodeEvent::fire('liammacros_macro_ready', array(
-				
 				&$this->_params['macros'],
-				&$this->_params['canviewmacros']
+				&$this->_params['canviewmacros'],
+				$thread,
+				$forum,
+				$type
 			));
 		}
 		
@@ -71,9 +82,15 @@ class LiamW_Macros_ViewPublic_Thread_View extends XFCP_LiamW_Macros_ViewPublic_T
 		$threadname = @$thread['title'];
 		$forumname = @$forum['title'];
 		
-		$macro = str_replace("{threaduser}", $threaduser, $macro);
-		$macro = str_replace("{threadname}", $threadname, $macro);
-		$macro = str_replace("{forumname}", $forumname, $macro);
+		$macro = str_replace(array(
+			"{threaduser}",
+			"{threadname}",
+			"{forumname}"
+		), array(
+			$threaduser,
+			$threadname,
+			$forumname
+		), $macro);
 		
 		return $macro;
 	}

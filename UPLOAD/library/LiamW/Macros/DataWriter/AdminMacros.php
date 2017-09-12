@@ -1,15 +1,15 @@
 <?php
 
-class LiamW_Macros_DataWriter_AdminDataWriter extends XenForo_DataWriter
+class LiamW_Macros_DataWriter_AdminMacros extends XenForo_DataWriter
 {
 
 	protected function _getFields()
 	{
 		return array(
 			
-			'xf_liam_macros_admin' => array(
+			'liam_macros_admin' => array(
 				
-				'macroid' => array(
+				'macro_id' => array(
 					
 					'type' => XenForo_Input::UINT,
 					'autoIncrement' => true
@@ -41,13 +41,13 @@ class LiamW_Macros_DataWriter_AdminDataWriter extends XenForo_DataWriter
 	{
 		return array(
 			
-			'xf_liam_macros_admin' => $this->_getMacrosModel()->getMacroFromId($data, true)
+			'liam_macros_admin' => $this->_getMacrosModel()->getMacroFromId($data, true)
 		);
 	}
 
 	protected function _getUpdateCondition($tableName)
 	{
-		return 'id = ' . $this->_db->quote($this->getExisting('id'));
+		return 'macro_id = ' . $this->_db->quote($this->getExisting('macro_id'));
 	}
 
 	/**

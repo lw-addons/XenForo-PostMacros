@@ -17,10 +17,10 @@ class LiamW_Macros_Route_Prefix_Macros implements XenForo_Route_Interface
 	 */
 	public function match($routePath, Zend_Controller_Request_Http $request, XenForo_Router $router)
 	{
-		$action = $router->resolveActionWithIntegerParam($routePath, $request, 'macroid');
+		$action = $router->resolveActionWithIntegerParam($routePath, $request, 'macro_id');
 		
 		// Set to the account tab, as that's where the link is...
-		return $router->getRouteMatch('LiamW_Macros_ControllerPublic_Controller', $action, 'account');
+		return $router->getRouteMatch('LiamW_Macros_ControllerPublic_Macros', $action, 'account');
 	}
 
 	/**
@@ -31,7 +31,7 @@ class LiamW_Macros_Route_Prefix_Macros implements XenForo_Route_Interface
 	 */
 	public function buildLink($originalPrefix, $outputPrefix, $action, $extension, $data, array &$extraParams)
 	{
-		return XenForo_Link::buildBasicLinkWithIntegerParam($outputPrefix, $action, $extension, $data, 'macroid', 'name');
+		return XenForo_Link::buildBasicLinkWithIntegerParam($outputPrefix, $action, $extension, $data, 'macro_id', 'name');
 	}
 
 }

@@ -10,9 +10,9 @@ class LiamW_Macros_DataWriter_MacrosOptions extends XenForo_DataWriter
 	{
 		return array(
 			
-			'xf_liam_macros_options' => array(
+			'liam_macros_options' => array(
 				
-				'userid' => array(
+				'user_id' => array(
 					
 					'type' => XenForo_DataWriter::TYPE_UINT,
 					'required' => true
@@ -48,7 +48,7 @@ class LiamW_Macros_DataWriter_MacrosOptions extends XenForo_DataWriter
 	{
 		$existing = array(
 			
-			'xf_liam_macros_options' => $this->_getModel()->getOptionsForUser(XenForo_Visitor::getUserId())
+			'liam_macros_options' => $this->_getModel()->getOptionsForUser(XenForo_Visitor::getUserId())
 		);
 		
 		return $existing;
@@ -59,7 +59,7 @@ class LiamW_Macros_DataWriter_MacrosOptions extends XenForo_DataWriter
 	 */
 	protected function _getUpdateCondition($tableName)
 	{
-		return "`userid`='{$this->_db->quote($this->getExisting('userid'))}'";
+		return 'user_id = ' . $this->_db->quote($this->getExisting('user_id'));
 	}
 
 	/**
@@ -71,4 +71,5 @@ class LiamW_Macros_DataWriter_MacrosOptions extends XenForo_DataWriter
 	{
 		return XenForo_Model::create('LiamW_Macros_Model_Macros');
 	}
+
 }
