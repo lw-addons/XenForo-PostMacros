@@ -44,6 +44,14 @@ class LiamW_Macros_DataWriter_Macros extends XenForo_DataWriter
 				'staff_macro' => array(
 					'type' => self::TYPE_BOOLEAN,
 					'default' => 0
+				),
+				'lock_thread' => array(
+					'type' => self::TYPE_BOOLEAN,
+					'default' => 0
+				),
+				'apply_prefix' => array(
+					'type' => self::TYPE_UINT,
+					'default' => 0
 				)
 			)
 		);

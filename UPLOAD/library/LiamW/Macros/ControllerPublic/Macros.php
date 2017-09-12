@@ -53,6 +53,25 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 			$user = $this->_getUserModel()->getUserById($macro['user_id']);
 
 			$macros[$key]['username'] = $user['username'];
+
+			if ($macro['apply_prefix'])
+			{
+				/** @var XenForo_Model_ThreadPrefix $prefixModel */
+				$prefixModel = XenForo_Model::create('XenForo_Model_ThreadPrefix');
+
+				$macros[$key]['prefix_title'] = new XenForo_Phrase($prefixModel->getPrefixTitlePhraseName($macro['apply_prefix']));
+			}
+		}
+
+		foreach ($adminMacros as $key => $macro)
+		{
+			if ($macro['apply_prefix'])
+			{
+				/** @var XenForo_Model_ThreadPrefix $prefixModel */
+				$prefixModel = XenForo_Model::create('XenForo_Model_ThreadPrefix');
+
+				$adminMacros[$key]['prefix_title'] = new XenForo_Phrase($prefixModel->getPrefixTitlePhraseName($macro['apply_prefix']));
+			}
 		}
 
 		$viewParams = array(
@@ -76,10 +95,12 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 		$input = $this->_input->filter(array(
 			'name' => XenForo_Input::STRING,
 			'thread_title' => XenForo_Input::STRING,
+			'lock_thread' => XenForo_Input::BOOLEAN,
+			'apply_prefix' => XenForo_Input::UINT
 		));
 
 		$input['content'] = $this->getHelper('Editor')->getMessageText('content', $this->_input);
-		$input['content'] = XenForo_Helper_String::autoLinkBbCode($input['content'], false);
+		$input['content'] = XenForo_Helper_String::autoLinkBbCode($input['content']);
 
 		$macroId = $this->_input->filterSingle('macro_id', XenForo_Input::UINT);
 
@@ -118,8 +139,13 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 
 		$addStaffMacro = $visitor->hasPermission('macro_permissions', 'can_create_staff_macros');
 
+		/** @var XenForo_Model_ThreadPrefix $prefixModel */
+		$prefixModel = XenForo_Model::create('XenForo_Model_ThreadPrefix');
+		$prefixes = $prefixModel->preparePrefixes($prefixModel->getAllPrefixes());
+
 		$viewParams = array(
-			'addStaffMacro' => $addStaffMacro
+			'addStaffMacro' => $addStaffMacro,
+			'prefixes' => $prefixes
 		);
 
 		return $this->responseView('LiamW_Macros_ViewPublic_Edit', 'macros_modify', $viewParams);
@@ -143,10 +169,15 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 		$addStaffMacro = $visitor->hasPermission('macro_permissions', 'can_create_staff_macros');
 		$disableStaffMacro = ($visitor->getUserId() == $macro['user_id']) ? 0 : 1;
 
+		/** @var XenForo_Model_ThreadPrefix $prefixModel */
+		$prefixModel = XenForo_Model::create('XenForo_Model_ThreadPrefix');
+		$prefixes = $prefixModel->preparePrefixes($prefixModel->getAllPrefixes());
+
 		$viewParams = array(
 			'macro' => $macro,
 			'disableStaffMacro' => $disableStaffMacro,
-			'addStaffMacro' => $addStaffMacro
+			'addStaffMacro' => $addStaffMacro,
+			'prefixes' => $prefixes
 		);
 
 		return $this->responseView('LiamW_Macros_ViewPublic_Edit', 'macros_modify', $viewParams);
@@ -180,6 +211,84 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 
 			return $this->responseRedirect(XenForo_ControllerResponse_Redirect::SUCCESS, $this->getDynamicRedirect());
 		}
+	}
+
+	public function actionPreview()
+	{
+		$this->_assertPostOnly();
+
+		$content = $this->getHelper('Editor')->getMessageText('content', $this->_input);
+		$content = XenForo_Helper_String::autoLinkBbCode($content);
+
+		$viewParams = array(
+			'content' => $content
+		);
+
+		return $this->responseView('LiamW_Macros_ViewPublic_Preview', 'macros_preview', $viewParams);
+	}
+
+	public function actionUse()
+	{
+		$data = $this->_input->filter(array(
+			'macro_id' => XenForo_Input::UINT,
+			'render' => XenForo_Input::BOOLEAN,
+			'type' => XenForo_Input::STRING,
+			'formAction' => XenForo_Input::STRING
+		));
+
+		$macro = $this->_getMacrosModel()->getMacroFromId($data['macro_id'], ($data['type'] == 'admin'));
+
+		if (!$macro)
+		{
+			return $this->responseError(new XenForo_Phrase('the_requested_macro_could_not_be_found'), 404);
+		}
+
+		switch ($data['type'])
+		{
+			case 'user':
+				if ($macro['user_id'] != XenForo_Visitor::getUserId() && !($macro['staff_macro'] && XenForo_Visitor::getInstance()
+							->hasPermission('macro_permissions', 'use_staff_macros'))
+				)
+				{
+					return $this->responseError(new XenForo_Phrase('macros_not_allowed_to_use_that_macro'), 403);
+				}
+				break;
+			case 'admin':
+				$validUserGroups = $macro['usergroups'];
+				$inUserGroups = explode(',', XenForo_Visitor::getInstance()->get('secondary_group_ids'));
+
+				// If the arrays are the same, none of the group id's are in the in user group array, so they can't use the macro.
+				if (array_diff($validUserGroups, $inUserGroups) === $validUserGroups)
+				{
+					return $this->responseError(new XenForo_Phrase('macros_not_allowed_to_use_that_macro'), 403);
+				}
+				break;
+		}
+
+		$parsedRoute = $this->parseRouteUrl(XenForo_Link::convertUriToAbsoluteUri($data['formAction'], true));
+
+		$thread = array();
+		$forum = array();
+
+		if (isset($parsedRoute['params']['thread_id']))
+		{
+			$thread = XenForo_Model::create('XenForo_Model_Thread')->getThreadById($parsedRoute['params']['thread_id']);
+			$forum = XenForo_Model::create('XenForo_Model_Forum')
+				->getForumByThreadId($parsedRoute['params']['thread_id']);
+		}
+		else if (isset($parsedRoute['params']['node_id']))
+		{
+			$forum = XenForo_Model::create('XenForo_Model_Forum')->getForumById($parsedRoute['params']['node_id']);
+		}
+
+		$viewParams = array(
+			'macro' => $macro,
+			'thread' => $thread,
+			'forum' => $forum,
+			'render' => $data['render']
+		);
+
+		return $this->responseView('LiamW_Macros_ViewPublic_Use', '', $viewParams);
 	}
 
 	protected function _assertCanViewMacros()

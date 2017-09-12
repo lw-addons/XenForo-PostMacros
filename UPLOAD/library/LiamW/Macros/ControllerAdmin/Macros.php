@@ -30,8 +30,13 @@ class LiamW_Macros_ControllerAdmin_Macros extends XenForo_ControllerAdmin_Abstra
 			);
 		}
 
+		/** @var XenForo_Model_ThreadPrefix $prefixModel */
+		$prefixModel = XenForo_Model::create('XenForo_Model_ThreadPrefix');
+		$prefixes = $prefixModel->preparePrefixes($prefixModel->getAllPrefixes());
+
 		$viewParams = array(
-			'usergroups' => $userGroupsDropDown
+			'usergroups' => $userGroupsDropDown,
+			'prefixes' => $prefixes
 		);
 
 		return $this->responseView('', 'liammacros_modify', $viewParams);
@@ -62,10 +67,15 @@ class LiamW_Macros_ControllerAdmin_Macros extends XenForo_ControllerAdmin_Abstra
 			);
 		}
 
+		/** @var XenForo_Model_ThreadPrefix $prefixModel */
+		$prefixModel = XenForo_Model::create('XenForo_Model_ThreadPrefix');
+		$prefixes = $prefixModel->preparePrefixes($prefixModel->getAllPrefixes());
+
 		$viewParams = array(
 			'macro' => $macro,
 			'usergroups' => $userGroupsDropDown,
-			'content' => $macro['content']
+			'content' => $macro['content'],
+			'prefixes' => $prefixes
 		);
 
 		return $this->responseView('', 'liammacros_modify', $viewParams);
@@ -76,7 +86,9 @@ class LiamW_Macros_ControllerAdmin_Macros extends XenForo_ControllerAdmin_Abstra
 		$content = $this->_input->filter(array(
 			'name' => XenForo_Input::STRING,
 			'content' => XenForo_Input::STRING,
-			'thread_title' => XenForo_Input::STRING
+			'thread_title' => XenForo_Input::STRING,
+			'lock_thread' => XenForo_Input::BOOLEAN,
+			'apply_prefix' => XenForo_Input::UINT
 		));
 
 		$dw = XenForo_DataWriter::create('LiamW_Macros_DataWriter_AdminMacros');
@@ -105,12 +117,26 @@ class LiamW_Macros_ControllerAdmin_Macros extends XenForo_ControllerAdmin_Abstra
 	{
 		$macroId = $this->_input->filterSingle('macro_id', XenForo_Input::UINT);
 
-		$dw = XenForo_DataWriter::create('LiamW_Macros_DataWriter_AdminMacros');
-		$dw->setExistingData($macroId, true);
-		$dw->delete();
+		if ($this->isConfirmedPost())
+		{
 
-		return $this->responseRedirect(XenForo_ControllerResponse_Redirect::SUCCESS,
-			XenForo_Link::buildAdminLink('macros'));
+			$dw = XenForo_DataWriter::create('LiamW_Macros_DataWriter_AdminMacros');
+			$dw->setExistingData($macroId, true);
+			$dw->delete();
+
+			return $this->responseRedirect(XenForo_ControllerResponse_Redirect::SUCCESS,
+				XenForo_Link::buildAdminLink('macros'));
+		}
+		else
+		{
+			$macro = $this->_getModel()->getMacroFromId($macroId, true);
+
+			$viewParams = array(
+				'macro' => $macro
+			);
+
+			return $this->responseView('', 'macros_delete_confirm', $viewParams);
+		}
 	}
 
 	/**

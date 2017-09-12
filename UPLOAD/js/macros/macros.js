@@ -4,58 +4,138 @@
  */
 !function ($, window, document, _undefined)
 {
-	$('document')
-		.ready(
-		function ()
+	XenForo.Macros = function ($macros)
+	{
+		this.__construct($macros);
+	};
+	XenForo.Macros.prototype =
+	{
+		__construct: function ($macros)
 		{
-			$("#macroSelect")
-				.change(
-				function (e)
+			this.$macros = $macros;
+			this.$macros.bind('change', $.context(this, 'macroSelected'));
+
+			this.updateVars();
+
+			this.titleField = $('#ctrl_title_thread_create');
+			this.noForm = false;
+		},
+
+		updateVars: function ()
+		{
+			$forms = $('form');
+
+			var thisClass = this;
+
+			jQuery.each($forms, function (index, form)
+			{
+				$editor = XenForo.getEditorInForm(form);
+				if ($editor)
 				{
-					var selectedOption = $(
-						'#macroSelect option:selected');
+					thisClass.$editor = $editor;
+					thisClass.$form = form;
+					return false;
+				}
+			});
 
-					var htmlContent = selectedOption.attr('data-content-parsed');
-					var plainContent = selectedOption.attr('data-content');
-					var titleText = selectedOption
-						.attr('data-title');
+			delete(thisClass);
 
-					var editor = XenForo
-						.getEditorInForm($('#ThreadCreate'));
-					if (!editor)
-					{
-						editor = XenForo
-							.getEditorInForm($('#QuickReply'));
-					}
-					if (!editor)
-					{
-						editor = XenForo
-							.getEditorInForm($('#main_form'));
-					}
-					if (typeof (editor.val) == "undefined"
-						&& plainContent != '-')
-					{
+			if (!this.$editor)
+			{
+				console.warn("Unable to find form to insert array into!");
+				this.noForm = true;
+			}
+
+			//console.log(this.$editor);
+
+			this.type = typeof (this.$editor.val) == "undefined" ? 'html' : 'plain';
+		},
+
+		macroSelected: function ()
+		{
+			if (this.noForm)
+			{
+				return;
+			}
+
+			var macroId = this.$macros.val();
+
+			if (macroId == 0)
+			{
+				return;
+			}
+
+			this.updateVars();
+
+			XenForo.ajax("macros/use", {
+				'macro_id': macroId,
+				'render': this.type == 'html' ? 1 : 0,
+				'type': this.$macros.find(':selected').data('type'),
+				'formAction': this.$macros.closest('form').attr('action')
+			}, $.context(this, 'successCallback'), {'type': 'GET'});
+		},
+
+		successCallback: function (ajaxData, textStatus)
+		{
+			if (this.noForm)
+			{
+				return;
+			}
+
+			if (ajaxData.templateHtml)
+			{
+				this.$macros.val(0);
+				XenForo.createOverlay(null, ajaxData.templateHtml, {'title': XenForo.phrases['error']}).xfShow();
+				return;
+			}
+
+			if (ajaxData.macroContent)
+			{
+				switch (this.type)
+				{
+					case "html":
 						try
 						{
-							editor
-								.insertHtml(htmlContent);
+							this.$editor
+								.insertHtml(ajaxData.macroContent.toString());
 						} catch (TypeError)
 						{
 							// TinyMce Support
-							editor.execCommand('mceInsertContent', false, htmlContent);
+							this.editor.execCommand('mceInsertContent', false, ajaxData.macroContent.toString());
 						}
-						$('#ctrl_title_thread_create').val(titleText);
-					} else if (plainContent != '-')
-					{
-						editor
-							.val(editor.val()
-							+ plainContent
+						break;
+					case "plain":
+						this.$editor
+							.val(this.$editor.val()
+							+ ajaxData.macroContent.toString()
 								.replace(
 								/<br \/>/g,
 								''));
-						$('#ctrl_title_thread_create').val(titleText);
-					}
-					$('#macroSelect').val(0);
-				});
-		});
-}(jQuery, this, document);
+						break;
+				}
+			}
+
+			if (ajaxData.threadTitle && this.titleField)
+			{
+				this.titleField.val(ajaxData.threadTitle);
+			}
+
+			if (ajaxData.lockThread)
+			{
+				$('<input type="hidden" name="_set[discussion_open]" value="1" />').appendTo(this.$form);
+				$('<input type="hidden" name="discussion_open" value="0" />').appendTo(this.$form);
+			}
+
+			if (ajaxData.applyPrefix)
+			{
+				$('<input type="hidden" name="apply_prefix" value="' + ajaxData.applyPrefix + '" />').appendTo(this.$form);
+
+			}
+
+			this.$macros.val(0);
+		}
+	}
+
+	XenForo.register('#MacroSelect', 'XenForo.Macros');
+}
+(jQuery, this, document);

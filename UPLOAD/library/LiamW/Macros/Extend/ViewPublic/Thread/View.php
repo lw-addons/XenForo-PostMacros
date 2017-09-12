@@ -14,62 +14,21 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 			$visitor->hasPermission('macro_permissions', 'use_staff_macros'));
 		$adminMacros = $macrosModel->getAdminMacrosForUser($visitor->toArray(), true);
 
-		$forum = $this->_params['forum'];
-		$thread = $this->_params['thread'];
-
-		foreach ($userMacros as $key => $macro)
-		{
-			if ($thread && $forum)
-			{
-				$userMacros[$key]['content'] = $this->compileVariables($macro['content'], $thread, $forum);
-			}
-		}
-
-		foreach ($adminMacros as $key => $macro)
-		{
-			if ($thread && $forum)
-			{
-				$adminMacros[$key]['content'] = $this->compileVariables($macro['content'], $thread, $forum);
-			}
-		}
-
 		if ($userId)
 		{
-			$this->_params['macros'] = $macrosModel->prepareArrayForDropDown($this, $userMacros, $adminMacros);
+			list($userMacros, $adminMacros) = $macrosModel->prepareArrayForDropDown($this, $userMacros, $adminMacros);
+			$this->_params['userMacros'] = $userMacros;
+			$this->_params['adminMacros'] = $adminMacros;
 
 			$show = !$macrosModel->hiddenOnThreadQuickReply($userId);
 
-			$this->_params['canViewMacros'] = ($macrosModel->canViewMacros($visitor) && $show && $forum['allow_macros']);
-			XenForo_CodeEvent::fire('liam_macros_ready', array(
-				&$this->_params['macros'],
-				&$this->_params['canViewMacros'],
-				$thread,
-				$forum
-			));
+			$this->_params['canViewMacros'] = ($macrosModel->canViewMacros($visitor) && $show && $this->_params['forum']['allow_macros']);
 		}
+
+		$this->_params['debug'] = XenForo_Application::debugMode();
 
 		parent::renderHtml();
 	}
-
-	private function compileVariables($macro, array $thread, array $forum)
-	{
-		$threadUser = $thread['username'];
-		$threadName = $thread['title'];
-		$forumName = $forum['title'];
-
-		$macro = str_replace(array(
-			"{threaduser}",
-			"{threadname}",
-			"{forumname}"
-		), array(
-			$threadUser,
-			$threadName,
-			$forumName
-		), $macro);
-
-		return $macro;
-	}
-
 }
 
 if (false)

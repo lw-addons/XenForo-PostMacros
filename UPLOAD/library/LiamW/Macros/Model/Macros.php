@@ -225,61 +225,24 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 
 	/**
 	 * @param XenForo_View $view
-	 * @param array        $a
-	 * @param array        $b
-	 * @param array        $_
+	 * @param array        $userMacros
+	 * @param array        $adminMacros
 	 *
 	 * @return array
 	 */
-	public function prepareArrayForDropDown(XenForo_View $view, array $a, array $b, array $_ = null)
+	public function prepareArrayForDropDown(XenForo_View $view, array $userMacros, array $adminMacros)
 	{
-		$macros = array();
-
-		foreach (func_get_args() as $param)
-		{
-			if (!is_array($param))
-			{
-				continue;
-			}
-
-			$macros = array_merge($macros, $param);
-		}
-
-		$options = array(
-			'bbCode' => array(
-				'bbCodes' => array(),
-			),
-			'view' => $view
-		);
-
-		$bbCodeParser = new XenForo_BbCode_Parser(XenForo_BbCode_Formatter_Base::create('Base', $options));
-
-		foreach ($macros as $key => $macro)
-		{
-			if (!(count($macro) > 1))
-			{
-				continue;
-			}
-
-			$macros[$key]['content_parsed'] = new XenForo_BbCode_TextWrapper($macro['content'], $bbCodeParser);
-		}
+		$tmp = array();
+		foreach ($userMacros as &$ma)
+			$tmp[] = &$ma["name"];
+		array_multisort($tmp, $userMacros);
 
 		$tmp = array();
-		foreach ($macros as &$ma)
+		foreach ($adminMacros as &$ma)
 			$tmp[] = &$ma["name"];
-		array_multisort($tmp, $macros);
+		array_multisort($tmp, $adminMacros);
 
-		$start = array(
-			'macro_id' => 0,
-			'name' => new XenForo_Phrase("postmacros_master_name"),
-			'thread_title' => '-',
-			'content_parsed' => '-',
-			'content' => '-'
-		);
-
-		array_unshift($macros, $start);
-
-		return $macros;
+		return array($userMacros, $adminMacros);
 	}
 
 }

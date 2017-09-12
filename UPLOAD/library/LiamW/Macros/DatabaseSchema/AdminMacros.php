@@ -16,7 +16,11 @@ class LiamW_Macros_DatabaseSchema_AdminMacros extends LiamW_Shared_DatabaseSchem
 				thread_title VARCHAR(50) NOT NULL,
 				usergroups TEXT NOT NULL,
 				PRIMARY KEY (macro_id)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+			30608 => array(
+				"ALTER TABLE liam_macros_admin ADD lock_thread TINYINT(1) UNSIGNED NOT NULL DEFAULT 0",
+				"ALTER TABLE liam_macros_admin ADD apply_prefix INT(10) UNSIGNED NOT NULL DEFAULT 0"
+			)
 		);
 	}
 

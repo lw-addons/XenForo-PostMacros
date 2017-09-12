@@ -122,5 +122,10 @@ class LiamW_Macros_Addon
 	{
 		$extend[] = 'LiamW_Macros_Extend_DataWriter_User';
 	}
+
+	public static function extendThreadController($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_ControllerPublic_Thread';
+	}
 }
 

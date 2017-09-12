@@ -28,6 +28,14 @@ class LiamW_Macros_DataWriter_AdminMacros extends XenForo_DataWriter
 				'usergroups' => array(
 					'type' => XenForo_Input::STRING,
 					'required' => true
+				),
+				'lock_thread' => array(
+					'type' => self::TYPE_BOOLEAN,
+					'default' => 0
+				),
+				'apply_prefix' => array(
+					'type' => self::TYPE_UINT,
+					'default' => 0
 				)
 			)
 		);

@@ -16,18 +16,16 @@ class LiamW_Macros_Extend_ViewPublic_Conversation_View extends XFCP_LiamW_Macros
 
 		if ($userId)
 		{
-			$this->_params['macros'] = $macrosModel->prepareArrayForDropDown($this, $userMacros, $adminMacros);
+			list($userMacros, $adminMacros) = $macrosModel->prepareArrayForDropDown($this, $userMacros, $adminMacros);
+			$this->_params['userMacros'] = $userMacros;
+			$this->_params['adminMacros'] = $adminMacros;
 
 			$show = !$macrosModel->hiddenOnConversationQuickReply($userId);
 
 			$this->_params['canViewMacros'] = ($macrosModel->canViewMacros($visitor) && $show);
-			XenForo_CodeEvent::fire('liam_macros_ready', array(
-				&$this->_params['macros'],
-				&$this->_params['canViewMacros'],
-				null,
-				null
-			));
 		}
+
+		$this->_params['debug'] = XenForo_Application::debugMode();
 
 		parent::renderHtml();
 	}

@@ -22,6 +22,10 @@ class LiamW_Macros_DatabaseSchema_Macros extends LiamW_Shared_DatabaseSchema_Abs
 			),
 			30603 => array(
 				"ALTER TABLE liam_macros CHANGE macro content TEXT NOT NULL"
+			),
+			30608 => array(
+				"ALTER TABLE liam_macros ADD lock_thread TINYINT(1) UNSIGNED NOT NULL DEFAULT 0",
+				"ALTER TABLE liam_macros ADD apply_prefix INT(10) UNSIGNED NOT NULL DEFAULT 0"
 			)
 		);
 	}
