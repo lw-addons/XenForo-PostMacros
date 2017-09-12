@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.2.1" version_id="4020170" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.3.0" version_id="4030070" url="https://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
   <admin_navigation>
     <navigation navigation_id="liam_postMacros" parent_navigation_id="liam_postMacros_main" display_order="1" link="post-macros/admin" admin_permission_id="lw_manageAdminMacros" debug_only="0" hide_no_children="0"/>
     <navigation navigation_id="liam_postMacros_main" parent_navigation_id="applications" display_order="16" link="" admin_permission_id="lw_manageAdminMacros" debug_only="0" hide_no_children="1"/>
@@ -32,8 +32,11 @@
 	<input type="hidden" name="importer" value="{$importer}" />
 </xen:form>]]></template>
     <template title="liam_postMacros_option_selectormode"><![CDATA[<xen:radiounit label="{$preparedOption.title}" name="{$fieldPrefix}[{$preparedOption.option_id}]" value="{$preparedOption.option_value}" hint="{$preparedOption.hint}">
-	<xen:option value="classic">{xen:phrase liam_postMacros_classic}</xen:option>
-	<xen:option value="new" unselectable="{xen:if '{$extra.canUseNew} == false', 1}" hint="{xen:if '{$extra.canUseNew} == false', {xen:phrase liam_postMacros_new_disabled_hint}}">{xen:phrase new}</xen:option>
+	<xen:option value="classic" hint="{xen:phrase liam_postMacros_classic_explain}">{xen:phrase liam_postMacros_classic}</xen:option>
+	<xen:option value="insert-modal" unselectable="{xen:if '{$extra.canUseNew} == false', 1}" hint="{xen:if '{$extra.canUseNew}', {xen:phrase liam_postMacros_insert_modal_explain}, {xen:phrase liam_postMacros_new_disabled_hint}}">{xen:phrase liam_postMacros_editor_insert_modal}</xen:option>
+	<xen:option value="modal" unselectable="{xen:if '{$extra.canUseNew} == false', 1}" hint="{xen:if '{$extra.canUseNew}', {xen:phrase liam_postMacros_modal_explain}, {xen:phrase liam_postMacros_new_disabled_hint}}">{xen:phrase liam_postMacros_editor_modal}</xen:option>
+	<xen:option value="embedded" unselectable="{xen:if '{$extra.canUseNew} == false', 1}" hint="{xen:if '{$extra.canUseNew}', {xen:phrase liam_postMacros_embedded_explain}, {xen:phrase liam_postMacros_new_disabled_hint}}">{xen:phrase liam_postMacros_editor_embedded}</xen:option>
+	
 	<xen:explain>{xen:raw $preparedOption.explain}</xen:explain>
 	<xen:html>
 		<input type="hidden" name="{$listedFieldName}" value="{$preparedOption.option_id}" />
@@ -300,7 +303,7 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
       <relation group_id="liam_postMacros" display_order="300"/>
     </option>
     <option option_id="liam_postMacros_selector_mode" edit_format="callback" data_type="string" can_backup="1" validation_class="LiamW_PostMacros_Option_SelectorMode" validation_method="verifyOption">
-      <default_value>classic</default_value>
+      <default_value>embedded</default_value>
       <edit_format_params>LiamW_PostMacros_Option_SelectorMode::renderOption</edit_format_params>
       <sub_options></sub_options>
       <relation group_id="liam_postMacros" display_order="1"/>
@@ -343,6 +346,7 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
     <phrase title="liam_postMacros_authorized_usergroups" version_id="40000" version_string="4.0.0"><![CDATA[Authorized Usergroups]]></phrase>
     <phrase title="liam_postMacros_choose_prefix" version_id="40000" version_string="4.0.0"><![CDATA[Choose prefix]]></phrase>
     <phrase title="liam_postMacros_classic" version_id="4010170" version_string="4.1.1"><![CDATA[Classic]]></phrase>
+    <phrase title="liam_postMacros_classic_explain" version_id="4020170" version_string="4.2.1"><![CDATA[This is the classic mode, that displays the macro selector above the editor. This is the only mode that supports the plain text editor, as well as the per-user view preferences.]]></phrase>
     <phrase title="liam_postMacros_confirm_deletion_of_admin_macro" version_id="40000" version_string="4.0.0"><![CDATA[Confirm deletion of admin macro]]></phrase>
     <phrase title="liam_postMacros_confirm_deletion_of_macro" version_id="40000" version_string="4.0.0"><![CDATA[Confirm deletion of macro]]></phrase>
     <phrase title="liam_postMacros_confirm_deletion_of_user_macro" version_id="400130" version_string="4.0.13"><![CDATA[Confirm deletion of user macro]]></phrase>
@@ -356,7 +360,11 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
     <phrase title="liam_postMacros_display_order" version_id="400070" version_string="4.0.7"><![CDATA[Display Order]]></phrase>
     <phrase title="liam_postMacros_display_order_explain" version_id="400070" version_string="4.0.7"><![CDATA[This is the display order for this macro. Macros will appear in the selector in ascending display order. <b>This is only designed for the macro creator, it will not work for staff macros.</b>]]></phrase>
     <phrase title="liam_postMacros_edit" version_id="40000" version_string="4.0.0"><![CDATA[Edit]]></phrase>
+    <phrase title="liam_postMacros_editor_embedded" version_id="4020170" version_string="4.2.1"><![CDATA[Embedded]]></phrase>
+    <phrase title="liam_postMacros_editor_insert_modal" version_id="4020170" version_string="4.2.1"><![CDATA[Modal Dialog, Insert Drop Down]]></phrase>
+    <phrase title="liam_postMacros_editor_modal" version_id="4020170" version_string="4.2.1"><![CDATA[Modal Dialog]]></phrase>
     <phrase title="liam_postMacros_edit_macro" version_id="40000" version_string="4.0.0"><![CDATA[Edit Macro]]></phrase>
+    <phrase title="liam_postMacros_embedded_explain" version_id="4020170" version_string="4.2.1"><![CDATA[This is the most 'integrated' mode. The editor toolbar button, when clicked, shows the list of macros and allows one to be selected straight from the editor.]]></phrase>
     <phrase title="liam_postMacros_enable" version_id="40000" version_string="4.0.0"><![CDATA[Enable post macros]]></phrase>
     <phrase title="liam_postMacros_enable_explain" version_id="40000" version_string="4.0.0"><![CDATA[If this is unchecked, users' will be unable to use macros in this forum.]]></phrase>
     <phrase title="liam_postMacros_hide_conversation_quick_reply" version_id="40000" version_string="4.0.0"><![CDATA[when viewing a conversation (quick reply)]]></phrase>
@@ -367,12 +375,14 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
     <phrase title="liam_postMacros_hide_thread_quick_reply" version_id="40000" version_string="4.0.0"><![CDATA[when viewing a thread (quick reply)]]></phrase>
     <phrase title="liam_postMacros_import_config_explain" version_id="40000" version_string="4.0.0"><![CDATA[This is the database you're importing from. These values have been taken from your config.php file and are read only.]]></phrase>
     <phrase title="liam_postMacros_insert_macro" version_id="4010170" version_string="4.1.1"><![CDATA[Insert Macro]]></phrase>
+    <phrase title="liam_postMacros_insert_modal_explain" version_id="4020170" version_string="4.2.1"><![CDATA[This method will create a link in the insert drop down button on the editor. It will display the insert macro drop down in an overlay when clicked.]]></phrase>
     <phrase title="liam_postMacros_lock_thread" version_id="40000" version_string="4.0.0"><![CDATA[Lock Thread]]></phrase>
     <phrase title="liam_postMacros_macro" version_id="4010170" version_string="4.1.1"><![CDATA[Macro]]></phrase>
     <phrase title="liam_postMacros_macros_description" version_id="40000" version_string="4.0.0"><![CDATA[These are macros created by you or others members.]]></phrase>
     <phrase title="liam_postMacros_managing_macros" version_id="400070" version_string="4.0.7"><![CDATA[Managing macros]]></phrase>
     <phrase title="liam_postMacros_master_name" version_id="40000" version_string="4.0.0"><![CDATA[Choose a macro...]]></phrase>
-    <phrase title="liam_postMacros_new_disabled_hint" version_id="4020070" version_string="4.2.0"><![CDATA[<span style="color: red;">Your XenForo setup is not compatible with the new method. The new method requires XenForo 1.3.0+ and that the default redactor editor is used.</span>]]></phrase>
+    <phrase title="liam_postMacros_modal_explain" version_id="4020170" version_string="4.2.1"><![CDATA[This mode displays a button on the main editor panel that, when clicked, will show the main macro select in an overlay.]]></phrase>
+    <phrase title="liam_postMacros_new_disabled_hint" version_id="4020170" version_string="4.2.1"><![CDATA[<span style="color: red;">Your XenForo setup is not compatible with this method. This method requires XenForo 1.3.0+ and that the default redactor editor be used.</span>]]></phrase>
     <phrase title="liam_postMacros_new_macro" version_id="40000" version_string="4.0.0"><![CDATA[Create New Macro]]></phrase>
     <phrase title="liam_postMacros_no_admin_macros" version_id="40000" version_string="4.0.0"><![CDATA[There are no admin macros!]]></phrase>
     <phrase title="liam_postMacros_no_user_macros" version_id="400130" version_string="4.0.13"><![CDATA[There are no user macros.]]></phrase>
@@ -407,7 +417,7 @@ opt_out={xen:phrase liam_postMacros_opt_out}</edit_format_params>
     <phrase title="liam_postMacros_you_have_no_macros" version_id="40000" version_string="4.0.0"><![CDATA[There are no macros you can view!]]></phrase>
     <phrase title="liam_postMacros_you_may_use_bbcode" version_id="40000" version_string="4.0.0"><![CDATA[You may use BBCode.]]></phrase>
     <phrase title="option_group_liam_postMacros" version_id="40005" version_string="4.0.5"><![CDATA[Post Macros]]></phrase>
-    <phrase title="option_group_liam_postMacros_description" version_id="40005" version_string="4.0.5"><![CDATA[]]></phrase>
+    <phrase title="option_group_liam_postMacros_description" version_id="4020170" version_string="4.2.1"><![CDATA[Options relating to the Post Macros add-on.]]></phrase>
     <phrase title="option_liam_postMacros_excluded_views" version_id="400110" version_string="4.0.11"><![CDATA[Opt In/Out Views]]></phrase>
     <phrase title="option_liam_postMacros_excluded_views_explain" version_id="400110" version_string="4.0.11"><![CDATA[Enter a list of view classes that apply to the system selected above.]]></phrase>
     <phrase title="option_liam_postMacros_mode" version_id="400110" version_string="4.0.11"><![CDATA[Macros Mode]]></phrase>
@@ -428,11 +438,7 @@ Opt Out: Show select everywhere, choose where not to display.<br />
     <phrase title="option_liam_postMacros_perPage" version_id="400130" version_string="4.0.13"><![CDATA[Macros Per Page]]></phrase>
     <phrase title="option_liam_postMacros_perPage_explain" version_id="400130" version_string="4.0.13"><![CDATA[Number of macros to show per page. Only used in Admin Panel currently.]]></phrase>
     <phrase title="option_liam_postMacros_selector_mode" version_id="4010170" version_string="4.1.1"><![CDATA[Selector Mode]]></phrase>
-    <phrase title="option_liam_postMacros_selector_mode_explain" version_id="4010170" version_string="4.1.1"><![CDATA[<p class="explain">There are two ways to insert macros. The 'classic' way is via a drop down select box prepended to the top of the editor template, that appears for all editors (depending on the options), with a smaller box for the quick reply editor.</p>
-
-<p class="explain">The new way is integrated directly into the editor, via a button in the 'Insert' drop down list. Clicking 'Insert'->'Macro' will bring up an overlay, with the macros drop down, allowing a macro to be inserted.</p>
-
-<p class="explain">The new way saves space, and makes the add-on seem more tightly integrated, however, because it's directly linked into the editor, the display options are disabled and the macro inserter is displayed in <i>all</i> editors (except when disabled by the author of the add-on the editor belongs to). All other things work, including thread title setting.</p>]]></phrase>
+    <phrase title="option_liam_postMacros_selector_mode_explain" version_id="4020170" version_string="4.2.1"><![CDATA[]]></phrase>
     <phrase title="option_postMacros_collapsable" version_id="400110" version_string="4.0.11"><![CDATA[Collapsable macros]]></phrase>
     <phrase title="option_postMacros_collapsable_explain" version_id="400110" version_string="4.0.11"><![CDATA[If enabled, macros on the macro page will be collapsed. The actual content will be fetched via AJAX when the Expand link is clicked.]]></phrase>
     <phrase title="permission_group_liam_postMacros" version_id="40000" version_string="4.0.0"><![CDATA[Post Macros]]></phrase>
@@ -786,7 +792,7 @@ $0]]></replace>
     </modification>
     <modification template="editor_js_setup" modification_key="liam_postMacros_editor_js_setup" description="" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<xen:require js="js/xenforo/bb_code_edit.js" />]]></find>
-      <replace><![CDATA[<xen:if is="{$editorOptions.canUseMacros} && {$xenOptions.liam_postMacros_selector_mode} == 'new'">
+      <replace><![CDATA[<xen:if is="{$editorOptions.canUseMacros} && {$xenOptions.liam_postMacros_selector_mode} != 'classic'">
 	 <xen:if is="{$debugMode}">
 	 	 <xen:require js="js/postmacros/macros_editor.js" />
 	 <xen:else />
@@ -807,10 +813,14 @@ liam_postMacros_insert_macro: "{xen:jsescape {xen:phrase liam_postMacros_insert_
 			background-position: {xen:if $pageIsRtl, '97%', '3%'} -{xen:calc '{$redactorButtons.redactor_btn_code} * 32 - 3'}px;
 		}]]></find>
       <replace><![CDATA[$0
-.redactor_dropdown a.insertMacro
-		{
-			background-position: {xen:if $pageIsRtl, '97%', '3%'} -892px;
-		}]]></replace>
+
+html .redactor_toolbar li a.redactor_btn_macros_button {
+	background: url('{xen:property imagePath}/postmacros/fa-clone.png') no-repeat 3px;
+}
+
+.redactor_dropdown a.insertMacro {
+	background: url('{xen:property imagePath}/postmacros/fa-clone.png') no-repeat 8px;
+}]]></replace>
     </modification>
     <modification template="footer" modification_key="liam_postMacros_footer" description="Branding. If you have a branding removal license for this license, you may disable this." execution_order="10" enabled="1" action="callback">
       <find><![CDATA[#{xen:phrase extra_copyright}#]]></find>

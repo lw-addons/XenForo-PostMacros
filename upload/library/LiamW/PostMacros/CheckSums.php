@@ -32,14 +32,14 @@ class LiamW_PostMacros_CheckSums
 			'library/LiamW/PostMacros/Extend/DataWriter/User.php' => '40fbd8e6e79cd4cc4c28008d90803438',
 			'library/LiamW/PostMacros/Extend/ViewPublic/Editor/Dialog.php' => '172f93900879f119ef42effbe5b7f35e',
 			'library/LiamW/PostMacros/Importer/Macros.php' => 'e404b78b9d46f2729772901f33dc699b',
-			'library/LiamW/PostMacros/Installer.php' => '7e396ca2c073e50e38484d9fdc5fc8b5',
-			'library/LiamW/PostMacros/Listener.php' => '3f64d25c826974552e55491df05c538b',
+			'library/LiamW/PostMacros/Installer.php' => 'ed432ae133ba424542069123c452d1ab',
+			'library/LiamW/PostMacros/Listener.php' => '630b4a551017c11b82e3c4d29eb58acb',
 			'library/LiamW/PostMacros/Model/Import.php' => '368c0dcdce246ef8b84c72b9adf3dabd',
 			'library/LiamW/PostMacros/Model/Macros.php' => '2b5980336487d3a6bfd6b9d5a103a09e',
 			'library/LiamW/PostMacros/Option/SelectorMode.php' => 'eca81fae39fe40043a5a8b8cdc8b98ed',
 			'library/LiamW/PostMacros/Route/Prefix/PostMacros.php' => '3f32c218109df16db5aef192c7680199',
 			'library/LiamW/PostMacros/Route/PrefixAdmin/PostMacros.php' => '271d14a8afd30a75eeea57cd4b4666d8',
-			'library/LiamW/PostMacros/TemplateModification.php' => '57dda03f5c7ef4e84620cd5cd9ec7351',
+			'library/LiamW/PostMacros/TemplateModification.php' => 'bf15d922ee94c1a1f18d5af768754cd6',
 			'library/LiamW/PostMacros/ViewPublic/Create.php' => '7facc7ddbfbaea42d77293934751e1b0',
 			'library/LiamW/PostMacros/ViewPublic/Edit.php' => '8a51547e2b19d902bca8933303f68b12',
 			'library/LiamW/PostMacros/ViewPublic/Expand.php' => '2cb8b10eaa8c02a03505c61723b960fa',
@@ -48,8 +48,8 @@ class LiamW_PostMacros_CheckSums
 			'library/LiamW/PostMacros/ViewPublic/Use.php' => '3e0f5211df8703426b2de9063b3448d3',
 			'js/postmacros/macros.js' => '4515cced099f8c7dc4f1a2f901957dcb',
 			'js/postmacros/macros.min.js' => '7015aaed42aea1d28d4463f7e180b0fd',
-			'js/postmacros/macros_editor.js' => '9042b6988deb828a10530ebfeb3205e2',
-			'js/postmacros/macros_editor.min.js' => 'd44340548a0c5d0d0cf033a0eac91301',
+			'js/postmacros/macros_editor.js' => '09049d6372a9e46a8d1fb868e2d61be1',
+			'js/postmacros/macros_editor.min.js' => '1aa9c625221c5505e8dbe3eb3446664d',
 		);
 	}
 }

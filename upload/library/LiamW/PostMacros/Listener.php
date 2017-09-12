@@ -67,7 +67,7 @@ class LiamW_PostMacros_Listener
 		/** @var LiamW_PostMacros_Model_Macros $macrosModel */
 		$macrosModel = XenForo_Model::create('LiamW_PostMacros_Model_Macros');
 
-		$editorOptions['macros'] = $macrosModel->getMacrosForSelect();
+		$editorOptions['json']['macros'] = $editorOptions['macros'] = $macrosModel->getMacrosForSelect();
 		$editorOptions['canUseMacros'] = XenForo_Visitor::getInstance()
 			->hasPermission('liam_postMacros', 'liamMacros_canUseMacros');
 		$editorOptions['showMacrosSelect'] = $macrosModel->showMacrosSelect($view) && (count($editorOptions['macros']['user']) || count($editorOptions['macros']['admin']));
@@ -80,6 +80,8 @@ class LiamW_PostMacros_Listener
 				'editorId' => 'ctrl_' . $formCtrlName
 			));
 		}
+
+		$editorOptions['json']['macrosMode'] = XenForo_Application::getOptions()->liam_postMacros_selector_mode;
 	}
 
 	public static function containerParams(array &$params, XenForo_Dependencies_Abstract $dependencies)

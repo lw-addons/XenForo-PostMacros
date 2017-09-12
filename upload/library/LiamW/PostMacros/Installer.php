@@ -108,6 +108,11 @@ class LiamW_PostMacros_Installer
 			{
 				self::_runQuery("ALTER TABLE liam_post_macros_admin ADD display_order INT(10) UNSIGNED NOT NULL DEFAULT 1");
 			}
+
+			if ($installedVersion <= 4030070)
+			{
+				self::_runQuery("UPDATE xf_option SET option_value='insert-modal' WHERE option_id='liam_postMacros_selector_mode' AND option_value='new'");
+			}
 		}
 	}
 
