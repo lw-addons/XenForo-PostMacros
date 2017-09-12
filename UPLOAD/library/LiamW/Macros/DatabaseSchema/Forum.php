@@ -12,7 +12,7 @@ class LiamW_Macros_DatabaseSchema_Forum extends LiamW_Shared_DatabaseSchema_Abst
 				"ALTER TABLE  `xf_forum` ADD  `allow_macros` BOOLEAN NOT NULL COMMENT  'Post Macros' AFTER  `find_new`",
 				"UPDATE `xf_forum` SET `allow_macros`='1'"
 			),
-			30601 => array(
+			30600 => array(
 				"ALTER TABLE  `xf_forum` ADD  `allow_macros` BOOLEAN NOT NULL COMMENT  'Post Macros' AFTER  `find_new`",
 				"UPDATE `xf_forum` SET `allow_macros`='1'"
 			)

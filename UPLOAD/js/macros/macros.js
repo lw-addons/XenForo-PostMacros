@@ -30,7 +30,8 @@
 											if (typeof (editor.val) == "undefined"
 													&& macrotext != '-') {
 
-												editor.insertHtml(macrotext);
+												editor
+														.insertHtml(macrotexthtml);
 
 												var titleText = $(
 														'#macroSelect option:selected')
