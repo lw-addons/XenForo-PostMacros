@@ -36,6 +36,7 @@ class LiamW_PostMacros_CheckSums
 			'library/LiamW/PostMacros/Listener.php' => '3f64d25c826974552e55491df05c538b',
 			'library/LiamW/PostMacros/Model/Import.php' => '368c0dcdce246ef8b84c72b9adf3dabd',
 			'library/LiamW/PostMacros/Model/Macros.php' => '2b5980336487d3a6bfd6b9d5a103a09e',
+			'library/LiamW/PostMacros/Option/SelectorMode.php' => 'eca81fae39fe40043a5a8b8cdc8b98ed',
 			'library/LiamW/PostMacros/Route/Prefix/PostMacros.php' => '3f32c218109df16db5aef192c7680199',
 			'library/LiamW/PostMacros/Route/PrefixAdmin/PostMacros.php' => '271d14a8afd30a75eeea57cd4b4666d8',
 			'library/LiamW/PostMacros/TemplateModification.php' => '57dda03f5c7ef4e84620cd5cd9ec7351',
@@ -45,6 +46,10 @@ class LiamW_PostMacros_CheckSums
 			'library/LiamW/PostMacros/ViewPublic/Index.php' => '1b62e8c580d60ea7304391012d2b60fd',
 			'library/LiamW/PostMacros/ViewPublic/Preview.php' => '3f4c48771bad01959153ab6fb972e25a',
 			'library/LiamW/PostMacros/ViewPublic/Use.php' => '3e0f5211df8703426b2de9063b3448d3',
+			'js/postmacros/macros.js' => '4515cced099f8c7dc4f1a2f901957dcb',
+			'js/postmacros/macros.min.js' => '7015aaed42aea1d28d4463f7e180b0fd',
+			'js/postmacros/macros_editor.js' => '9042b6988deb828a10530ebfeb3205e2',
+			'js/postmacros/macros_editor.min.js' => 'd44340548a0c5d0d0cf033a0eac91301',
 		);
 	}
 }
