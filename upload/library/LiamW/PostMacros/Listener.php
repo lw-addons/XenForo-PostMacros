@@ -61,7 +61,6 @@ class LiamW_PostMacros_Listener
 		$editorOptions['canUseMacros'] = XenForo_Visitor::getInstance()
 			->hasPermission('liam_postMacros', 'liamMacros_canUseMacros');
 		$editorOptions['showMacrosSelect'] = $macrosModel->showMacrosSelect($view) && (count($editorOptions['macros']['user']) || count($editorOptions['macros']['admin']));
-		$editorOptions['debug'] = XenForo_Application::debugMode();
 
 		if (!$editorOptions['height'])
 		{

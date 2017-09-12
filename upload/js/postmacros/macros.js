@@ -17,7 +17,7 @@
 
 			if (!this.$macros.data('editorid'))
 			{
-				console.error('Invalid Editor Id!');
+				console.error('Post Macros: There is no editor ID on the macro select. Aborting setup.');
 				return;
 			}
 
@@ -159,6 +159,77 @@
 		}
 	};
 
-	XenForo.register('.MacroSelect', 'XenForo.PostMacros');
+
+	XenForo.PostMacrosExpand = function ($ol)
+	{
+		this.__construct($ol);
+	};
+	XenForo.PostMacrosExpand.prototype =
+	{
+		__construct: function ($ol)
+		{
+			this.$macroId = $ol.data('macroid');
+
+			this.$expandLink = $ol.find('.ExpandLink');
+			this.$expandLink.bind('click', $.context(this, 'expandCollapse'));
+
+			this.$type = $ol.data('type') || 'user';
+
+			this.$ol = $ol;
+		},
+
+		expandCollapse: function ($e)
+		{
+			$e.preventDefault();
+
+			if (this.$expandLink.text() == XenForo.phrases['postMacros_expand'])
+			{
+				this.expand();
+			}
+			else
+			{
+				this.collapse();
+			}
+		},
+
+		expand: function ()
+		{
+			if (typeof this.$templateHtml != 'undefined')
+			{
+				this.$templateHtml.xfFadeDown();
+			}
+			else
+			{
+				XenForo.ajax(
+					'post-macros/expand',
+					{
+						'macro_id': this.$macroId,
+						'type': this.$type
+					},
+					$.context(this, 'expandTemplateReceived')
+				);
+			}
+
+			this.$expandLink.text(XenForo.phrases['postMacros_collapse']);
+		},
+
+		collapse: function ()
+		{
+			this.$templateHtml.xfFadeUp();
+			this.$expandLink.text(XenForo.phrases['postMacros_expand']);
+		},
+
+		expandTemplateReceived: function (ajaxData)
+		{
+			if (ajaxData.templateHtml)
+			{
+				this.$templateHtml = $(ajaxData.templateHtml);
+				this.$templateHtml.xfInsert('appendTo', this.$ol);
+			}
+		}
+	};
+
+	XenForo.register('select.MacroSelect', 'XenForo.PostMacros');
+	XenForo.register('.MacroExpand', 'XenForo.PostMacrosExpand');
 }
 (jQuery, this, document);

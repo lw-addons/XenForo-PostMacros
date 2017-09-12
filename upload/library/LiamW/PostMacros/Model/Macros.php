@@ -332,8 +332,42 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 
 		$viewParams = $view->getParams();
 		$viewClass = XenForo_Application::resolveDynamicClassToRoot($view);
-		$excludedViews = preg_split('/\r?\n/',
+
+		$mode = $options->get('liam_postMacros_mode');
+		$optInOutViews = preg_split('/\r?\n/',
 			$options->get('liam_postMacros_excluded_views'), -1, PREG_SPLIT_NO_EMPTY);
+
+		switch ($mode)
+		{
+			case 'default':
+				$shouldDisplay = $this->_shouldDisplayDefault($viewClass, $viewParams, $viewingUser);
+				break;
+			case 'opt_in_default':
+
+				$shouldDisplayDefault = $this->_shouldDisplayDefault($viewClass, $viewParams, $viewingUser, $isDefault);
+
+				$shouldDisplay = $isDefault ? $shouldDisplayDefault : (in_array($viewClass,
+						$optInOutViews) && !$viewingUser['post_macros_hide_other']);
+
+				break;
+			case 'opt_in':
+				$shouldDisplay = in_array($viewClass, $optInOutViews) && $this->_shouldDisplayDefault($viewClass,
+						$viewParams, $viewingUser);
+				break;
+			case 'opt_out':
+				$shouldDisplay = $this->_shouldDisplayDefault($viewClass, $viewParams,
+						$viewingUser) && !in_array($viewClass, $optInOutViews);
+				break;
+			default:
+				throw new XenForo_Exception("Post Macros: Invalid option value: $mode");
+		}
+
+		return $shouldDisplay;
+	}
+
+	protected function _shouldDisplayDefault($viewClass, array $viewParams, array $viewingUser, &$isDefault = null)
+	{
+		$shouldDisplay = true;
 
 		switch ($viewClass)
 		{
@@ -356,12 +390,7 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 				$shouldDisplay = !$viewingUser['post_macros_hide_conversation_quick_reply'];
 				break;
 			default:
-				$shouldDisplay = $options->get('liam_postMacros_all_editors') && !$viewingUser['post_macros_hide_other'];
-		}
-
-		if (in_array($viewClass, $excludedViews))
-		{
-			$shouldDisplay = false;
+				$isDefault = false;
 		}
 
 		return $shouldDisplay;

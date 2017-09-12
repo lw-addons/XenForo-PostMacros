@@ -135,6 +135,17 @@ class LiamW_PostMacros_ControllerPublic_Macros extends XenForo_ControllerPublic_
 		return $this->responseView('LiamW_PostMacros_ViewPublic_Preview', 'postMacros_preview_macro', $viewParams);
 	}
 
+	public function actionExpand()
+	{
+		$macro = $this->_getMacroOrError();
+
+		$viewParams = array(
+			'macro' => $macro
+		);
+
+		return $this->responseView('LiamW_PostMacros_ViewPublic_Expand', 'postMacros_expanded', $viewParams);
+	}
+
 	public function actionUse()
 	{
 		$this->_assertPostOnly();
@@ -146,20 +157,7 @@ class LiamW_PostMacros_ControllerPublic_Macros extends XenForo_ControllerPublic_
 			'formAction' => XenForo_Input::STRING
 		));
 
-		if ($data['type'] == 'user')
-		{
-			$macro = $this->_getMacroOrError($data['macro_id']);
-		}
-		else
-		{
-			$macro = $this->_getMacrosModel()->getAdminMacroById($data['macro_id']);
-
-			if (!$macro)
-			{
-				return $this->responseError(new XenForo_Phrase('liam_postMacros_requested_macro_not_found'),
-					404);
-			}
-		}
+		$macro = $this->_getMacroOrError($data['macro_id'], $data['type']);
 
 		$this->_assertCanUseMacro($macro, $data['type']);
 
@@ -194,14 +192,30 @@ class LiamW_PostMacros_ControllerPublic_Macros extends XenForo_ControllerPublic_
 		return $this->responseView('LiamW_PostMacros_ViewPublic_Use', '', $viewParams);
 	}
 
-	protected function _getMacroOrError($macroId = null)
+	protected function _getMacroOrError($macroId = null, $type = null)
 	{
 		if (!$macroId)
 		{
 			$macroId = $this->_input->filterSingle('macro_id', XenForo_Input::UINT);
 		}
 
-		$macro = $this->_getMacrosModel()->getMacroById($macroId);
+		if (!$type)
+		{
+			$type = $this->_input->filterSingle('type', XenForo_Input::STRING);
+		}
+
+		if ($type == 'user')
+		{
+			$macro = $this->_getMacrosModel()->getMacroById($macroId);
+		}
+		else if ($type == 'admin')
+		{
+			$macro = $this->_getMacrosModel()->getAdminMacroById($macroId);
+		}
+		else
+		{
+			$macro = null;
+		}
 
 		if (!$macro)
 		{
