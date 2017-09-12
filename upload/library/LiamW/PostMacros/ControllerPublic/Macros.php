@@ -137,7 +137,19 @@ class LiamW_PostMacros_ControllerPublic_Macros extends XenForo_ControllerPublic_
 
 	public function actionExpand()
 	{
-		$macro = $this->_getMacroOrError();
+		$macroId = $this->_input->filterSingle('macro_id', XenForo_Input::UINT);
+		$type = $this->_input->filterSingle('type', XenForo_Input::STRING);
+
+		$macro = $this->_getMacroOrError($macroId, $type);
+
+		if ($type == 'user')
+		{
+			$macro = $this->_getMacrosModel()->prepareMacro($macro);
+		}
+		else
+		{
+			$macro = $this->_getMacrosModel()->prepareAdminMacro($macro);
+		}
 
 		$viewParams = array(
 			'macro' => $macro
@@ -192,16 +204,11 @@ class LiamW_PostMacros_ControllerPublic_Macros extends XenForo_ControllerPublic_
 		return $this->responseView('LiamW_PostMacros_ViewPublic_Use', '', $viewParams);
 	}
 
-	protected function _getMacroOrError($macroId = null, $type = null)
+	protected function _getMacroOrError($macroId = null, $type = 'user')
 	{
 		if (!$macroId)
 		{
 			$macroId = $this->_input->filterSingle('macro_id', XenForo_Input::UINT);
-		}
-
-		if (!$type)
-		{
-			$type = $this->_input->filterSingle('type', XenForo_Input::STRING);
 		}
 
 		if ($type == 'user')

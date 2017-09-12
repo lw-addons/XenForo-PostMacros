@@ -17,7 +17,7 @@ class LiamW_PostMacros_CheckSums
 		return array(
 			'library/LiamW/PostMacros/BbCode/Formatter/Reversible.php' => 'e617d013c11f54bcd3d1f38e562af2bb',
 			'library/LiamW/PostMacros/ControllerAdmin/AdminMacros.php' => 'bc6967053866dc114ef7a99e93a979df',
-			'library/LiamW/PostMacros/ControllerPublic/Macros.php' => '37f27ad96ebadfbfc88975c87095f98a',
+			'library/LiamW/PostMacros/ControllerPublic/Macros.php' => '4c29f8355366ec75e15ca591e9ac5bf3',
 			'library/LiamW/PostMacros/DataWriter/AdminMacros.php' => '7ef626371aef654aa7a650ca2bcb3fc9',
 			'library/LiamW/PostMacros/DataWriter/Macros.php' => '1b5a80a6e0e941121d524c2f8685f618',
 			'library/LiamW/PostMacros/Extend/ControllerAdmin/Forum.php' => 'a8e9f8055d634ccb3b994de0c02f5546',
