@@ -21,8 +21,10 @@ class LiamW_PostMacros_CheckSums
 			'library/LiamW/PostMacros/DataWriter/Macros.php' => '3dbfc147d721d87040d2fd706b580d21',
 			'library/LiamW/PostMacros/Extend/ControllerAdmin/Forum.php' => 'a8e9f8055d634ccb3b994de0c02f5546',
 			'library/LiamW/PostMacros/Extend/ControllerPublic/Account.php' => 'd582f5869b214d043c76d52331fb23ff',
-			'library/LiamW/PostMacros/Extend/ControllerPublic/Thread.php' => '26ce17d8ba742acf00f0ebde5c8c94a5',
-			'library/LiamW/PostMacros/Extend/DataWriter/DiscussionMessage/Post.php' => '687879eeb9dbbf1ae3722e7b32d82bba',
+			'library/LiamW/PostMacros/Extend/ControllerPublic/Forum.php' => '02d14fc407801f59bc02c2a70a80e4d8',
+			'library/LiamW/PostMacros/Extend/ControllerPublic/Thread.php' => '92d9183a20edf84448a3e8bd169a9b31',
+			'library/LiamW/PostMacros/Extend/DataWriter/Discussion/Thread.php' => '73d57e64eb06daef0ff5a105c3ae7c04',
+			'library/LiamW/PostMacros/Extend/DataWriter/DiscussionMessage/Post.php' => '83556c7ae961241f3c787d7c685a47fa',
 			'library/LiamW/PostMacros/Extend/DataWriter/Forum.php' => 'c8424e12e5a126616a7433e1fdbd074f',
 			'library/LiamW/PostMacros/Extend/DataWriter/User.php' => '502388847289d694d44146bd064ad184',
 			'library/LiamW/PostMacros/Extend/ViewPublic/Conversation/Add.php' => '225099315bee0fe538500d4e7bd9c738',
@@ -33,7 +35,7 @@ class LiamW_PostMacros_CheckSums
 			'library/LiamW/PostMacros/Extend/ViewPublic/Thread/View.php' => 'b2030bef01e0a59dbcf2471cbe5bfd53',
 			'library/LiamW/PostMacros/Importer/Macros.php' => 'e404b78b9d46f2729772901f33dc699b',
 			'library/LiamW/PostMacros/Installer.php' => 'a9537592fd0a312ab009d46eeb67808c',
-			'library/LiamW/PostMacros/Listener.php' => 'e9017ed38e39bf0c2d9b3453dbafafe1',
+			'library/LiamW/PostMacros/Listener.php' => 'f9abddfe2d1585d765c58025fc7e408c',
 			'library/LiamW/PostMacros/Model/Import.php' => 'e321e8b714a3ae1c794edc7ef48f3ab5',
 			'library/LiamW/PostMacros/Model/Macros.php' => '9473f9a1b66f97a95f095c9092f3d8a2',
 			'library/LiamW/PostMacros/Route/Prefix/PostMacros.php' => '3f32c218109df16db5aef192c7680199',
@@ -42,7 +44,9 @@ class LiamW_PostMacros_CheckSums
 			'library/LiamW/PostMacros/ViewPublic/Edit.php' => 'b49dbfc42f33bab2c70ee6b6abc8ba2d',
 			'library/LiamW/PostMacros/ViewPublic/Index.php' => '61315064f408509e8811c55d38ceb455',
 			'library/LiamW/PostMacros/ViewPublic/Preview.php' => '17742fcb9f572d3f1713223e71ad7f7f',
-			'library/LiamW/PostMacros/ViewPublic/Use.php' => 'e1d8b68d9db41cdddce5b630b1d6cd92',
+			'library/LiamW/PostMacros/ViewPublic/Use.php' => 'd62b054115abe40870a4a71bb946b3fe',
+			'js/postmacros/macros.js' => '87e7a30f8824cc728375dfe02900dba7',
+			'js/postmacros/macros.min.js' => '57db549a2bb88d572682491a5b124e7f'
 		);
 	}
 }

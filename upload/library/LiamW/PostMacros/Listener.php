@@ -62,6 +62,16 @@ class LiamW_PostMacros_Listener
 		$extend[] = 'LiamW_PostMacros_Extend_DataWriter_DiscussionMessage_Post';
 	}
 
+	public static function extendForumController($class, array &$extend)
+	{
+		$extend[] = 'LiamW_PostMacros_Extend_ControllerPublic_Forum';
+	}
+
+	public static function extendThreadDataWriter($class, array &$extend)
+	{
+		$extend[] = 'LiamW_PostMacros_Extend_DataWriter_Discussion_Thread';
+	}
+
 	public static function extendImportModel($class, array &$extend)
 	{
 		XenForo_Model_Import::$extraImporters[] = 'LiamW_PostMacros_Importer_Macros';

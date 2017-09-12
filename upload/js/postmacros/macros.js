@@ -124,8 +124,7 @@
 			if (ajaxData.lockThread)
 			{
 				console.log('Locking thread');
-				$('<input type="hidden" name="_set[discussion_open]" value="1" />').appendTo(this.$form);
-				$('<input type="hidden" name="discussion_open" value="0" />').appendTo(this.$form);
+				$('<input type="hidden" name="set_locked" value="1" />').appendTo(this.$form);
 			}
 
 			if (ajaxData.threadPrefix)

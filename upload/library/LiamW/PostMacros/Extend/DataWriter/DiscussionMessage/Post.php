@@ -6,12 +6,21 @@ class LiamW_PostMacros_Extend_DataWriter_DiscussionMessage_Post extends XFCP_Lia
 	{
 		parent::_messagePostSave();
 
-		if (XenForo_Application::isRegistered('liam_postMacros_set_prefix'))
+		if (XenForo_Application::isRegistered('liam_postMacros_set_prefix') || XenForo_Application::isRegistered('liam_postMacros_set_locked'))
 		{
-			$threadDw = XenForo_DataWriter::create('XenForo_DataWriter_Discussion_Thread',
-				XenForo_DataWriter::ERROR_SILENT);
+			$threadDw = XenForo_DataWriter::create('XenForo_DataWriter_Discussion_Thread');
 			$threadDw->setExistingData($this->get('thread_id'));
-			$threadDw->set('prefix_id', XenForo_Application::isRegistered('liam_postMacros_set_prefix'));
+
+			if (XenForo_Application::isRegistered('liam_postMacros_set_prefix'))
+			{
+				$threadDw->set('prefix_id', XenForo_Application::get('liam_postMacros_set_prefix'));
+			}
+
+			if (XenForo_Application::isRegistered('liam_postMacros_set_locked'))
+			{
+				$threadDw->set('discussion_open', false);
+			}
+
 			$threadDw->save();
 		}
 	}

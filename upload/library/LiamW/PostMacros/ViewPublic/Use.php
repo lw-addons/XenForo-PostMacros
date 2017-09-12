@@ -35,7 +35,7 @@ class LiamW_PostMacros_ViewPublic_Use extends XenForo_ViewPublic_Base
 		$threadName = isset($thread['title']) ? $thread['title'] : '';
 		$forumName = isset($forum['title']) ? $forum['title'] : '';
 
-		$macro = str_replace(array(
+		$macro['content'] = str_replace(array(
 			"{threadcreator}",
 			"{threadtitle}",
 			"{forumtitle}"
@@ -43,7 +43,7 @@ class LiamW_PostMacros_ViewPublic_Use extends XenForo_ViewPublic_Base
 			$threadUser,
 			$threadName,
 			$forumName
-		), $macro);
+		), $macro['content']);
 
 		return $macro;
 	}

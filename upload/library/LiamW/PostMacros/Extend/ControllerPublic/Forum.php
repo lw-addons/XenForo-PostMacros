@@ -1,8 +1,8 @@
 <?php
 
-class LiamW_PostMacros_Extend_ControllerPublic_Thread extends XFCP_LiamW_PostMacros_Extend_ControllerPublic_Thread
+class LiamW_PostMacros_Extend_ControllerPublic_Forum extends XFCP_LiamW_PostMacros_Extend_ControllerPublic_Forum
 {
-	public function actionAddReply()
+	public function actionAddThread()
 	{
 		$setPrefix = $this->_input->filterSingle('set_prefix', XenForo_Input::UINT);
 		$setLocked = $this->_input->filterSingle('set_locked', xenforo_input::BOOLEAN);
@@ -20,13 +20,13 @@ class LiamW_PostMacros_Extend_ControllerPublic_Thread extends XFCP_LiamW_PostMac
 			}
 		}
 
-		return parent::actionAddReply();
+		return parent::actionAddThread();
 	}
 }
 
 if (false)
 {
-	class XFCP_LiamW_PostMacros_Extend_ControllerPublic_Thread extends XenForo_ControllerPublic_Thread
+	class XFCP_LiamW_PostMacros_Extend_ControllerPublic_Forum extends XenForo_ControllerPublic_Forum
 	{
 	}
 }
