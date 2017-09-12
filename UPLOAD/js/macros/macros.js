@@ -35,14 +35,21 @@
 					if (typeof (editor.val) == "undefined"
 						&& plainContent != '-')
 					{
-						editor
-							.insertHtml(htmlContent);
+						try
+						{
+							editor
+								.insertHtml(htmlContent);
+						} catch (TypeError)
+						{
+							// TinyMce Support
+							editor.execCommand('mceInsertContent', false, htmlContent);
+						}
 						$('#ctrl_title_thread_create').val(titleText);
-					} else if (macrotext != '-')
+					} else if (plainContent != '-')
 					{
 						editor
 							.val(editor.val()
-							+ macrotext
+							+ plainContent
 								.replace(
 								/<br \/>/g,
 								''));

@@ -11,16 +11,12 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 	protected function _preDispatch($action)
 	{
 		$this->_assertRegistrationRequired();
+		$this->_assertCanViewMacros();
 	}
 
 	public function actionIndex()
 	{
 		$visitor = XenForo_Visitor::getInstance();
-
-		if (!$visitor->hasPermission('macro_permissions', 'can_use_macros'))
-		{
-			return $this->responseNoPermission();
-		}
 
 		$macrosModel = $this->_getMacrosModel();
 
@@ -75,14 +71,6 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 		/* @var $macrosDW LiamW_Macros_DataWriter_Macros */
 		$macrosDW = XenForo_DataWriter::create('LiamW_Macros_DataWriter_Macros');
 
-		$visitor = XenForo_Visitor::getInstance();
-
-		/* Check the visitor has permission to use macros */
-		if (!$visitor->hasPermission('macro_permissions', 'can_use_macros'))
-		{
-			return $this->responseNoPermission();
-		}
-
 		$userId = XenForo_Visitor::getUserId();
 
 		$input = $this->_input->filter(array(
@@ -99,6 +87,7 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 		if ($macroId)
 		{
 			$existingMacro = $this->_getMacrosModel()->getMacroFromId($macroId);
+			$this->_assertCanEditMacro($existingMacro);
 			$macrosDW->setExistingData($existingMacro, true);
 			$input['staff_macro'] = ($userId == $existingMacro['user_id']) ? $this->_input->filterSingle('staff_macro',
 				XenForo_Input::BOOLEAN) : $existingMacro['staff_macro'];
@@ -149,15 +138,10 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 
 		$visitor = XenForo_Visitor::getInstance();
 
+		$this->_assertCanEditMacro($macro);
+
 		$addStaffMacro = $visitor->hasPermission('macro_permissions', 'can_create_staff_macros');
 		$disableStaffMacro = ($visitor->getUserId() == $macro['user_id']) ? 0 : 1;
-
-		if ($this->isStaffMacro($macro) && !$visitor->hasPermission('macro_permissions',
-				'can_edit_all_staff_macros') && $disableStaffMacro
-		)
-		{
-			return $this->responseNoPermission();
-		}
 
 		$viewParams = array(
 			'macro' => $macro,
@@ -172,6 +156,8 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 	{
 		$macroId = $this->_input->filterSingle('macro_id', XenForo_Input::UINT);
 		$macro = $this->_getMacrosModel()->getMacroFromId($macroId);
+
+		$this->_assertCanViewMacros();
 
 		if ($macro['user_id'] != XenForo_Visitor::getUserId() && !XenForo_Visitor::getInstance()
 				->hasPermission('macro_permissions', 'can_delete_staff_macros')
@@ -193,6 +179,28 @@ class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abst
 			$macroDW->delete();
 
 			return $this->responseRedirect(XenForo_ControllerResponse_Redirect::SUCCESS, $this->getDynamicRedirect());
+		}
+	}
+
+	protected function _assertCanViewMacros()
+	{
+		if (!XenForo_Visitor::getInstance()->hasPermission('macro_permissions', 'can_use_macros'))
+		{
+			throw $this->getNoPermissionResponseException();
+		}
+	}
+
+	protected function _assertCanEditMacro(array $macro)
+	{
+		$this->_assertCanViewMacros();
+
+		$visitor = XenForo_Visitor::getInstance();
+
+		if (($this->isStaffMacro($macro) && $visitor->getUserId() != $macro['user_id'] && !$visitor->hasPermission('macro_permissions',
+					'can_edit_all_staff_macros')) || (!$this->isStaffMacro($macro) && $visitor->getUserId() != $macro['user_id'])
+		)
+		{
+			throw $this->getNoPermissionResponseException();
 		}
 	}
 
