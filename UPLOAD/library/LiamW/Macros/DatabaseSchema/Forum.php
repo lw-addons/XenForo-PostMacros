@@ -35,4 +35,8 @@ class LiamW_Macros_DatabaseSchema_Forum extends LiamW_Shared_DatabaseSchema_Abst
 		);
 	}
 
+	protected function _getClassName()
+	{
+		return get_class($this);
+	}
 }

@@ -160,22 +160,22 @@ class LiamW_Macros_Model_Macros extends XenForo_Model
 		return true;
 	}
 
-	public function hiddenOnQr($userId)
+	public function hiddenOnThreadQuickReply($userId)
 	{
 		return $this->_getDb()->fetchOne("SELECT macros_hide_qr FROM xf_user_option WHERE user_id=?", $userId);
 	}
 
-	public function hiddenOnNtNr($userId)
+	public function hiddenOnThreadCreateReply($userId)
 	{
 		return $this->_getDb()->fetchOne("SELECT macros_hide_ntnr FROM xf_user_option WHERE user_id=?", $userId);
 	}
 
-	public function hiddenOnConvoQr($userId)
+	public function hiddenOnConversationQuickReply($userId)
 	{
 		return $this->_getDb()->fetchOne("SELECT macros_hide_convo_qr FROM xf_user_option WHERE user_id=?", $userId);
 	}
 
-	public function hiddenOnConvoNcNr($userId)
+	public function hiddenOnConversationCreateReply($userId)
 	{
 		return $this->_getDb()->fetchOne("SELECT macros_hide_convo_ncnr FROM xf_user_option WHERE user_id=?", $userId);
 	}

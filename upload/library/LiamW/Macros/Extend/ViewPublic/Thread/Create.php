@@ -1,6 +1,6 @@
 <?php
 
-class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Extend_ViewPublic_Thread_View
+class LiamW_Macros_Extend_ViewPublic_Thread_Create extends XFCP_LiamW_Macros_Extend_ViewPublic_Thread_Create
 {
 	public function renderHtml()
 	{
@@ -15,21 +15,20 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 		$adminMacros = $macrosModel->getAdminMacrosForUser($visitor->toArray(), true);
 
 		$forum = $this->_params['forum'];
-		$thread = $this->_params['thread'];
 
 		foreach ($userMacros as $key => $macro)
 		{
-			if ($thread && $forum)
+			if ($forum)
 			{
-				$userMacros[$key]['content'] = $this->compileVariables($macro['content'], $thread, $forum);
+				$userMacros[$key]['content'] = str_replace("{forumname}", $forum['title'], $macro['content']);
 			}
 		}
 
 		foreach ($adminMacros as $key => $macro)
 		{
-			if ($thread && $forum)
+			if ($forum)
 			{
-				$adminMacros[$key]['content'] = $this->compileVariables($macro['content'], $thread, $forum);
+				$adminMacros[$key]['content'] = str_replace("{forumname}", $forum['title'], $macro['content']);
 			}
 		}
 
@@ -37,13 +36,13 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 		{
 			$this->_params['macros'] = $macrosModel->prepareArrayForDropDown($this, $userMacros, $adminMacros);
 
-			$show = !$macrosModel->hiddenOnThreadQuickReply($userId);
+			$show = !$macrosModel->hiddenOnThreadCreateReply($userId);
 
 			$this->_params['canViewMacros'] = ($macrosModel->canViewMacros($visitor) && $show && $forum['allow_macros']);
 			XenForo_CodeEvent::fire('liam_macros_ready', array(
 				&$this->_params['macros'],
 				&$this->_params['canViewMacros'],
-				$thread,
+				null,
 				$forum
 			));
 		}
@@ -51,30 +50,11 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 		parent::renderHtml();
 	}
 
-	private function compileVariables($macro, array $thread, array $forum)
-	{
-		$threadUser = $thread['username'];
-		$threadName = $thread['title'];
-		$forumName = $forum['title'];
-
-		$macro = str_replace(array(
-			"{threaduser}",
-			"{threadname}",
-			"{forumname}"
-		), array(
-			$threadUser,
-			$threadName,
-			$forumName
-		), $macro);
-
-		return $macro;
-	}
-
 }
 
 if (false)
 {
-	class XFCP_LiamW_Macros_Extend_ViewPublic_Thread_View extends XenForo_ViewPublic_Thread_View
+	class XFCP_LiamW_Macros_Extend_ViewPublic_Thread_Create extends XenForo_ViewPublic_Thread_Create
 	{
 	}
 }

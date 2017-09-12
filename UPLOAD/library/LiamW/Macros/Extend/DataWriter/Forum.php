@@ -2,9 +2,6 @@
 
 class LiamW_Macros_Extend_DataWriter_Forum extends XFCP_LiamW_Macros_Extend_DataWriter_Forum
 {
-	/*
-	 * (non-PHPdoc) @see XenForo_DataWriter_Forum::_getFields()
-	 */
 	protected function _getFields()
 	{
 		$fields = parent::_getFields();
@@ -17,9 +14,6 @@ class LiamW_Macros_Extend_DataWriter_Forum extends XFCP_LiamW_Macros_Extend_Data
 		return $fields;
 	}
 
-	/*
-	 * (non-PHPdoc) @see XenForo_DataWriter_Node::_preSave()
-	 */
 	protected function _preSave()
 	{
 		if (XenForo_Application::isRegistered('allow_macros_forum'))
@@ -29,7 +23,6 @@ class LiamW_Macros_Extend_DataWriter_Forum extends XFCP_LiamW_Macros_Extend_Data
 
 		parent::_preSave();
 	}
-
 }
 
 if (false)

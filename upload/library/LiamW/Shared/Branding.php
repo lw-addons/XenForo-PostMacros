@@ -2,7 +2,6 @@
 
 abstract class LiamW_Shared_Branding
 {
-
 	private static $_brandingShown = false;
 	private static $_helperAdded = false;
 

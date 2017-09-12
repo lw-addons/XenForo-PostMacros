@@ -28,4 +28,8 @@ class LiamW_Macros_DatabaseSchema_AdminMacros extends LiamW_Shared_DatabaseSchem
 		return array("DROP TABLE IF EXISTS xf_liam_macros_admin");
 	}
 
+	protected function _getClassName()
+	{
+		return get_class($this);
+	}
 }

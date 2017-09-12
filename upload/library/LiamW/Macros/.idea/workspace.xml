@@ -19,35 +19,114 @@
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
   </component>
+  <component name="DatabaseView">
+    <option name="FLATTEN" value="false" />
+    <option name="GROUP_BY_TYPE" value="true" />
+    <option name="SORT_CHILDREN" value="false" />
+    <option name="SHOW_TABLE_CONSTRAINTS" value="true" />
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" />
+        <option name="myItemType" value="com.intellij.database.view.DbRootNodeDescriptor" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="MySQL - xenissue@localhost" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="xenissue" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+    </PATH>
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" />
+        <option name="myItemType" value="com.intellij.database.view.DbRootNodeDescriptor" />
+      </PATH_ELEMENT>
+    </PATH>
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="Macros" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="Addon.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Addon.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.20187794" vertical-offset="591" max-vertical-offset="1980">
+              <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AddOn.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../XenForo/Model/AddOn.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.375" vertical-offset="4392" max-vertical-offset="8790">
+              <caret line="303" column="20" selection-start-line="303" selection-start-column="20" selection-end-line="303" selection-end-column="20" />
+              <folding>
+                <marker date="1424537328000" expanded="true" signature="313:360" placeholder="SELECT * FRO..xf_addon..." />
+                <marker date="1424537328000" expanded="true" signature="827:901" placeholder="SELECT versi..xf_addon..." />
+                <marker date="1424537328000" expanded="true" signature="1093:1136" placeholder="SELECT * FRO..xf_addon..." />
+                <marker date="1424537328000" expanded="true" signature="20939:21003" placeholder="SELECT addon..xf_addon..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CodeEvent.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../XenForo/Model/CodeEvent.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-15.916667" vertical-offset="5603" max-vertical-offset="6450">
+              <caret line="399" column="45" selection-start-line="399" selection-start-column="45" selection-end-line="399" selection-end-column="45" />
+              <folding>
+                <marker date="1424537329000" expanded="true" signature="321:372" placeholder="SELECT * FRO..xf_code_event..." />
+                <marker date="1424537329000" expanded="true" signature="641:714" placeholder="SELECT * FRO..xf_code_event..." />
+                <marker date="1424537329000" expanded="true" signature="940:992" placeholder="SELECT * FRO..xf_code_event..." />
+                <marker date="1424537329000" expanded="true" signature="1280:1370" placeholder="SELECT * FRO..xf_code_event..." />
+                <marker date="1424537329000" expanded="true" signature="1588:1656" placeholder="SELECT event..xf_code_event..." />
+                <marker date="1424537329000" expanded="true" signature="5661:5736" placeholder="SELECT * FRO..xf_code_event_listener..." />
+                <marker date="1424537329000" expanded="true" signature="5958:6028" placeholder="SELECT * FRO..xf_code_event_listener..." />
+                <marker date="1424537329000" expanded="true" signature="6315:6412" placeholder="SELECT * FRO..xf_code_event_listener..." />
+                <marker date="1424537329000" expanded="true" signature="6725:7106" placeholder="SELECT liste..xf_code_event_listener..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/DataWriter/MacrosOptions.php" />
         <option value="$PROJECT_DIR$/../Shared/DatabaseSchema/Abstract22.php" />
-        <option value="$PROJECT_DIR$/Extend/DataWriter/Forum.php" />
         <option value="$PROJECT_DIR$/DataWriter/Macros.php" />
-        <option value="$PROJECT_DIR$/Extend/ControllerAdmin/Forum.php" />
-        <option value="$PROJECT_DIR$/ViewPublic/View.php" />
-        <option value="$PROJECT_DIR$/ControllerPublic/Macros.php" />
         <option value="$PROJECT_DIR$/ViewPublic/Edit.php" />
         <option value="$PROJECT_DIR$/../../../js/macros/macros.js" />
-        <option value="$PROJECT_DIR$/Model/Macros.php" />
         <option value="$PROJECT_DIR$/Extend/ControllerPublic/Account.php" />
         <option value="$PROJECT_DIR$/Extend/DataWriter/User.php" />
         <option value="$PROJECT_DIR$/ControllerAdmin/Macros.php" />
         <option value="$PROJECT_DIR$/../Shared/DatabaseSchema/Abstract2.php" />
-        <option value="$PROJECT_DIR$/Addon.php" />
-        <option value="$PROJECT_DIR$/DatabaseSchema/UserOption.php" />
-        <option value="$PROJECT_DIR$/DatabaseSchema/Macros.php" />
+        <option value="$PROJECT_DIR$/DatabaseSchema/AdminMacros.php" />
         <option value="$PROJECT_DIR$/DatabaseSchema/Forum.php" />
+        <option value="$PROJECT_DIR$/DatabaseSchema/UserOption.php" />
+        <option value="$PROJECT_DIR$/Model/Macros.php" />
+        <option value="$PROJECT_DIR$/Extend/ViewPublic/Conversation/Create.php" />
+        <option value="$PROJECT_DIR$/Extend/ViewPublic/Thread/Create.php" />
+        <option value="$PROJECT_DIR$/Extend/ViewPublic/Thread/Reply.php" />
+        <option value="$PROJECT_DIR$/Extend/ViewPublic/Conversation/View.php" />
+        <option value="$PROJECT_DIR$/Extend/ViewPublic/Conversation/Reply.php" />
+        <option value="$PROJECT_DIR$/Extend/ViewPublic/Conversation/Add.php" />
+        <option value="$PROJECT_DIR$/Addon.php" />
         <option value="$PROJECT_DIR$/Extend/ViewPublic/Thread/View.php" />
+        <option value="$PROJECT_DIR$/Extend/DataWriter/Forum.php" />
+        <option value="$PROJECT_DIR$/Extend/ControllerAdmin/Forum.php" />
+        <option value="$PROJECT_DIR$/DatabaseSchema/Macros.php" />
+        <option value="$PROJECT_DIR$/ControllerPublic/Macros.php" />
+        <option value="$PROJECT_DIR$/ViewPublic/View.php" />
       </list>
     </option>
   </component>
@@ -89,6 +168,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -119,7 +199,7 @@
               <option name="myItemType" value="com.jetbrains.php.config.PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Shared" />
+              <option name="myItemId" value="XenForo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -137,21 +217,11 @@
               <option name="myItemType" value="com.jetbrains.php.config.PhpExternalLibrariesNodePatcher$PatchedLibraryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Shared" />
+              <option name="myItemId" value="XenForo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="DatabaseSchema" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Macros" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Macros" />
+              <option name="myItemId" value="Model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -162,10 +232,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Macros" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ViewPublic" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -179,86 +245,17 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Route" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Macros" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Macros" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Route" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Prefix" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Macros" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Macros" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Extend" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ViewPublic" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Thread" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Macros" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Macros" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Extend" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Macros" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Macros" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DatabaseSchema" />
+              <option name="myItemId" value="Model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../js/macros/macros.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Shared" />
     <property name="options.lastSelected" value="SQL Dialects" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -267,6 +264,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Extend/ViewPublic/Conversation" />
+      <recent name="$PROJECT_DIR$/Extend/ViewPublic/Thread" />
       <recent name="$PROJECT_DIR$/../Shared/DatabaseSchema" />
     </key>
   </component>
@@ -278,28 +277,29 @@
     <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
       <method />
     </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
     <configuration default="true" type="com.intellij.database.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
       <option name="VM_PARAMETERS" value="" />
       <option name="USER_CFG_CLASS" />
       <option name="CONTEXT_PROVIDER" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
-      <method />
-    </configuration>
     <configuration default="true" type="PhpBehatConfigurationType" factoryName="Behat">
       <BehatRunner />
-      <method />
-    </configuration>
-    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" server_id="f8646675-45b0-4c31-ad7d-08ca3f6cfd6a" server_name="xenforo">
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
       <node-options />
       <gulpfile />
       <tasks />
+      <arguments />
       <pass-parent-envs>true</pass-parent-envs>
       <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server" server_id="f8646675-45b0-4c31-ad7d-08ca3f6cfd6a" server_name="xenforo">
       <method />
     </configuration>
     <list size="0" />
@@ -319,29 +319,29 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="773" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296875" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -361,21 +361,88 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Addon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="390" max-vertical-offset="1230">
+          <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatabaseSchema/UserOption.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1035">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1423159746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
+            <marker date="1423159746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
+            <marker date="1423159746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
+            <marker date="1423159746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
+            <marker date="1423159746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Addon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1230">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatabaseSchema/UserOption.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1035">
+          <caret line="17" column="76" selection-start-line="13" selection-start-column="16" selection-end-line="17" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ControllerPublic/Macros.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3720">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Shared/DatabaseSchema/Abstract2.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3173" max-vertical-offset="3945">
+          <caret line="240" column="22" selection-start-line="240" selection-start-column="22" selection-end-line="240" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatabaseSchema/AdminMacros.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="495" max-vertical-offset="600">
+          <caret line="33" column="5" selection-start-line="30" selection-start-column="4" selection-end-line="33" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatabaseSchema/Forum.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="53" max-vertical-offset="705">
+          <caret line="41" column="1" selection-start-line="41" selection-start-column="1" selection-end-line="41" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DatabaseSchema/Macros.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="300" max-vertical-offset="750">
+          <caret line="20" column="68" selection-start-line="20" selection-start-column="68" selection-end-line="20" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DatabaseSchema/UserOption.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="960">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1423088296000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
-            <marker date="1423088296000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
-            <marker date="1423088296000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
-            <marker date="1423088296000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
-            <marker date="1423088296000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -383,13 +450,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.8607199" vertical-offset="1924" max-vertical-offset="20730">
           <caret line="49" column="23" selection-start-line="49" selection-start-column="23" selection-end-line="49" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Extend/DataWriter/Forum.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39110428" vertical-offset="0" max-vertical-offset="690">
-          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -407,31 +467,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Extend/ControllerAdmin/Forum.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0690184" vertical-offset="0" max-vertical-offset="690">
-          <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../XenForo/ControllerPublic/Account.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.18153365" vertical-offset="10729" max-vertical-offset="28860">
           <caret line="723" column="49" selection-start-line="723" selection-start-column="49" selection-end-line="723" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Model/Macros.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="6.29108" vertical-offset="0" max-vertical-offset="4350">
-          <caret line="268" column="34" selection-start-line="268" selection-start-column="34" selection-end-line="268" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ViewPublic/Edit.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23006135" vertical-offset="0" max-vertical-offset="652">
-          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
         </state>
       </provider>
     </entry>
@@ -442,34 +481,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ControllerPublic/Macros.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.50490195" vertical-offset="1656" max-vertical-offset="3720">
-          <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Extend/DataWriter/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5521472" vertical-offset="0" max-vertical-offset="780">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Extend/ControllerPublic/Account.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23006135" vertical-offset="0" max-vertical-offset="652">
-          <caret line="10" column="35" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ControllerAdmin/Macros.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.5117371" vertical-offset="1326" max-vertical-offset="1965">
-          <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DataWriter/AdminMacros.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.18558282" vertical-offset="269" max-vertical-offset="945">
@@ -477,28 +488,121 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Route/Prefix/Macros.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="676">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../XenForo/ViewPublic/Conversation/Add.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.04601227" vertical-offset="0" max-vertical-offset="652">
+          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../XenForo/ViewPublic/Conversation/Reply.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.04694836" vertical-offset="0" max-vertical-offset="639">
+          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../XenForo/ViewPublic/Conversation/View.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.04694836" vertical-offset="0" max-vertical-offset="639">
+          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Extend/ViewPublic/Thread/Reply.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.056748465" vertical-offset="593" max-vertical-offset="1245">
+          <caret line="42" column="54" selection-start-line="42" selection-start-column="54" selection-end-line="42" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../XenForo/CodeEvent.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.4601227" vertical-offset="1050" max-vertical-offset="2565">
+          <caret line="50" column="9" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Extend/ViewPublic/Conversation/Reply.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-14.375" vertical-offset="0" max-vertical-offset="705">
+          <caret line="23" column="54" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Extend/ViewPublic/Conversation/View.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36809817" vertical-offset="0" max-vertical-offset="705">
+          <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../Shared/DatabaseSchema/Abstract2.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.25" vertical-offset="1035" max-vertical-offset="3870">
-          <caret line="87" column="54" selection-start-line="87" selection-start-column="54" selection-end-line="87" selection-end-column="54" />
+        <state vertical-scroll-proportion="0.23006135" vertical-offset="0" max-vertical-offset="3945">
+          <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DatabaseSchema/AdminMacros.php">
+    <entry file="file://$PROJECT_DIR$/Extend/ViewPublic/Thread/Create.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.625" vertical-offset="0" max-vertical-offset="540">
-          <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
-          <folding>
-            <marker date="1419376699000" expanded="true" signature="-1:-1" placeholder="CREATE TABLE..liam_macros_admin..." />
-            <marker date="1419376699000" expanded="true" signature="-1:-1" placeholder="DROP TABLE I..." />
-          </folding>
+        <state vertical-scroll-proportion="0.17177914" vertical-offset="323" max-vertical-offset="975">
+          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ViewPublic/View.php">
+    <entry file="file://$PROJECT_DIR$/Extend/ViewPublic/Thread/View.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0690184" vertical-offset="0" max-vertical-offset="660">
+        <state vertical-scroll-proportion="0.2530675" vertical-offset="0" max-vertical-offset="1275">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Extend/ViewPublic/Conversation/Add.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.41564417" vertical-offset="29" max-vertical-offset="705">
+          <caret line="20" column="76" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="76" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Extend/DataWriter/Forum.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.0" vertical-offset="0" max-vertical-offset="585">
+          <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Extend/ControllerPublic/Account.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.23006135" vertical-offset="0" max-vertical-offset="652">
+          <caret line="10" column="35" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Extend/DataWriter/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35582823" vertical-offset="128" max-vertical-offset="780">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Extend/ControllerAdmin/Forum.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="375">
           <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
           <folding />
         </state>
@@ -506,67 +610,142 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DatabaseSchema/Forum.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.5" vertical-offset="0" max-vertical-offset="645">
-          <caret line="20" column="78" selection-start-line="20" selection-start-column="78" selection-end-line="20" selection-end-column="78" />
+        <state vertical-scroll-proportion="-11.25" vertical-offset="0" max-vertical-offset="705">
+          <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
           <folding>
-            <marker date="1423148847000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_forum..." />
-            <marker date="1423148847000" expanded="true" signature="-1:-1" placeholder="SELECT allow..xf_forum..." />
-            <marker date="1423148847000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_forum..." />
+            <marker date="1423159738000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_forum..." />
+            <marker date="1423159738000" expanded="true" signature="-1:-1" placeholder="SELECT allow..xf_forum..." />
+            <marker date="1423159738000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_forum..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Addon.php">
+    <entry file="file://$PROJECT_DIR$/DatabaseSchema/AdminMacros.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.125" vertical-offset="600" max-vertical-offset="1485">
-          <caret line="53" column="63" selection-start-line="53" selection-start-column="63" selection-end-line="53" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Extend/ViewPublic/Thread/View.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.24233128" vertical-offset="1163" max-vertical-offset="1815">
-          <caret line="67" column="29" selection-start-line="67" selection-start-column="29" selection-end-line="67" selection-end-column="29" />
+        <state vertical-scroll-proportion="-14.375" vertical-offset="0" max-vertical-offset="600">
+          <caret line="23" column="38" selection-start-line="23" selection-start-column="38" selection-end-line="23" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DatabaseSchema/UserOption.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="960">
-          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+        <state vertical-scroll-proportion="-6.875" vertical-offset="30" max-vertical-offset="1035">
+          <caret line="13" column="42" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
           <folding>
-            <marker date="1423088296000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
-            <marker date="1423088296000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
-            <marker date="1423088296000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
-            <marker date="1423088296000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
-            <marker date="1423088296000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
+            <marker date="1423159746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
+            <marker date="1423159746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
+            <marker date="1423159746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
+            <marker date="1423159746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
+            <marker date="1423159746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_user_option..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DatabaseSchema/Macros.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.56288344" vertical-offset="23" max-vertical-offset="675">
-          <caret line="26" column="27" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.0690184" vertical-offset="0" max-vertical-offset="652">
+          <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
           <folding>
-            <marker date="1423148664000" expanded="true" signature="-1:-1" placeholder="CREATE TABLE..xf_liam_macros..." />
-            <marker date="1423148664000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_liam_macros..." />
-            <marker date="1423148664000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_liam_macros..." />
-            <marker date="1423148664000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_liam_macros..." />
-            <marker date="1423148664000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE liam_macros..." />
-            <marker date="1423148664000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE liam_macros..." />
-            <marker date="1423148664000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE liam_macros..." />
-            <marker date="1423148664000" expanded="true" signature="-1:-1" placeholder="DROP TABLE I..." />
+            <marker date="1424721746000" expanded="true" signature="-1:-1" placeholder="CREATE TABLE..xf_liam_macros..." />
+            <marker date="1424721746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_liam_macros..." />
+            <marker date="1424721746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_liam_macros..." />
+            <marker date="1424721746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE xf_liam_macros..." />
+            <marker date="1424721746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE liam_macros..." />
+            <marker date="1424721746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE liam_macros..." />
+            <marker date="1424721746000" expanded="true" signature="-1:-1" placeholder="ALTER TABLE liam_macros..." />
+            <marker date="1424721746000" expanded="true" signature="-1:-1" placeholder="DROP TABLE I..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Route/Prefix/Macros.php">
+    <entry file="file://$PROJECT_DIR$/ControllerAdmin/Macros.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="676">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.2868098" vertical-offset="1313" max-vertical-offset="1965">
+          <caret line="100" column="38" selection-start-line="100" selection-start-column="38" selection-end-line="100" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ViewPublic/View.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39110428" vertical-offset="0" max-vertical-offset="652">
+          <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ViewPublic/Edit.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.23006135" vertical-offset="0" max-vertical-offset="652">
+          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ControllerPublic/Macros.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.201878" vertical-offset="147" max-vertical-offset="3705">
+          <caret line="61" column="28" selection-start-line="61" selection-start-column="28" selection-end-line="61" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Model/Macros.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.1267605" vertical-offset="3711" max-vertical-offset="4350">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding>
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..liam_macros..." />
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..liam_macros..." />
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..liam_macros_admin..." />
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..liam_macros_admin..." />
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..liam_macros..." />
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT * FRO..liam_macros_admin..." />
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT macro..xf_user_option..." />
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT macro..xf_user_option..." />
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT macro..xf_user_option..." />
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT macro..xf_user_option..." />
+            <marker date="1424717524000" expanded="true" signature="-1:-1" placeholder="SELECT macro..xf_user_option..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../XenForo/Model/AddOn.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.375" vertical-offset="4392" max-vertical-offset="8790">
+          <caret line="303" column="20" selection-start-line="303" selection-start-column="20" selection-end-line="303" selection-end-column="20" />
+          <folding>
+            <marker date="1424537328000" expanded="true" signature="313:360" placeholder="SELECT * FRO..xf_addon..." />
+            <marker date="1424537328000" expanded="true" signature="827:901" placeholder="SELECT versi..xf_addon..." />
+            <marker date="1424537328000" expanded="true" signature="1093:1136" placeholder="SELECT * FRO..xf_addon..." />
+            <marker date="1424537328000" expanded="true" signature="20939:21003" placeholder="SELECT addon..xf_addon..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../XenForo/Model/CodeEvent.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.916667" vertical-offset="5603" max-vertical-offset="6450">
+          <caret line="399" column="45" selection-start-line="399" selection-start-column="45" selection-end-line="399" selection-end-column="45" />
+          <folding>
+            <marker date="1424537329000" expanded="true" signature="321:372" placeholder="SELECT * FRO..xf_code_event..." />
+            <marker date="1424537329000" expanded="true" signature="641:714" placeholder="SELECT * FRO..xf_code_event..." />
+            <marker date="1424537329000" expanded="true" signature="940:992" placeholder="SELECT * FRO..xf_code_event..." />
+            <marker date="1424537329000" expanded="true" signature="1280:1370" placeholder="SELECT * FRO..xf_code_event..." />
+            <marker date="1424537329000" expanded="true" signature="1588:1656" placeholder="SELECT event..xf_code_event..." />
+            <marker date="1424537329000" expanded="true" signature="5661:5736" placeholder="SELECT * FRO..xf_code_event_listener..." />
+            <marker date="1424537329000" expanded="true" signature="5958:6028" placeholder="SELECT * FRO..xf_code_event_listener..." />
+            <marker date="1424537329000" expanded="true" signature="6315:6412" placeholder="SELECT * FRO..xf_code_event_listener..." />
+            <marker date="1424537329000" expanded="true" signature="6725:7106" placeholder="SELECT liste..xf_code_event_listener..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Addon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20187794" vertical-offset="591" max-vertical-offset="1980">
+          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
           <folding />
         </state>
       </provider>

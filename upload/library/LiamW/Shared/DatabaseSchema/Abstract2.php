@@ -185,7 +185,7 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract2
 	 */
 	protected function _getErrorMessage($sqlError, $version, $sql)
 	{
-		return "An error occurred while running SQL in class " . __CLASS__ . " <!-- $sqlError -->";
+		return "An error occurred while running SQL in class " . $this->_getClassName() . " <!-- $sqlError -->";
 	}
 
 	/**
@@ -225,6 +225,11 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract2
 	protected function _postUninstall()
 	{
 		return true;
+	}
+
+	protected function _getClassName()
+	{
+		return get_class($this);
 	}
 
 	/**

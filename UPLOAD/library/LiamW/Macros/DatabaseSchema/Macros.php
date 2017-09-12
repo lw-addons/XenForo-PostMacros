@@ -2,10 +2,6 @@
 
 class LiamW_Macros_DatabaseSchema_Macros extends LiamW_Shared_DatabaseSchema_Abstract2
 {
-
-	/*
-	 * (non-PHPdoc) @see LiamW_Shared_DatabaseSchema_Abstract::_getInstallSql()
-	 */
 	protected function _getInstallSql()
 	{
 		return array(
@@ -21,7 +17,7 @@ class LiamW_Macros_DatabaseSchema_Macros extends LiamW_Shared_DatabaseSchema_Abs
 			30401 => "ALTER TABLE xf_liam_macros ADD COLUMN thread_title VARCHAR(50) NOT NULL AFTER macro;",
 			30501 => array(
 				"RENAME TABLE xf_liam_macros TO liam_macros",
-				"ALTER TABLE liam_macros CHANGE macroid macro_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY",
+				"ALTER TABLE liam_macros CHANGE macroid macro_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT",
 				"ALTER TABLE liam_macros CHANGE userid user_id INT(10) UNSIGNED NOT NULL"
 			),
 			30603 => array(
@@ -30,11 +26,13 @@ class LiamW_Macros_DatabaseSchema_Macros extends LiamW_Shared_DatabaseSchema_Abs
 		);
 	}
 
-	/*
-	 * (non-PHPdoc) @see LiamW_Shared_DatabaseSchema_Abstract::_getUninstallSql()
-	 */
 	protected function _getUninstallSql()
 	{
 		return array('DROP TABLE IF EXISTS liam_macros');
+	}
+
+	protected function _getClassName()
+	{
+		return get_class($this);
 	}
 }

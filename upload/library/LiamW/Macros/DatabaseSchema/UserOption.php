@@ -56,4 +56,9 @@ class LiamW_Macros_DatabaseSchema_UserOption extends LiamW_Shared_DatabaseSchema
 		{
 		}
 	}
+
+	protected function _getClassName()
+	{
+		return get_class($this);
+	}
 }

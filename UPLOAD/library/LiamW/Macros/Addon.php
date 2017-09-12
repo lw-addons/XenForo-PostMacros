@@ -11,6 +11,8 @@
 class LiamW_Macros_Addon
 {
 
+	protected static $_canViewMacros = null;
+
 	public static function install($installedAddon)
 	{
 		if (XenForo_Application::$versionId < 1020070)
@@ -45,49 +47,80 @@ class LiamW_Macros_Addon
 		$forum->uninstall();
 	}
 
-	public static function extendClass($class, array &$extend)
+	public static function containerParams(array &$params, XenForo_Dependencies_Abstract $dependencies)
 	{
-		switch ($class)
+		if (self::$_canViewMacros == null)
 		{
-			case "XenForo_ViewPublic_Thread_Create":
-			case "XenForo_ViewPublic_Thread_Reply":
-				XenForo_Application::set('macro_type', 'ntnr');
-				$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_View';
-				break;
-			case "XenForo_ViewPublic_Thread_View":
-				XenForo_Application::set('macro_type', 'qr');
-				$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_View';
-				break;
-			case "XenForo_ViewPublic_Conversation_View":
-				XenForo_Application::set('macro_type', 'convoqr');
-				$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_View';
-				break;
-			case "XenForo_ViewPublic_Conversation_Reply":
-			case "XenForo_ViewPublic_Conversation_Add":
-				XenForo_Application::set('macro_type', 'convoncnr');
-				$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_View';
-				break;
-			case "XenForo_ControllerAdmin_Forum":
-				$extend[] = 'LiamW_Macros_Extend_ControllerAdmin_Forum';
-				break;
-			case "XenForo_DataWriter_Forum":
-				$extend[] = 'LiamW_Macros_Extend_DataWriter_Forum';
-				break;
-			case "XenForo_DataWriter_User":
-				$extend[] = 'LiamW_Macros_Extend_DataWriter_User';
-				break;
-			case "XenForo_ControllerPublic_Account":
-				$extend[] = 'LiamW_Macros_Extend_ControllerPublic_Account';
+			/* @var $model LiamW_Macros_Model_Macros */
+			$model = XenForo_Model::create('LiamW_Macros_Model_Macros');
+
+			self::$_canViewMacros = $model->canViewMacros(XenForo_Visitor::getInstance(), true);
 		}
+
+		$params['canViewMacros'] = self::$_canViewMacros;
 	}
 
-	public static function containerParam(array &$params, XenForo_Dependencies_Abstract $dependencies)
+	public static function templateCreate(&$templateName, array &$params, XenForo_Template_Abstract $template)
 	{
-		/* @var $model LiamW_Macros_Model_Macros */
-		$model = XenForo_Model::create('LiamW_Macros_Model_Macros');
+		if (self::$_canViewMacros == null)
+		{
+			/* @var $model LiamW_Macros_Model_Macros */
+			$model = XenForo_Model::create('LiamW_Macros_Model_Macros');
 
-		$params['canUseMacros'] = $model->canViewMacros(XenForo_Visitor::getInstance(), true);
+			self::$_canViewMacros = $model->canViewMacros(XenForo_Visitor::getInstance(), true);
+		}
+
+		$params['canViewMacros'] = self::$_canViewMacros;
 	}
 
+	public static function extendThreadCreateView($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_Create';
+	}
+
+	public static function extendThreadReplyView($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_Reply';
+	}
+
+	public static function extendThreadViewView($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_ViewPublic_Thread_View';
+	}
+
+	public static function extendConversationAddView($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_ViewPublic_Conversation_Add';
+	}
+
+	public static function extendConversationReplyView($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_ViewPublic_Conversation_Reply';
+	}
+
+	public static function extendConversationViewView($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_ViewPublic_Conversation_View';
+	}
+
+	public static function extendForumAdminController($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_ControllerAdmin_Forum';
+	}
+
+	public static function extendAccountController($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_ControllerPublic_Account';
+	}
+
+	public static function extendForumDataWriter($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_DataWriter_Forum';
+	}
+
+	public static function extendUserDataWriter($class, array &$extend)
+	{
+		$extend[] = 'LiamW_Macros_Extend_DataWriter_User';
+	}
 }
 

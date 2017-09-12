@@ -8,7 +8,6 @@
  */
 class LiamW_Macros_ControllerPublic_Macros extends XenForo_ControllerPublic_Abstract
 {
-
 	protected function _preDispatch($action)
 	{
 		$this->_assertRegistrationRequired();

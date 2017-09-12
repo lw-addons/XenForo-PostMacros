@@ -1,6 +1,6 @@
 <?php
 
-class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Extend_ViewPublic_Thread_View
+class LiamW_Macros_Extend_ViewPublic_Thread_Reply extends XFCP_LiamW_Macros_Extend_ViewPublic_Thread_Reply
 {
 	public function renderHtml()
 	{
@@ -37,7 +37,7 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 		{
 			$this->_params['macros'] = $macrosModel->prepareArrayForDropDown($this, $userMacros, $adminMacros);
 
-			$show = !$macrosModel->hiddenOnThreadQuickReply($userId);
+			$show = !$macrosModel->hiddenOnThreadCreateReply($userId);
 
 			$this->_params['canViewMacros'] = ($macrosModel->canViewMacros($visitor) && $show && $forum['allow_macros']);
 			XenForo_CodeEvent::fire('liam_macros_ready', array(
@@ -57,7 +57,7 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 		$threadName = $thread['title'];
 		$forumName = $forum['title'];
 
-		$macro = str_replace(array(
+		return str_replace(array(
 			"{threaduser}",
 			"{threadname}",
 			"{forumname}"
@@ -66,15 +66,13 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 			$threadName,
 			$forumName
 		), $macro);
-
-		return $macro;
 	}
 
 }
 
 if (false)
 {
-	class XFCP_LiamW_Macros_Extend_ViewPublic_Thread_View extends XenForo_ViewPublic_Thread_View
+	class XFCP_LiamW_Macros_Extend_ViewPublic_Thread_Reply extends XenForo_ViewPublic_Thread_Reply
 	{
 	}
 }
