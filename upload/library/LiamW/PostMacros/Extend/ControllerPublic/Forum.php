@@ -4,8 +4,8 @@ class LiamW_PostMacros_Extend_ControllerPublic_Forum extends XFCP_LiamW_PostMacr
 {
 	public function actionAddThread()
 	{
-		$setPrefix = $this->_input->filterSingle('set_prefix', XenForo_Input::UINT);
-		$setLocked = $this->_input->filterSingle('set_locked', xenforo_input::BOOLEAN);
+		$setPrefix = $this->_input->filterSingle('macros_set_prefix', XenForo_Input::UINT);
+		$setLocked = $this->_input->filterSingle('macros_set_locked', XenForo_Input::BOOLEAN);
 
 		if (XenForo_Visitor::getInstance()->hasPermission('forum', 'editAnyPost'))
 		{

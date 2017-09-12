@@ -17,7 +17,10 @@
 
 			if (!this.$macros.data('editorid'))
 			{
-				console.error('Post Macros: There is no editor ID on the macro select. Aborting setup.');
+				console.error('Post Macros: There is no editor ID on the macro select. Aborting setup & hiding select.');
+
+                this.$macros.xfRemove('xfHide');
+
 				return;
 			}
 
@@ -61,8 +64,11 @@
 
 			if (!this.$editor)
 			{
-				console.warn("Post Macros: Unable to find editor! Post macros isn't going to work...");
-				return;
+				console.warn("Post Macros: Unable to find editor! Post macros isn't going to work :( Getting rid of select.");
+
+                this.$macros.xfRemove('xfHide');
+
+                return;
 			}
 
 			this.type = typeof (this.$editor.val) == "undefined" ? 'html' : 'plain';
@@ -84,7 +90,7 @@
 
 			this.updateVars();
 
-			XenForo.ajax("post-macros/use", {
+			XenForo.ajax("index.php?post-macros/use", {
 				'macro_id': macroId,
 				'render': this.type == 'html' ? 1 : 0,
 				'type': this.$macros.find(':selected').data('type'),
@@ -132,8 +138,9 @@
 				}
 			}
 
+            console.log(this.titleField);
 
-			if (ajaxData.threadTitle && this.titleField)
+			if (ajaxData.threadTitle && this.titleField && this.titleField.val() == "")
 			{
 				this.titleField.val(ajaxData.threadTitle);
 			}
@@ -141,13 +148,17 @@
 			if (ajaxData.lockThread)
 			{
 				console.log('Locking thread');
-				$('<input type="hidden" name="set_locked" value="1" />').appendTo(this.$form);
+                var existingLockInput = $('#ctrl_macros_set_locked');
+                if (existingLockInput) existingLockInput.remove();
+				$('<input id="ctrl_macros_set_locked" type="hidden" name="macros_set_locked" value="1" />').appendTo(this.$form);
 			}
 
 			if (ajaxData.threadPrefix)
 			{
 				console.log('Setting prefix...');
-				$('<input type="hidden" name="set_prefix" value="' + ajaxData.threadPrefix + '" />').appendTo(this.$form);
+                var existingPrefixInput = $('#ctrl_macros_set_prefix');
+                if (existingPrefixInput) existingPrefixInput.remove();
+                $('<input id="ctrl_macros_set_prefix" type="hidden" name="macros_set_prefix" value="' + ajaxData.threadPrefix + '" />').appendTo(this.$form);
 			}
 
 			this.$macros.val(0);
@@ -158,7 +169,6 @@
 			return str.replace(/(:|\.|\[|\]|,)/g, "\\$1");
 		}
 	};
-
 
 	XenForo.PostMacrosExpand = function ($ol)
 	{
@@ -231,5 +241,4 @@
 
 	XenForo.register('select.MacroSelect', 'XenForo.PostMacros');
 	XenForo.register('.MacroExpand', 'XenForo.PostMacrosExpand');
-}
-(jQuery, this, document);
+}(jQuery, this, document);

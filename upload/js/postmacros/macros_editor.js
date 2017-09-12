@@ -99,7 +99,7 @@
 				macroId = data[1];
 			}
 
-			XenForo.ajax("post-macros/use", {
+			XenForo.ajax("index.php?post-macros/use", {
 				'macro_id': macroId,
 				'render': 1,
 				'type': type,
@@ -112,23 +112,22 @@
 				}
 
 				var $titleField = $('#ctrl_title_thread_create');
-				if (ajaxData.threadTitle && $titleField)
-				{
-					$titleField.val(ajaxData.threadTitle);
-				}
+                if (ajaxData.threadTitle && $titleField && $titleField.val == "")
+                {
+                    $titleField.val(ajaxData.threadTitle);
+                }
 
-				if (ajaxData.lockThread)
-				{
-					console.log('Locking thread');
-					$('<input type="hidden" name="set_locked" value="1" />').appendTo(self.macroForm);
-					console.log(self.macroForm);
-				}
+                if (ajaxData.lockThread)
+                {
+                    console.log('Locking thread');
+                    $('<input type="hidden" name="macros_set_locked" value="1" />').appendTo(self.$form);
+                }
 
-				if (ajaxData.threadPrefix)
-				{
-					console.log('Setting prefix...');
-					$('<input type="hidden" name="set_prefix" value="' + ajaxData.threadPrefix + '" />').appendTo(self.macroForm);
-				}
+                if (ajaxData.threadPrefix)
+                {
+                    console.log('Setting prefix...');
+                    $('<input type="hidden" name="macros_set_prefix" value="' + ajaxData.threadPrefix + '" />').appendTo(self.$form);
+                }
 
 				ed.syncCode();
 				ed.modalClose();
@@ -153,8 +152,7 @@
 					self.$macroSelect.focus();
 				}, 100);
 			}), ed);
-		}
-		,
+		},
 
 		insertMacro: function (e, ed)
 		{
@@ -179,5 +177,4 @@
 
 	XenForo.register('textarea.BbCodeWysiwygEditor', 'XenForo.MacrosButtons');
 
-}
-(jQuery, this, document);
+}(jQuery, this, document);

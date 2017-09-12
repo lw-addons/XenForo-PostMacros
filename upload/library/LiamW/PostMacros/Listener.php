@@ -89,31 +89,4 @@ class LiamW_PostMacros_Listener
 		$params['canUseMacros'] = XenForo_Visitor::getInstance()
 			->hasPermission('liam_postMacros', 'liamMacros_canUseMacros');
 	}
-
-	// The view extension functions are still here because XF has a habit of not letting installs go through
-	// if a function for a listener that has been removed doesn't exist...
-
-	public static function extendThreadViewView($class, array &$extend)
-	{
-	}
-
-	public static function extendThreadReplyView($class, array &$extend)
-	{
-	}
-
-	public static function extendThreadCreateView($class, array &$extend)
-	{
-	}
-
-	public static function extendConversationAddView($class, array &$extend)
-	{
-	}
-
-	public static function extendConversationReplyView($class, array &$extend)
-	{
-	}
-
-	public static function extendConversationViewView($class, array &$extend)
-	{
-	}
 }

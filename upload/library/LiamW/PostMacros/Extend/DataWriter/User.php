@@ -29,7 +29,7 @@ class LiamW_PostMacros_Extend_DataWriter_User extends XFCP_LiamW_PostMacros_Exte
 			)
 		);
 
-		return array_merge_recursive(parent::_getFields(), $newFields);
+		return XenForo_Application::mapMerge(parent::_getFields(), $newFields);
 	}
 
 	protected function _preSave()
