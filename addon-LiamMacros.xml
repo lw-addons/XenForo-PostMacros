@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="LiamMacros" title="Post Macros" version_string="3.5.1" version_id="30501" url="http://xf-liam.com/categories/post-macros.8/" install_callback_class="LiamW_Macros_Addon" install_callback_method="install" uninstall_callback_class="LiamW_Macros_Addon" uninstall_callback_method="uninstall">
+  <admin_navigation>
+    <navigation navigation_id="macros" parent_navigation_id="options" display_order="500000" link="macros" admin_permission_id="" debug_only="0" hide_no_children="0"/>
+  </admin_navigation>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates>
+    <template title="liammacros_list"><![CDATA[<xen:title>{xen:phrase liammacros_macros}</xen:title>
+
+<xen:topctrl>
+	<a href="{xen:adminlink 'macros/new'}" class="button">+ {xen:phrase liammacros_new_macro}</a>
+</xen:topctrl>
+
+<xen:require css="filter_list.css" />
+<xen:require js="js/xenforo/filter_list.js" />
+
+<xen:form action="{xen:adminlink 'macros'}" class="section">
+
+	<h2 class="subHeading">
+		<xen:include template="filter_list_controls" />
+		{xen:phrase liammacros_macros}
+	</h2>
+	
+	<ul class="FilterList Scrollable">
+		<ol>
+			<xen:foreach loop="$macros" value="$macro">
+				<xen:listitem
+					id="{$macro.id}"
+					href="{xen:adminlink 'macros/edit', $macro}"
+					label="{$macro.name}"
+					delete="{xen:adminlink 'macros/delete', $macro}" />
+			</xen:foreach>
+		</ol>
+	</ul>
+
+	<p class="sectionFooter">{xen:phrase showing_x_of_y_items, 'count=<span class="FilterListCount">{xen:number $totalMacros}</span>', 'total={xen:number $totalMacros}'}</p>
+
+</xen:form>]]></template>
+    <template title="liammacros_modify"><![CDATA[<xen:title><xen:if is="{$macro.id}">{xen:phrase liammacros_edit}<xen:else />{xen:phrase liammacros_new}</xen:if></xen:title>
+
+<xen:form action="{xen:adminlink 'macros/save'}" method="post" class="AutoValidator" data-redirect="on" >
+	<xen:textboxunit label="{xen:phrase liammacros_name}:" name="name" value="{$macro.name}" data-livetitletemplate="{xen:if {$macro.name},
+		'{xen:phrase liammacros_edit}: <em>%s</em>',
+		'{xen:phrase liammacros_new}: <em>%s</em>'}" />
+	<xen:textboxunit label="{xen:phrase liammacros_thread_title}:" name="thread_title" value="{$macro.thread_title}" />
+	<xen:textboxunit label="{xen:phrase liammacros_content}:" name="content" value="{$macro.content}" rows="5" />
+	<xen:checkboxunit label="{xen:phrase liammacros_ugps}:" name="usergroups">
+		<xen:options source="$usergroups" checked="$macro.usergroups"/>
+	</xen:checkboxunit>
+	
+	
+	<input type="hidden" name="id" value="{$macro.id}" />
+	<xen:submitunit save="{xen:phrase save}" />
+	
+</xen:form>]]></template>
+  </admin_templates>
+  <admin_template_modifications/>
+  <code_events>
+    <event event_id="liammacros_macro_ready"><![CDATA[<p>Called when the view parameters for the drop down have been set. You can use this to modify the macro name, content, html content, as well as whether or not the select box will be displayed.</p>
+
+<p>Callback signature:</p>
+<blockquote><code><em>array</em> &$macros, &$canviewmacros</code></blockquote>
+
+<p>Arguments:</p>
+<ol>
+	<li><code><em>array</em> &$macros</code> - array of macro arrays being passed to the selector.</li>
+	<li><code><em>boolean</em> &$canviewmacros</code> - if false, the selector will not be shown.</li>
+</ol>]]></event>
+  </code_events>
+  <code_event_listeners>
+    <listener event_id="container_public_params" execute_order="10" callback_class="LiamW_Macros_Addon" callback_method="containerParam" active="1" hint="" description=""/>
+    <listener event_id="load_class" execute_order="10" callback_class="LiamW_Macros_Addon" callback_method="extendClass" active="1" hint="" description="Add the relevant parameters to the macro drop down view."/>
+  </code_event_listeners>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups/>
+  <permissions>
+    <permission_groups>
+      <permission_group permission_group_id="macro_permissions"/>
+    </permission_groups>
+    <permissions>
+      <permission permission_group_id="macro_permissions" permission_id="can_create_staff_macros" permission_type="flag" depend_permission_id="use_staff_macros" default_value="unset" interface_group_id="macros" display_order="5"/>
+      <permission permission_group_id="macro_permissions" permission_id="can_delete_staff_macros" permission_type="flag" default_value="unset" interface_group_id="macros" display_order="1000"/>
+      <permission permission_group_id="macro_permissions" permission_id="can_edit_all_staff_macros" permission_type="flag" depend_permission_id="use_staff_macros" default_value="unset" interface_group_id="macros" display_order="6"/>
+      <permission permission_group_id="macro_permissions" permission_id="can_use_macros" permission_type="flag" default_value="unset" interface_group_id="macros" display_order="1"/>
+      <permission permission_group_id="macro_permissions" permission_id="max_macros" permission_type="integer" default_value_int="0" interface_group_id="macros" display_order="2"/>
+      <permission permission_group_id="macro_permissions" permission_id="use_staff_macros" permission_type="flag" depend_permission_id="can_use_macros" default_value="unset" interface_group_id="macros" display_order="4"/>
+    </permissions>
+    <interface_groups>
+      <interface_group interface_group_id="macros" display_order="10"/>
+    </interface_groups>
+  </permissions>
+  <phrases>
+    <phrase title="add_macro" version_id="14" version_string="3.1.1"><![CDATA[Save Macro]]></phrase>
+    <phrase title="admin_macros" version_id="14" version_string="3.1.1"><![CDATA[Admin Macros]]></phrase>
+    <phrase title="admin_macros_description" version_id="14" version_string="3.1.1"><![CDATA[These macros have been defined by the administrator for your usergroup. They cannot be edited or deleted.]]></phrase>
+    <phrase title="admin_navigation_macros" version_id="6" version_string="2.1"><![CDATA[Macro Definitions]]></phrase>
+    <phrase title="controls_not_available" version_id="14" version_string="3.1.1"><![CDATA[Controls not available]]></phrase>
+    <phrase title="delete_macro" version_id="0" version_string="1.0"><![CDATA[Delete Macro]]></phrase>
+    <phrase title="edit_macro" version_id="0" version_string="1.0"><![CDATA[Edit Macro]]></phrase>
+    <phrase title="insert_macro" version_id="0" version_string="1.0"><![CDATA[Insert Macro]]></phrase>
+    <phrase title="liammacros_content" version_id="6" version_string="2.1"><![CDATA[Macro Definition Content]]></phrase>
+    <phrase title="liammacros_edit" version_id="6" version_string="2.1"><![CDATA[Edit Macro Definition]]></phrase>
+    <phrase title="liammacros_macros" version_id="6" version_string="2.1"><![CDATA[Macro Definitions]]></phrase>
+    <phrase title="liammacros_name" version_id="6" version_string="2.1"><![CDATA[Macro Definition Name]]></phrase>
+    <phrase title="liammacros_new" version_id="6" version_string="2.1"><![CDATA[New Macro Definition]]></phrase>
+    <phrase title="liammacros_new_macro" version_id="6" version_string="2.1"><![CDATA[New Macro]]></phrase>
+    <phrase title="liammacros_thread_title" version_id="30401" version_string="3.4.1"><![CDATA[Macro definition thread title]]></phrase>
+    <phrase title="liammacros_ugps" version_id="6" version_string="2.1"><![CDATA[Usergroups allowed to use macro]]></phrase>
+    <phrase title="macros" version_id="0" version_string="1.0"><![CDATA[Macros]]></phrase>
+    <phrase title="macros_delete_confirm" version_id="14" version_string="3.1.1"><![CDATA[Confirm deletion of macro]]></phrase>
+    <phrase title="macros_hide_convo_ncnr" version_id="30201" version_string="3.2.1"><![CDATA[Hide macro selector on new conversation and conversation reply pages]]></phrase>
+    <phrase title="macros_hide_convo_qr" version_id="30201" version_string="3.2.1"><![CDATA[Hide macro selector on conversation quick reply]]></phrase>
+    <phrase title="macros_hide_new_thread_new_reply" version_id="30201" version_string="3.2.1"><![CDATA[Hide macro selector on create thread and reply to thread pages]]></phrase>
+    <phrase title="macros_hide_qr" version_id="30201" version_string="3.2.1"><![CDATA[Hide macro selector on quick reply]]></phrase>
+    <phrase title="macros_managing_macros" version_id="30304" version_string="3.3.4"><![CDATA[Managing macros]]></phrase>
+    <phrase title="macros_no_macro" version_id="1" version_string="1.0"><![CDATA[You must enter macro content!]]></phrase>
+    <phrase title="macros_no_name" version_id="0" version_string="1.0"><![CDATA[Please enter a name for the macro!]]></phrase>
+    <phrase title="macros_options" version_id="30200" version_string="3.2.0"><![CDATA[Macro Options]]></phrase>
+    <phrase title="macros_other_macro" version_id="30304" version_string="3.3.4"><![CDATA[<i>This is a staff macro provided by {name}</i>]]></phrase>
+    <phrase title="macros_own_staff_macro" version_id="30304" version_string="3.3.4"><![CDATA[<i>This is your own staff macro</i>]]></phrase>
+    <phrase title="macros_thread_title" version_id="30401" version_string="3.4.1"><![CDATA[Thread Title]]></phrase>
+    <phrase title="macros_vars" version_id="30304" version_string="3.3.4"><![CDATA[{threaduser} - The name of the thread author<br>
+{threadname} - The title of the thread<br>
+{forumname} - The title of the forum the thread has been posted in]]></phrase>
+    <phrase title="macros_vars_available" version_id="30304" version_string="3.3.4"><![CDATA[The following variables are available:]]></phrase>
+    <phrase title="macro_cant_add" version_id="0" version_string="1.0"><![CDATA[You cannot add new Macros!]]></phrase>
+    <phrase title="macro_content" version_id="0" version_string="1.0"><![CDATA[Macro Content:]]></phrase>
+    <phrase title="macro_doesnt_exist" version_id="14" version_string="3.1.1"><![CDATA[The macro you requested doesn't exist.]]></phrase>
+    <phrase title="macro_edit" version_id="0" version_string="1.0"><![CDATA[Edit Macro: ]]></phrase>
+    <phrase title="macro_inserted" version_id="0" version_string="1.0"><![CDATA[Macro Inserted]]></phrase>
+    <phrase title="macro_name" version_id="0" version_string="1.0"><![CDATA[Macro Name: ]]></phrase>
+    <phrase title="macro_name_placeholder" version_id="0" version_string="1.0"><![CDATA[Macro Name...]]></phrase>
+    <phrase title="macro_no_macro" version_id="0" version_string="1.0"><![CDATA[Please enter a body for the macro!]]></phrase>
+    <phrase title="macro_text_placeholder" version_id="0" version_string="1.0"><![CDATA[Macro Text...]]></phrase>
+    <phrase title="macro_threadtitle_placeholder" version_id="30401" version_string="3.4.1"><![CDATA[Thead title...]]></phrase>
+    <phrase title="new_macro" version_id="0" version_string="1.0"><![CDATA[Create Macro]]></phrase>
+    <phrase title="permission_group_macro_permissions" version_id="0" version_string="1.0"><![CDATA[Macro Permissions]]></phrase>
+    <phrase title="permission_interface_macros" version_id="0" version_string="1.0"><![CDATA[Macro Permissions]]></phrase>
+    <phrase title="permission_macro_permissions_can_create_staff_macros" version_id="14" version_string="3.1.1"><![CDATA[Can create staff macros]]></phrase>
+    <phrase title="permission_macro_permissions_can_delete_staff_macros" version_id="30304" version_string="3.3.4"><![CDATA[Can delete all staff macros]]></phrase>
+    <phrase title="permission_macro_permissions_can_edit_all_staff_macros" version_id="14" version_string="3.1.1"><![CDATA[Can edit all staff macros]]></phrase>
+    <phrase title="permission_macro_permissions_can_use_macros" version_id="0" version_string="1.0"><![CDATA[Can Use Macros]]></phrase>
+    <phrase title="permission_macro_permissions_max_macros" version_id="6" version_string="2.1"><![CDATA[Maximum Macros (Set to 0 to stop user creating their own macros)]]></phrase>
+    <phrase title="permission_macro_permissions_use_staff_macros" version_id="5" version_string="2.0"><![CDATA[Can use staff macros]]></phrase>
+    <phrase title="postmacros_error_deleting" version_id="14" version_string="3.1.1"><![CDATA[An error occurred while deleting the macro.]]></phrase>
+    <phrase title="postmacros_master_name" version_id="14" version_string="3.1.1"><![CDATA[Select a macro to insert...]]></phrase>
+    <phrase title="postmacros_only_delete_own" version_id="14" version_string="3.1.1"><![CDATA[You can only delete your own macros!]]></phrase>
+    <phrase title="postmacros_usemacro_gone" version_id="14" version_string="3.1.1"><![CDATA[This action has been deprecated. Please remove all references to it. If you arrived here from a link, something is wrong - contact the forum administrator.]]></phrase>
+    <phrase title="post_macros" version_id="14" version_string="3.1.1"><![CDATA[Post Macros]]></phrase>
+    <phrase title="staff_macro" version_id="14" version_string="3.1.1"><![CDATA[Staff Macro]]></phrase>
+  </phrases>
+  <route_prefixes>
+    <route_type type="admin">
+      <prefix original_prefix="macros" class="LiamW_Macros_Route_PrefixAdmin_Macros" build_link="data_only"/>
+    </route_type>
+    <route_type type="public">
+      <prefix original_prefix="macros" class="LiamW_Macros_Route_Prefix_Macros" build_link="data_only"/>
+    </route_type>
+  </route_prefixes>
+  <style_properties/>
+  <templates>
+    <template title="macros" version_id="30401" version_string="3.4.1"><![CDATA[<xen:require css="macros.css" />
+
+<xen:title>{xen:phrase macros}</xen:title>
+<xen:description>{xen:phrase post_macros}</xen:description>
+
+<xen:if is="{$canUseMacros}">
+	<xen:set var="$newMacroButton"><a href="{xen:link 'macros/new'}" class="callToAction"><span>{xen:phrase new_macro}</span></a></xen:set>
+	<xen:topctrl>{xen:raw $newMacroButton}</xen:topctrl>
+	<xen:set var="$macroOptions"><a href="{xen:link 'macros/options'}" style="width: 100%" class="callToAction OverlayTrigger"><span>{xen:phrase macros_options}</span></a></xen:set>
+	{xen:raw $macroOptions}
+</xen:if>
+
+<xen:foreach loop="$macros" value="$macro">
+
+	<ol class="section sectionMain">
+
+		<div class="subHeading">
+			<h3 class="nodeTitle">
+				{$macro.name} <xen:if is="{$macro.staff_macro}"><xen:if is="{$visitor.user_id} == {$macro.userid}"> - {xen:phrase macros_own_staff_macro}<xen:else /> - {xen:phrase macros_other_macro, 'name={$macro.username}'}</xen:if></xen:if>
+			</h3>
+		</div>
+
+		<div class="primaryContent">
+			<p class="muted">{xen:phrase macros_thread_title}: {xen:raw $macro.thread_title}</p>
+		</div>
+
+		<div class="primaryContent">
+			{xen:raw $macro.macro}
+		</div>
+
+		<div class="sectionFooter macroControls">
+			<xen:if is="{$macro.candelete}"><span><a href="{xen:link 'macros/delete', $macro}" class="OverlayTrigger">{xen:phrase delete_macro}</a></span></xen:if>
+			<xen:if is="{$macro.canedit}"><span><a href="{xen:link 'macros/edit', $macro}" class="OverlayTrigger">{xen:phrase edit_macro}</a></span></xen:if>
+			
+			<xen:if is="!{$macro.canedit} && !{$macro.candelete}">
+				<i>{xen:phrase controls_not_available}</i>
+			</xen:if>
+		</div>
+
+	</ol>
+
+</xen:foreach>
+
+<xen:if is="{$adminmacros}">
+	<div class="titleBar macroHeader">
+		<h1>{xen:phrase admin_macros}</h1>
+		<p id="pageDescription" class="muted baseHtml">{xen:phrase admin_macros_description}</p>
+	</div>
+
+	<xen:foreach loop="$adminmacros" value="$name">
+		<ol class="section sectionMain">
+	
+			<div class="subHeading">
+				<h3 class="nodeTitle">
+					{$name.name}
+				</h3>
+			</div>
+	
+			<div class="primaryContent">
+				<p class="muted">{xen:phrase macros_thread_title}: {xen:raw $name.thread_title}</p>
+			</div>
+			
+			<div class="primaryContent">
+				{xen:raw $name.content}
+			</div>
+	
+			<div class="sectionFooter macroControls">
+				<i>{xen:phrase controls_not_available}</i>
+			</div>
+	
+		</ol>
+	</xen:foreach>
+
+</xen:if>]]></template>
+    <template title="macros.css" version_id="14" version_string="3.1.1"><![CDATA[.macroHeader h1 { padding-top: 10px; } 
+
+.macroControls span, .macroControls i {
+	float: right;
+	padding-right: 10px;
+}]]></template>
+    <template title="macros_account_link" version_id="30200" version_string="3.2.0"><![CDATA[<xen:if is="{$canUseMacros}"><li><a href="{xen:link full:macros}">{xen:phrase macros}</a></li></xen:if>]]></template>
+    <template title="macros_confirm_delete" version_id="14" version_string="3.1.1"><![CDATA[<xen:title>{xen:phrase delete_macro}</xen:title>
+
+<form action="{xen:link 'macros/delete', $macro}" method="post" class="xenForm deleteConfirmForm formOverlay">
+	<p>{xen:phrase macros_delete_confirm}: <b><a href="{xen:link macros/edit, $macro}">{$macro.name}</a></b></p>
+	
+	<dl class="ctrlUnit submitUnit">
+		<dt></dt>
+		<dd>
+			<input type="submit" value="{xen:phrase delete_macro}" class="button primary" accesskey="s">
+			<input type="reset" class="button OverlayCloser" value="{xen:phrase cancel}">
+		</dd>
+	</dl>
+		
+	<input type="hidden" name="_xfConfirm" value="1">	
+	<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+</form>]]></template>
+    <template title="macros_modify" version_id="30401" version_string="3.4.1"><![CDATA[<xen:if is="{$macroid}">
+	<xen:title>{xen:phrase macro_edit} {$macroname}</xen:title>
+<xen:else />
+	<xen:title>{xen:phrase new_macro}</xen:title>
+</xen:if>
+
+<xen:if is="{$macroid}">
+	<xen:navigation>
+		<xen:breadcrumb href="{xen:link 'full:macros'}">{xen:phrase macros}</xen:breadcrumb>
+		<xen:breadcrumb href="{xen:link 'full:macros'}">{$macroname}</xen:breadcrumb>
+	</xen:navigation>
+<xen:else />
+	<xen:navigation>
+		<xen:breadcrumb href="{xen:link 'full:macros'}">{xen:phrase macros}</xen:breadcrumb>
+	</xen:navigation>
+</xen:if>
+
+<form action="{xen:link 'macros/write'}" method="post" class="xenForm AutoValidator formOverlay" data-redirect="on">
+	<fieldset>
+				
+		<dl class="ctrlUnit fullWidth">
+			<dt></dt>
+			<dd style="padding-left: 0px; padding-right: 0px;"><input type="text" style="width: fill-parent;" name="name" class="textCtrl titleCtrl" placeholder="{xen:phrase macro_name_placeholder}" value="{$macroname}" data-liveTitleTemplate="<xen:if is="{$macroid}">{xen:phrase edit_macro}<xen:else />{xen:phrase new_macro}</xen:if>: <em>%s</em>"></dd>
+		</dl>
+		
+		<dl class="ctrlUnit fullWidth">
+			<dt></dt>
+			<dd style="padding-left: 0px; padding-right: 0px;"><input type="text" style="width: fill-parent;" name="thread_title" class="textCtrl" placeholder="{xen:phrase macro_threadtitle_placeholder}" value="{$macro.thread_title}" data-liveTitleTemplate="<xen:if is="{$macroid}">{xen:phrase edit_macro}<xen:else />{xen:phrase new_macro}</xen:if>: <em>%s</em>"></dd>
+		</dl>
+		
+		<dl class="ctrlUnit fullWidth">
+			<dt></dt>
+			{xen:raw $editorTemplate}
+		</dl>
+		
+		<xen:if is="{$viewsm}">
+			<dl>
+				<dd><input type="checkbox" id="ctrl_staff_macro" name="staff_macro" value="true" <xen:if is="{$staffmacro}">checked="checked"</xen:if> <xen:if is="{$smdis}">disabled="true"</xen:if>> <label for="ctrl_staff_macro">{xen:phrase staff_macro}</label></dd>
+				<dt></dt>
+			</dl>
+		</xen:if>
+		
+			
+		<input type="hidden" name="_xfToken" value="{$visitor.csrf_token_page}" />
+		<input type="hidden" name="macroid" value="{$macroid}" />
+	</fieldset>
+	
+	<dl class="ctrlUnit submitUnit">
+		<dt></dt>
+		<dd>
+			<input type="submit" value="{xen:phrase add_macro}" class="button primary" accesskey="s">
+			<xen:if is="{$macroid}"><input type="reset" class="button OverlayCloser" value="{xen:phrase cancel}"></xen:if>
+		</dd>
+	</dl>
+	
+	<dl class="ctrlUnit">
+		<dt>{xen:phrase macros_vars_available}</dt>
+		<dd>{xen:phrase macros_vars}</dd>
+	</dl>
+</form>]]></template>
+    <template title="macros_options" version_id="30201" version_string="3.2.1"><![CDATA[<xen:title>{xen:phrase macros_options}</xen:title>
+
+<form method="post" action="{xen:link macros/save-options}" class="xenForm formOverlay AutoValidator">
+	<fieldset>
+		
+		<dl class="ctrlUnit fullWidth">
+			<dt></dt>
+			<dd style="padding-left: 0px; padding-right: 0px;">
+				<label for="macros_hide_qr">{xen:phrase macros_hide_qr}:</label>
+				<input type="checkbox" value="1" id="macros_hide_qr" name="macros_hide_qr" {xen:checked {$macros_hide_qr}} />
+			</dd>
+		</dl>
+		
+		<dl class="ctrlUnit fullWidth">
+			<dt></dt>
+			<dd style="padding-left: 0px; padding-right: 0px;">
+				<label for="macros_hide_ntnr">{xen:phrase macros_hide_new_thread_new_reply}:</label>
+				<input type="checkbox" value="1" id="macros_hide_ntnr" name="macros_hide_ntnr" {xen:checked {$macros_hide_ntnr}} />		
+			</dd>
+		</dl>
+		
+		<dl class="ctrlUnit fullWidth">
+			<dt></dt>
+			<dd style="padding-left: 0px; padding-right: 0px;">
+				<label for="macros_hide_convo_qr">{xen:phrase macros_hide_convo_qr}:</label>
+				<input type="checkbox" value="1" id="macros_hide_convo_qr" name="macros_hide_convo_qr" {xen:checked {$macros_hide_convo_qr}} />
+			</dd>
+		</dl>
+		
+		<dl class="ctrlUnit fullWidth">
+			<dt></dt>
+			<dd style="padding-left: 0px; padding-right: 0px;">
+				<label for="macros_hide_convo_ncnr">{xen:phrase macros_hide_convo_ncnr}:</label>
+				<input type="checkbox" value="1" id="macros_hide_convo_ncnr" name="macros_hide_convo_ncnr" {xen:checked {$macros_hide_convo_ncnr}} />
+			</dd>
+		</dl>
+	</fieldset>
+	
+	<input type="hidden" name="existing" value="{$existing}" />
+	
+	<dl class="ctrlUnit submitUnit">
+		<dt></dt>
+		<dd>
+			<input type="submit" value="{xen:phrase save}" class="button primary" accesskey="s">
+			<input type="reset" class="button OverlayCloser" value="{xen:phrase cancel}">
+		</dd>
+	</dl>
+</form>]]></template>
+    <template title="macros_select" version_id="30401" version_string="3.4.1"><![CDATA[<xen:require js="js/macros/macros.js" />
+	
+<xen:if is="{$canviewmacros}">
+	<span {xen:if '{$qreply}', 'style="float: left;"'}>
+		<select name="macros" class="textCtrl" id="macroSelect" {xen:if '!{$qreply}', 'style="width: 100%;"'}>
+			<xen:foreach loop="$macros" value="$macro">
+				<option data-valuehtml="{$macro.macrohtml}" data-valuetitle="{$macro.thread_title}" value="{$macro.macro}">{$macro.name}</option>
+			</xen:foreach>
+		</select>
+	</span>
+</xen:if>]]></template>
+  </templates>
+  <public_template_modifications>
+    <modification template="conversation_add" modification_key="add_drop_down_create" description="" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[{xen:raw $editorTemplate}</dd>]]></find>
+      <replace><![CDATA[<xen:include template="macros_select" />$0]]></replace>
+    </modification>
+    <modification template="conversation_add" modification_key="converdation_new_macros" description="" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<form action="{xen:link 'conversations/insert'}" method="post" class="xenForm Preview AutoValidator"]]></find>
+      <replace><![CDATA[$0 id="main_form"]]></replace>
+    </modification>
+    <modification template="conversation_reply" modification_key="conversationreplymacros" description="" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<form action="{xen:link 'conversations/insert-reply', $conversation}" method="post" class="xenForm Preview"]]></find>
+      <replace><![CDATA[$0 id="main_form"]]></replace>
+    </modification>
+    <modification template="conversation_reply" modification_key="convoreply_macros" description="" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[{xen:raw $editorTemplate}</dd>]]></find>
+      <replace><![CDATA[<xen:include template="macros_select" />$0]]></replace>
+    </modification>
+    <modification template="thread_create" modification_key="macros_select" description="" execution_order="1" enabled="1" action="preg_replace">
+      <find><![CDATA[/<form action="{xen:link 'forums\/add-thread', \$forum}"(.*?)data-redirect="on"
+/is]]></find>
+      <replace><![CDATA[$0id="main_form"]]></replace>
+    </modification>
+    <modification template="navigation_visitor_tab" modification_key="macrosaccountlink" description="Adds macros link to drop down" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<xen:if is="{$canEditSignature}"><li><a href="{xen:link account/signature}">{xen:phrase signature}</a></li></xen:if>]]></find>
+      <replace><![CDATA[$0
+<xen:include template="macros_account_link" />]]></replace>
+    </modification>
+    <modification template="thread_create" modification_key="macrosdropdowntcreate" description="" execution_order="2" enabled="1" action="str_replace">
+      <find><![CDATA[{xen:raw $editorTemplate}</dd>]]></find>
+      <replace><![CDATA[<xen:include template="macros_select" />$0]]></replace>
+    </modification>
+    <modification template="quick_reply" modification_key="macrosqreply" description="" execution_order="100" enabled="1" action="str_replace">
+      <find><![CDATA[<input type="submit" class="button primary" value="{xen:phrase post_reply}" accesskey="s" />
+			<xen:include template="attachment_upload_button" />
+			<xen:if is="{$showMoreOptions}"><input type="submit" class="button DisableOnSubmit" value="{xen:phrase more_options}..." name="more_options" /></xen:if>
+		</div>]]></find>
+      <replace><![CDATA[<xen:include template="macros_select">
+<xen:set var="$qreply">1</xen:set>
+</xen:include>
+			<input type="submit" class="button primary" value="{xen:phrase post_reply}" accesskey="s" />
+			<xen:include template="attachment_upload_button" />
+			<xen:if is="{$showMoreOptions}"><input type="submit" class="button DisableOnSubmit" value="{xen:phrase more_options}..." name="more_options" /></xen:if>
+		</div>]]></replace>
+    </modification>
+    <modification template="thread_reply" modification_key="macrosthreadreplydropdown" description="" execution_order="2" enabled="1" action="str_replace">
+      <find><![CDATA[<dt><label for="ctrl_message">{xen:phrase message}:</label></dt>
+			<dd>]]></find>
+      <replace><![CDATA[$0
+<xen:include template="macros_select" />]]></replace>
+    </modification>
+    <modification template="thread_reply" modification_key="thread_reply_macros" description="" execution_order="1" enabled="1" action="preg_replace">
+      <find><![CDATA[/<form action="{xen:link 'threads\/add-reply', \$thread}" method="post"(.*?)/is]]></find>
+      <replace><![CDATA[$0id="main_form"]]></replace>
+    </modification>
+  </public_template_modifications>
+  <bb_code_media_sites/>
+  <bb_codes/>
+</addon>
