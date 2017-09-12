@@ -58,11 +58,11 @@ class LiamW_PostMacros_DataWriter_Macros extends XenForo_DataWriter
 				),
 				'lock_thread' => array(
 					'type' => self::TYPE_BOOLEAN,
-					'default' => false
+					'default' => 0
 				),
 				'staff_macro' => array(
 					'type' => self::TYPE_BOOLEAN,
-					'default' => false
+					'default' => 0
 				)
 			)
 		);
