@@ -6,6 +6,7 @@ class LiamW_PostMacros_ViewPublic_Create extends XenForo_ViewPublic_Base
 	{
 		parent::prepareParams();
 
-		$this->_params['editorTemplate'] = XenForo_ViewPublic_Helper_Editor::getEditorTemplate($this, 'content');
+		$this->_params['editorTemplate'] = XenForo_ViewPublic_Helper_Editor::getEditorTemplate($this, 'content', '',
+			array('noMacros' => true));
 	}
 }

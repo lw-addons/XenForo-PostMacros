@@ -278,13 +278,18 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 		return false;
 	}
 
-	public function showMacrosSelect(XenForo_ViewPublic_Base $view, array $viewingUser = null)
+	public function showMacrosSelect(XenForo_View $view, array $viewingUser = null)
 	{
 		$this->standardizeViewingUserReference($viewingUser);
 
-		$viewParams = $view->getParams();
+		$options = XenForo_Application::getOptions();
 
-		switch (XenForo_Application::resolveDynamicClassToRoot($view))
+		$viewParams = $view->getParams();
+		$viewClass = XenForo_Application::resolveDynamicClassToRoot($view);
+		$excludedViews = preg_split('/\r?\n/',
+			$options->get('liam_postMacros_excluded_views'), PREG_SPLIT_NO_EMPTY);
+
+		switch ($viewClass)
 		{
 			case 'XenForo_ViewPublic_Thread_Create':
 			case 'XenForo_ViewPublic_Thread_Reply':
@@ -305,7 +310,12 @@ class LiamW_PostMacros_Model_Macros extends XenForo_Model
 				$shouldDisplay = !$viewingUser['post_macros_hide_conversation_quick_reply'];
 				break;
 			default:
-				$shouldDisplay = true; // Display on an unknown view.
+				$shouldDisplay = $options->get('liam_postMacros_all_editors');
+		}
+
+		if (in_array($viewClass, $excludedViews))
+		{
+			$shouldDisplay = false;
 		}
 
 		return $shouldDisplay;

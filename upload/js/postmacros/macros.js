@@ -12,6 +12,7 @@
 	{
 		__construct: function ($macros)
 		{
+			console.log($macros);
 			this.$macros = $macros;
 			this.$macros.bind('change', $.context(this, 'macroSelected'));
 
@@ -29,7 +30,7 @@
 
 			jQuery.each($forms, function (index, form)
 			{
-				$editor = XenForo.getEditorInForm(form);
+				$editor = XenForo.getEditorInForm(form, '#' + thisClass.escape(thisClass.$macros.data('editorid')) + '_html');
 				if ($editor)
 				{
 					thisClass.$editor = $editor;
@@ -38,15 +39,25 @@
 				}
 			});
 
-			delete(thisClass);
+			if (!this.$editor)
+			{
+				jQuery.each($forms, function (index, form)
+				{
+					$editor = XenForo.getEditorInForm(form, '#' + thisClass.escape(thisClass.$macros.data('editorid')));
+					if ($editor)
+					{
+						thisClass.$editor = $editor;
+						thisClass.$form = form;
+						return false;
+					}
+				});
+			}
 
 			if (!this.$editor)
 			{
-				console.warn("Unable to find form to insert array into!");
-				this.noForm = true;
+				console.warn("Post Macros: Unable to find editor! Post macros isn't going to work...");
+				return;
 			}
-
-			//console.log(this.$editor);
 
 			this.type = typeof (this.$editor.val) == "undefined" ? 'html' : 'plain';
 		},
@@ -134,9 +145,14 @@
 			}
 
 			this.$macros.val(0);
+		},
+
+		escape: function (str)
+		{
+			return str.replace(/(:|\.|\[|\]|,)/g, "\\$1");
 		}
 	};
 
-	XenForo.register('#MacroSelect', 'XenForo.PostMacros');
+	XenForo.register('.MacroSelect', 'XenForo.PostMacros');
 }
 (jQuery, this, document);
