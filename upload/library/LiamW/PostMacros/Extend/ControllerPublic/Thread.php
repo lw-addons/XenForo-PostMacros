@@ -4,10 +4,11 @@ class LiamW_PostMacros_Extend_ControllerPublic_Thread extends XFCP_LiamW_PostMac
 {
 	public function actionAddReply()
 	{
-		if (XenForo_Visitor::getInstance()->hasPermission('forum', 'editAnyPost'))
+		$setPrefix = $this->_input->filterSingle('set_prefix', XenForo_Input::UINT);
+
+		if (XenForo_Visitor::getInstance()->hasPermission('forum', 'editAnyPost') && $setPrefix)
 		{
-			XenForo_Application::set('liam_postMacros_set_prefix',
-				$this->_input->filterSingle('set_prefix', XenForo_Input::UINT));
+			XenForo_Application::set('liam_postMacros_set_prefix', $setPrefix);
 		}
 
 		return parent::actionAddReply();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.0.1" version_id="40001" url="https://xf-liam.com/products/post-macros.2/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
+<addon addon_id="liam_postMacros" title="Post Macros" version_string="4.0.2" version_id="40002" url="https://xf-liam.com/products/post-macros.2/" install_callback_class="LiamW_PostMacros_Installer" install_callback_method="install" uninstall_callback_class="LiamW_PostMacros_Installer" uninstall_callback_method="uninstall">
   <admin_navigation>
     <navigation navigation_id="liam_postMacros" parent_navigation_id="options" display_order="500" link="post-macros" admin_permission_id="" debug_only="0" hide_no_children="0"/>
   </admin_navigation>
@@ -201,6 +201,8 @@
     <phrase title="liam_postMacros_options_explain" version_id="40000" version_string="4.0.0"><![CDATA[You can use these options to choose where to display the macro selector.]]></phrase>
     <phrase title="liam_postMacros_others_staff_macro" version_id="40000" version_string="4.0.0"><![CDATA[This is an other's staff macro.]]></phrase>
     <phrase title="liam_postMacros_own_staff_macro" version_id="40000" version_string="4.0.0"><![CDATA[This is your own staff macro.]]></phrase>
+    <phrase title="liam_postMacros_please_enter_valid_content" version_id="40001" version_string="4.0.1"><![CDATA[Please enter valid content.]]></phrase>
+    <phrase title="liam_postMacros_please_enter_valid_title" version_id="40001" version_string="4.0.1"><![CDATA[Please enter a valid title.]]></phrase>
     <phrase title="liam_postMacros_requested_macro_not_found" version_id="40000" version_string="4.0.0"><![CDATA[The requested macro could not be found!]]></phrase>
     <phrase title="liam_postMacros_save_macro" version_id="40000" version_string="4.0.0"><![CDATA[Save Macro]]></phrase>
     <phrase title="liam_postMacros_staff_macro" version_id="40000" version_string="4.0.0"><![CDATA[Staff Macro]]></phrase>

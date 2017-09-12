@@ -89,7 +89,13 @@ class LiamW_PostMacros_Installer
 
 	public static function uninstall()
 	{
+		self::$_db = XenForo_Application::getDb();
+		XenForo_Db::beginTransaction(self::$_db);
+
 		self::_uninstallTables();
+		self::_uninstallCoreAlters();
+
+		XenForo_Db::commit(self::$_db);
 	}
 
 	protected static function _installTables()

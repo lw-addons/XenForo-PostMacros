@@ -39,7 +39,8 @@ class LiamW_PostMacros_DataWriter_Macros extends XenForo_DataWriter
 				'title' => array(
 					'type' => self::TYPE_STRING,
 					'maxLength' => 50,
-					'required' => true
+					'required' => true,
+					'requiredError' => 'liam_postMacros_please_enter_valid_title'
 				),
 				'thread_title' => array(
 					'type' => self::TYPE_STRING,
@@ -52,7 +53,8 @@ class LiamW_PostMacros_DataWriter_Macros extends XenForo_DataWriter
 				),
 				'content' => array(
 					'type' => self::TYPE_STRING,
-					'required' => true
+					'required' => true,
+					'requiredError' => 'liam_postMacros_please_enter_valid_content'
 				),
 				'lock_thread' => array(
 					'type' => self::TYPE_BOOLEAN,
