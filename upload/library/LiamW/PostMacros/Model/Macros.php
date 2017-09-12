@@ -3,13 +3,13 @@
 class LiamW_PostMacros_Model_Macros extends XenForo_Model
 {
 	protected $_orderOptions = array(
-		'display_order' => 'ORDER BY display_order'
+		'display_order' => 'display_order'
 	);
 
 	public function getMacros(array $conditions = array(), array $fetchOptions = array())
 	{
 		$whereConditions = $this->_prepareMacrosConditions($conditions);
-		$orderByClause = $this->getOrderByClause($this->_orderOptions, $fetchOptions);
+		$orderByClause = ' ' . $this->getOrderByClause($this->_orderOptions, $fetchOptions);
 
 		return $this->fetchAllKeyed(
 			'SELECT * FROM liam_post_macros WHERE ' . $whereConditions . $orderByClause, 'macro_id'

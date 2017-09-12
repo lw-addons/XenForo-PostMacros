@@ -32,14 +32,14 @@ class LiamW_PostMacros_CheckSums
 			'library/LiamW/PostMacros/Installer.php' => '7caa8cbf0facb9f189bb3cc8653e1cca',
 			'library/LiamW/PostMacros/Listener.php' => 'd5fb2a59feb714aae8a3f8440ebacbce',
 			'library/LiamW/PostMacros/Model/Import.php' => '368c0dcdce246ef8b84c72b9adf3dabd',
-			'library/LiamW/PostMacros/Model/Macros.php' => '11d1e8ecbfa856d3376940f0addd7cae',
+			'library/LiamW/PostMacros/Model/Macros.php' => '7ce830f7e886cfcc17e4791fab49934e',
 			'library/LiamW/PostMacros/Route/Prefix/PostMacros.php' => '3f32c218109df16db5aef192c7680199',
 			'library/LiamW/PostMacros/Route/PrefixAdmin/PostMacros.php' => '2bc6de5f0454e0cba8d76ef665b3723f',
 			'library/LiamW/PostMacros/TemplateModification.php' => '57dda03f5c7ef4e84620cd5cd9ec7351',
 			'library/LiamW/PostMacros/ViewPublic/Create.php' => '7facc7ddbfbaea42d77293934751e1b0',
 			'library/LiamW/PostMacros/ViewPublic/Edit.php' => '8a51547e2b19d902bca8933303f68b12',
-			'library/LiamW/PostMacros/ViewPublic/Index.php' => '9fbfd7900e90bb9d6d1d358d3630aa72',
-			'library/LiamW/PostMacros/ViewPublic/Preview.php' => '17742fcb9f572d3f1713223e71ad7f7f',
+			'library/LiamW/PostMacros/ViewPublic/Index.php' => '33475be3669058bb291de019c9948c43',
+			'library/LiamW/PostMacros/ViewPublic/Preview.php' => '07cfb07579a2d742c0e2ea7425840cf8',
 			'library/LiamW/PostMacros/ViewPublic/Use.php' => '4cb77e1ab843f42275b8fa85046a99ee',
 		);
 	}
