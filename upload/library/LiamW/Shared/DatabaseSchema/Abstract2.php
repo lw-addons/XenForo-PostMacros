@@ -43,9 +43,9 @@ abstract class LiamW_Shared_DatabaseSchema_Abstract2
 
 		$instance = new $class($installedVersion, $throw);
 
-		if (!($instance instanceof PayToPost_DatabaseSchema_Abstract))
+		if (!($instance instanceof LiamW_Shared_DatabaseSchema_Abstract2))
 		{
-			throw new XenForo_Exception("Installer not instance of PayToPost_DatabaseSchema_Abstract!");
+			throw new XenForo_Exception("Installer not instance of LiamW_Shared_DatabaseSchema_Abstract2!");
 		}
 
 		$instance->_db = XenForo_Application::getDb();

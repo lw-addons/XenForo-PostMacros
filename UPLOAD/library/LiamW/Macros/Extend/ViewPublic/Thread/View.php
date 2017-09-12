@@ -57,7 +57,7 @@ class LiamW_Macros_Extend_ViewPublic_Thread_View extends XFCP_LiamW_Macros_Exten
 				case "ntnr":
 					$show = !$macrosModel->hiddenOnNtNr($userId);
 					break;
-				case "covoqr":
+				case "convoqr":
 					$show = !$macrosModel->hiddenOnConvoQr($userId);
 					break;
 				case "convoncnr":

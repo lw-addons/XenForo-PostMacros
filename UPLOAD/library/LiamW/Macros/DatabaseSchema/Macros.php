@@ -27,7 +27,7 @@ class LiamW_Macros_DatabaseSchema_Macros extends LiamW_Shared_DatabaseSchema_Abs
 				"ALTER TABLE liam_macros CHANGE macroid macro_id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT",
 				"ALTER TABLE liam_macros CHANGE userid user_id INT(10) UNSIGNED NOT NULL"
 			),
-			30603 => array(
+			30604 => array(
 				"ALTER TABLE liam_macros CHANGE macro content TEXT NOT NULL"
 			)
 		);

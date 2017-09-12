@@ -23,7 +23,7 @@ class LiamW_Macros_Addon
 
 		$dbMacros = LiamW_Shared_DatabaseSchema_Abstract2::create('LiamW_Macros_DatabaseSchema_Macros');
 		$dbAdminMacros = LiamW_Shared_DatabaseSchema_Abstract2::create('LiamW_Macros_DatabaseSchema_AdminMacros');
-		$dbMacroOptions = LiamW_Shared_DatabaseSchema_Abstract2::create('LiamW_Macros_DatabaseSchema_MacroOptions');
+		$dbMacroOptions = LiamW_Shared_DatabaseSchema_Abstract2::create('LiamW_Macros_DatabaseSchema_UserOption');
 		$forum = LiamW_Shared_DatabaseSchema_Abstract2::create('LiamW_Macros_DatabaseSchema_Forum');
 
 		$dbMacros->install($version);
@@ -36,7 +36,7 @@ class LiamW_Macros_Addon
 	{
 		$dbMacros = LiamW_Shared_DatabaseSchema_Abstract2::create('LiamW_Macros_DatabaseSchema_Macros');
 		$dbAdminMacros = LiamW_Shared_DatabaseSchema_Abstract2::create('LiamW_Macros_DatabaseSchema_AdminMacros');
-		$dbMacroOptions = LiamW_Shared_DatabaseSchema_Abstract2::create('LiamW_Macros_DatabaseSchema_MacroOptions');
+		$dbMacroOptions = LiamW_Shared_DatabaseSchema_Abstract2::create('LiamW_Macros_DatabaseSchema_UserOption');
 		$forum = LiamW_Shared_DatabaseSchema_Abstract2::create('LiamW_Macros_DatabaseSchema_Forum');
 
 		$dbMacros->uninstall();
